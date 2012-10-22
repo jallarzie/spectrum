@@ -25,6 +25,9 @@ namespace spectrum
         public Application()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+            
             Content.RootDirectory = "Content";
         }
 
@@ -37,7 +40,6 @@ namespace spectrum
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
