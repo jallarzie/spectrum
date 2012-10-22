@@ -8,6 +8,5 @@ namespace spectrum.GameComponents
 {
     public class Ship : DrawableGameComponent
     {
-        public Ship() : base(Application.Instance) { }
     }
 }

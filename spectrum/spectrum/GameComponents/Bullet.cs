@@ -8,6 +8,5 @@ namespace spectrum.GameComponents
 {
     public class Bullet : DrawableGameComponent
     {
-        public Bullet() : base(Application.Instance) { }
     }
 }
