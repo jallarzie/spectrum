@@ -29,6 +29,8 @@ namespace spectrum
             graphics.PreferredBackBufferHeight = 720;
             
             Content.RootDirectory = "Content";
+
+            Components.Add(new spectrum.GameComponents.Ship(this, Vector2.Zero));
         }
 
         /// <summary>
