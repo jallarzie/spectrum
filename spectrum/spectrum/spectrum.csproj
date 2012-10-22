@@ -107,6 +107,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collision\BoundingBox.cs" />
+    <Compile Include="Collision\BoundingSphere.cs" />
+    <Compile Include="Collision\Collision.cs" />
+    <Compile Include="Display\AnimatedSprite.cs" />
+    <Compile Include="Display\DisplayList.cs" />
+    <Compile Include="Display\Sprite.cs" />
+    <Compile Include="GameComponents\Bullet.cs" />
+    <Compile Include="GameComponents\Ship.cs" />
+    <Compile Include="GameStates\Exit.cs" />
+    <Compile Include="GameStates\Playing.cs" />
+    <Compile Include="GameStates\State.cs" />
+    <Compile Include="Path\Follow.cs" />
+    <Compile Include="Path\Path.cs" />
+    <Compile Include="Path\Straight.cs" />
+    <Compile Include="Path\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application.cs" />
   </ItemGroup>

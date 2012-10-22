@@ -8,12 +8,26 @@ namespace spectrum
 #if WINDOWS || XBOX
     class Application : Microsoft.Xna.Framework.Game
     {
+        public static Application instance;
+
+        public static Application Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Application();
+                }
+                return instance;
+            }
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         static void Main(string[] args)
         {
-            using (Application game = new Application())
+            using (Application game = Application.Instance)
             {
                 game.Run();
             }
@@ -22,7 +36,7 @@ namespace spectrum
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Application()
+        private Application()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
