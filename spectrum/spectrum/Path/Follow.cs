@@ -5,7 +5,7 @@ using System.Text;
 
 namespace spectrum.Path
 {
-    class Follow
+    class Follow : Path
     {
     }
 }

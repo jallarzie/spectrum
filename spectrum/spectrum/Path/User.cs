@@ -5,7 +5,7 @@ using System.Text;
 
 namespace spectrum.Path
 {
-    class User
+    class User : Path
     {
     }
 }

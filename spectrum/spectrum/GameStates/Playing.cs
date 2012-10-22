@@ -5,7 +5,7 @@ using System.Text;
 
 namespace spectrum.GameStates
 {
-    class Playing
+    class Playing : State
     {
     }
 }

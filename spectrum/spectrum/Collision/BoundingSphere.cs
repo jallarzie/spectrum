@@ -5,7 +5,7 @@ using System.Text;
 
 namespace spectrum.Collision
 {
-    class BoundingSphere
+    class BoundingSphere : Collision
     {
     }
 }

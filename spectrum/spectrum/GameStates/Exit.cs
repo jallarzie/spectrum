@@ -5,7 +5,7 @@ using System.Text;
 
 namespace spectrum.GameStates
 {
-    class Exit
+    class Exit : State
     {
     }
 }
