@@ -10,16 +10,10 @@ namespace spectrum.GameComponents
 {
     public class Ship : DrawableGameComponent
     {
-        private static Rectangle SRC_RECTANGLE = new Rectangle(18, 22, 194, 91);
-
-        private static Rectangle SRC_LEFTWING_RECTANGLE = new Rectangle(24, 252, 51, 54);
-        private static Vector2 LEFTWING_OFFSET = new Vector2(-6, 37);
-
-        private static Rectangle SRC_RIGHTWING_RECTANGLE = new Rectangle(24, 338, 51, 54);
-        private static Vector2 RIGHTWING_OFFSET = new Vector2(154, 38);
+        private static Rectangle SRC_RECTANGLE = new Rectangle(0, 0, 216, 97);
 
         /// <summary>
-        /// Top Left Position of the Ship
+        /// Center Position of the Ship
         /// </summary>
         public Vector2 Position;
 
@@ -41,7 +35,7 @@ namespace spectrum.GameComponents
 
         protected override void LoadContent()
         {
-            texture = Game.Content.Load<Texture2D>("spriggan");
+            texture = Game.Content.Load<Texture2D>("ship");
             base.LoadContent();
         }
 
@@ -95,11 +89,17 @@ namespace spectrum.GameComponents
             SpriteBatch batch = new SpriteBatch(Game.GraphicsDevice);
 
             batch.Begin();
-            batch.Draw(texture, Position + new Vector2(SRC_RECTANGLE.Width / 2, SRC_RECTANGLE.Height / 2), SRC_RECTANGLE, Color.White, Angle, new Vector2(SRC_RECTANGLE.Width / 2, SRC_RECTANGLE.Height / 2), 1, SpriteEffects.None, 0);
-
-            // Drawing the Ship's Wings
-            batch.Draw(texture, Position + RIGHTWING_OFFSET, SRC_RIGHTWING_RECTANGLE, Color.White);
-            batch.Draw(texture, Position + LEFTWING_OFFSET, SRC_LEFTWING_RECTANGLE, Color.White);
+            batch.Draw(
+                texture: texture,
+                position: Position, 
+                sourceRectangle: SRC_RECTANGLE,
+                color: Color.White, 
+                rotation: Angle,
+                origin: new Vector2(SRC_RECTANGLE.Width / 2, SRC_RECTANGLE.Height / 2),
+                scale: 0.25f,
+                effects: SpriteEffects.None,
+                layerDepth: 0);
+            
             batch.End();
 
             base.Draw(gameTime);
