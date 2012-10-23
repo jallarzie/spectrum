@@ -24,29 +24,19 @@ namespace spectrum.GameComponents
         public Vector2 Position;
 
         /// <summary>
-        /// Current Speed of the Ship, in pixels/frame
-        /// </summary>
-        public int Speed { get; private set; }
-
-        /// <summary>
         /// Speed Of the Ship when it moves, in pixels/frame
         /// </summary>
         public int MovingSpeed;
 
-        /// <summary>
-        /// Unit Vector of the Direction of the Ship.
-        /// </summary>
-        public Vector2 Direction;
-
-
         private Texture2D texture;
-        private KeyboardState previousKeyBoardState;
+
+        private float Angle;
 
         public Ship(Game game, Vector2 position) : base(game) 
         {
             Position = position;
-            Speed = 0;
             MovingSpeed = 8;
+            Angle = 0;
         }
 
         protected override void LoadContent()
@@ -61,31 +51,42 @@ namespace spectrum.GameComponents
 
             if (keyboardState.IsKeyDown(Keys.Left)) 
             {
-                Direction = new Vector2(-1, 0);
-                Speed = MovingSpeed;
+                Position += MovingSpeed * new Vector2(-1, 0);
+                Angle = 3 * (float)Math.PI/2;
             }
-            else if (keyboardState.IsKeyDown(Keys.Right)) 
-            { 
-                Direction = new Vector2(1, 0);
-                Speed = MovingSpeed;
-            }
-            else if (keyboardState.IsKeyDown(Keys.Up)) 
+            if (keyboardState.IsKeyDown(Keys.Right)) 
             {
-                Direction = new Vector2(0, -1);
-                Speed = MovingSpeed;
+                Position += MovingSpeed * new Vector2(1, 0);
+                Angle = (float)Math.PI/2;
             }
-            else if (keyboardState.IsKeyDown(Keys.Down))
+            if (keyboardState.IsKeyDown(Keys.Up)) 
             {
-                Direction = new Vector2(0, 1);
-                Speed = MovingSpeed;
+                Position += MovingSpeed * new Vector2(0, -1);
+                Angle = 0;
             }
-            else 
+            if (keyboardState.IsKeyDown(Keys.Down))
             {
-                Speed = 0;
+                Position += MovingSpeed * new Vector2(0, 1);
+                Angle = (float)Math.PI;
             }
-            previousKeyBoardState = keyboardState;
 
-            Position += Speed * Direction;
+            if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Up))
+            {
+                Angle = 11 * (float)Math.PI/6;
+            }
+            if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Down))
+            {
+                Angle = 4 * (float)Math.PI / 3;
+            }
+            if (keyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyDown(Keys.Up))
+            {
+                Angle = (float)Math.PI/6;
+            }
+            if (keyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyDown(Keys.Down))
+            {
+                Angle = 5 * (float)Math.PI / 6;
+            }
+
             base.Update(gameTime);
         }
 
@@ -94,7 +95,7 @@ namespace spectrum.GameComponents
             SpriteBatch batch = new SpriteBatch(Game.GraphicsDevice);
 
             batch.Begin();
-            batch.Draw(texture, Position, SRC_RECTANGLE, Color.White);
+            batch.Draw(texture, Position + new Vector2(SRC_RECTANGLE.Width / 2, SRC_RECTANGLE.Height / 2), SRC_RECTANGLE, Color.White, Angle, new Vector2(SRC_RECTANGLE.Width / 2, SRC_RECTANGLE.Height / 2), 1, SpriteEffects.None, 0);
 
             // Drawing the Ship's Wings
             batch.Draw(texture, Position + RIGHTWING_OFFSET, SRC_RIGHTWING_RECTANGLE, Color.White);
