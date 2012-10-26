@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "spectrum", "spectrum\spectrum\spectrum.csproj", "{266988ED-D1A3-4458-A055-369025DDBCB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectrum", "spectrum\spectrum\Spectrum.csproj", "{266988ED-D1A3-4458-A055-369025DDBCB4}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "spectrumContent", "spectrum\spectrumContent\spectrumContent.contentproj", "{BECFA046-BEA5-4EA0-8239-9A543ED3ED0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpectrumContent", "spectrum\spectrumContent\SpectrumContent.contentproj", "{BECFA046-BEA5-4EA0-8239-9A543ED3ED0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>spectrum</RootNamespace>
-    <AssemblyName>spectrum</AssemblyName>
+    <RootNamespace>Spectrum</RootNamespace>
+    <AssemblyName>Spectrum</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
@@ -107,21 +107,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collision\BoundingBox.cs" />
-    <Compile Include="Collision\BoundingSphere.cs" />
-    <Compile Include="Collision\Collision.cs" />
-    <Compile Include="Display\AnimatedSprite.cs" />
-    <Compile Include="Display\DisplayList.cs" />
-    <Compile Include="Display\Sprite.cs" />
-    <Compile Include="GameComponents\Bullet.cs" />
-    <Compile Include="GameComponents\Ship.cs" />
-    <Compile Include="GameStates\Exit.cs" />
-    <Compile Include="GameStates\Playing.cs" />
-    <Compile Include="GameStates\State.cs" />
-    <Compile Include="Path\Follow.cs" />
-    <Compile Include="Path\Path.cs" />
-    <Compile Include="Path\Straight.cs" />
-    <Compile Include="Path\User.cs" />
+    <Compile Include="Library\Collisions\Box.cs" />
+    <Compile Include="Library\Collisions\Sphere.cs" />
+    <Compile Include="Library\Collisions\Area.cs" />
+    <Compile Include="Components\Ship.cs" />
+    <Compile Include="Library\Paths\Path.cs" />
+    <Compile Include="Library\Geometry\Node.cs" />
+    <Compile Include="Library\Geometry\CoordinateSystem.cs" />
+    <Compile Include="Library\Graphics\DisplayList.cs" />
+    <Compile Include="Library\Graphics\Drawable.cs" />
+    <Compile Include="Library\Graphics\Flat.cs" />
+    <Compile Include="Library\Graphics\Sprite.cs" />
+    <Compile Include="Library\Graphics\Entity2D.cs" />
+    <Compile Include="Library\Paths\PathAware.cs" />
+    <Compile Include="Library\Paths\User.cs" />
+    <Compile Include="Library\States\State.cs" />
+    <Compile Include="Library\States\StateMachine.cs" />
+    <Compile Include="States\Exit.cs" />
+    <Compile Include="States\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application.cs" />
   </ItemGroup>
@@ -130,9 +133,10 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\spectrumContent\spectrumContent.contentproj">
-      <Name>spectrumContent</Name>
+    <ProjectReference Include="..\spectrumContent\SpectrumContent.contentproj">
+      <Name>SpectrumContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{BECFA046-BEA5-4EA0-8239-9A543ED3ED0C}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
