@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Background.cs" />
     <Compile Include="Library\Collisions\Box.cs" />
     <Compile Include="Library\Collisions\Sphere.cs" />
     <Compile Include="Library\Collisions\Area.cs" />

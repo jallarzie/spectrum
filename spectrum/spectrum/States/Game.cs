@@ -13,6 +13,8 @@ namespace Spectrum.States
         {
             Player = new Ship();
             Player.Path = new User(Player);
+
+            Application.Instance.Drawables.Add(new Background());
             Application.Instance.Drawables.Add(Player);
         }
 
