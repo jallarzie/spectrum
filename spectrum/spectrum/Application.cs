@@ -41,6 +41,8 @@ namespace Spectrum
 
         protected override void Initialize()
         {
+            IsMouseVisible = true;
+
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             StateMachine = new StateMachine();
@@ -56,7 +58,7 @@ namespace Spectrum
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.LightGray);
 
             SpriteBatch.Begin();
             Drawables.Draw(gameTime, SpriteBatch);

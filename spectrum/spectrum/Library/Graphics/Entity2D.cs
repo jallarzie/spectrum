@@ -15,6 +15,7 @@ namespace Spectrum.Library.Graphics
             Position = new Vector2(0, 0);
             Rotation = 0f;
             Scale = 1f;
+            Tint = Color.White;
 
             Origin = new Vector2(0, 0);
             Layer = 0f;
@@ -47,7 +48,7 @@ namespace Spectrum.Library.Graphics
         public virtual void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
         {
             if (Dirty) this.Update();
-            targetSpriteBatch.Draw(Texture, this.WorldPosition(), null, Color.White * Opacity, this.WorldRotation(), Origin, Scale, Flip, Layer);
+            targetSpriteBatch.Draw(Texture, this.WorldPosition(), null, Tint * Opacity, this.WorldRotation(), Origin, Scale, Flip, Layer);
         }
 
         protected Texture2D Texture;
@@ -57,6 +58,7 @@ namespace Spectrum.Library.Graphics
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public float Scale { get; set; }
+        public Color Tint { get; set; }
 
         public Vector2 Origin;
         public float Layer;
