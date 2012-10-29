@@ -15,6 +15,7 @@ namespace Spectrum.States
             Player.Path = new User(Player);
 
             Application.Instance.Drawables.Add(new Background());
+            Application.Instance.Drawables.Add(new PowerCore());
             Application.Instance.Drawables.Add(Player);
         }
 

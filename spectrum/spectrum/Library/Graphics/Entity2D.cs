@@ -44,7 +44,7 @@ namespace Spectrum.Library.Graphics
         {
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
         {
             if (Dirty) this.Update();
             targetSpriteBatch.Draw(Texture, this.WorldPosition(), null, Color.White * Opacity, this.WorldRotation(), Origin, Scale, Flip, Layer);
