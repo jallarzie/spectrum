@@ -56,8 +56,20 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="powerup.png">
       <Name>powerup</Name>
+=======
+    <Compile Include="background.png">
+      <Name>background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="powercore.png">
+      <Name>powercore</Name>
+>>>>>>> 03e358beaabac4f5399a24df3e9c5d67351743c3
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

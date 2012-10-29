@@ -22,6 +22,9 @@ namespace Spectrum.States
             Player = new Ship();
             Player.Position = new Vector2(Window.Width / 2, Window.Height * 4/5);
             Player.Path = new User(Player);
+
+            Application.Instance.Drawables.Add(new Background());
+            Application.Instance.Drawables.Add(new PowerCore());
             Application.Instance.Drawables.Add(Player);
 
             Lasers = new List<Laser>();
