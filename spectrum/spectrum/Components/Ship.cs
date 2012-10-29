@@ -11,7 +11,6 @@ namespace Spectrum.Components
         {
             Origin = new Vector2(Width / 2, Height / 2);
             Scale = 0.5f;
-            Speed = 8;
         }
 
         public void PathPosition(Vector2 position)
@@ -24,7 +23,6 @@ namespace Spectrum.Components
             Rotation = angle;
         }
 
-        public float Speed;
         public Path Path;
     }
 }

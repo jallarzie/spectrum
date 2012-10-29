@@ -24,17 +24,19 @@ namespace Spectrum.Library.Paths
             KeyboardState keyboardState = Keyboard.GetState();
             Vector2 direction = new Vector2();
 
-            if (keyboardState.IsKeyDown(Keys.Left))
+            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
                 direction.X -= 1;
-            if (keyboardState.IsKeyDown(Keys.Right))
+            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
                 direction.X += 1;
-            if (keyboardState.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
                 direction.Y -= 1;
-            if (keyboardState.IsKeyDown(Keys.Down))
+            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
                 direction.Y += 1;
 
             if (direction.X == 0 && direction.Y == 0)
                 return Position;
+
+            direction.Normalize();
 
             Position += direction * distance;
 
