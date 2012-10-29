@@ -26,12 +26,12 @@ namespace Spectrum.Components
             Rotation = angle;
         }
 
-        public bool IsVisible(Rectangle window)
+        public bool IsVisible(Viewport viewport)
         {
-            return (Position.X + Width / 2 >= window.X &&
-                    Position.X - Width / 2 < window.Width &&
-                    Position.Y + Height / 2 >= window.Y &&
-                    Position.Y - Height / 2 < window.Height);
+            return (Position.X + Width / 2 >= viewport.X &&
+                    Position.X - Width / 2 < viewport.Width &&
+                    Position.Y + Height / 2 >= viewport.Y &&
+                    Position.Y - Height / 2 < viewport.Height);
         }
 
         public Path Path;

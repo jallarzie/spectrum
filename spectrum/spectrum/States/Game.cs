@@ -5,6 +5,7 @@ using Spectrum.Library.Paths;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Spectrum.States
 {
@@ -18,9 +19,9 @@ namespace Spectrum.States
         public override void Initialize()
         {
             RNG = new Random();
-            Window = new Rectangle(0, 0, 1280, 720);
+            Viewport = Application.Instance.GraphicsDevice.Viewport;
             Player = new Ship();
-            Player.Position = new Vector2(Window.Width / 2, Window.Height * 4/5);
+            Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player);
 
             Application.Instance.Drawables.Add(new Background());
@@ -41,7 +42,7 @@ namespace Spectrum.States
             foreach (Laser laser in Lasers)
             {
                 laser.Path.Move((float)(SPEED_LASER * gameTime.ElapsedGameTime.TotalSeconds));
-                if (!laser.IsVisible(Window))
+                if (!laser.IsVisible(Viewport))
                 {
                     LasersToRemove.Add(laser);
                 }
@@ -107,14 +108,14 @@ namespace Spectrum.States
                     case 5: color = Color.Yellow; break;
                     case 6: color = Color.White; break;
                 }
-                Powerup powerup = new Powerup(color, new Vector2(RNG.Next(Window.Width), RNG.Next(Window.Height)));
+                Powerup powerup = new Powerup(color, new Vector2(RNG.Next(Viewport.Width), RNG.Next(Viewport.Height)));
                 Powerups.Add(powerup);
                 Application.Instance.Drawables.Add(powerup);
             }
         }
 
         private Random RNG;
-        private Rectangle Window;
+        private Viewport Viewport;
         private Ship Player;
         private List<Laser> Lasers, LasersToRemove;
         private List<Powerup> Powerups, PowerupsToRemove;
