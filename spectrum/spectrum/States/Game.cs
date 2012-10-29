@@ -38,7 +38,33 @@ namespace Spectrum.States
         {
             Player.Path.Move((float) (SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds));
 
+            CollectPowerups();
             ShootLaser(gameTime);
+            MoveLasers(gameTime);
+
+            // to test color combining system
+            SpawnRandomPowerup(gameTime);
+        }
+
+        private void ShootLaser(GameTime gameTime)
+        {
+            LaserFireRateCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (LaserFireRateCounter >= 1 / FIRE_RATE)
+            {
+                LaserFireRateCounter = 0f;
+                MouseState mouseState = Mouse.GetState();
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
+                    Laser laser = new Laser(Player.Tint, Player.Position, direction);
+                    Lasers.Add(laser);
+                    Application.Instance.Drawables.Add(laser);
+                }
+            }
+        }
+
+        private void MoveLasers(GameTime gameTime)
+        {
             foreach (Laser laser in Lasers)
             {
                 laser.Path.Move((float)(SPEED_LASER * gameTime.ElapsedGameTime.TotalSeconds));
@@ -53,9 +79,10 @@ namespace Spectrum.States
                 Application.Instance.Drawables.Remove(laser);
             }
             LasersToRemove.Clear();
+        }
 
-            // to test color combining system
-            SpawnRandomPowerup(gameTime);
+        private void CollectPowerups()
+        {
             foreach (Powerup powerup in Powerups)
             {
                 Vector2 distance = Player.Position - powerup.Position;
@@ -73,25 +100,8 @@ namespace Spectrum.States
             PowerupsToRemove.Clear();
         }
 
-        public void ShootLaser(GameTime gameTime)
-        {
-            LaserFireRateCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (LaserFireRateCounter >= 1 / FIRE_RATE)
-            {
-                LaserFireRateCounter = 0f;
-                MouseState mouseState = Mouse.GetState();
-                if (mouseState.LeftButton == ButtonState.Pressed)
-                {
-                    Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
-                    Laser laser = new Laser(Player.Tint, Player.Position, direction);
-                    Lasers.Add(laser);
-                    Application.Instance.Drawables.Add(laser);
-                }
-            }
-        }
-
         // to test color combining system
-        public void SpawnRandomPowerup(GameTime gameTime)
+        private void SpawnRandomPowerup(GameTime gameTime)
         {
             PowerupSpawnCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (PowerupSpawnCounter >= POWERUP_SPAWN_INTERVAL)
