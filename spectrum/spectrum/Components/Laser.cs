@@ -34,8 +34,6 @@ namespace Spectrum.Components
                     Position.Y - Height / 2 < window.Height);
         }
 
-        public Color Color { get; set; }
-
         public Path Path;
     }
 }

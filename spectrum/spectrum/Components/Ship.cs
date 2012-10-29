@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Spectrum.Library.Graphics;
 using Spectrum.Library.Paths;
+using Spectrum.Library.Collisions;
 
 namespace Spectrum.Components
 {
@@ -11,10 +12,10 @@ namespace Spectrum.Components
         {
             Origin = new Vector2(Width / 2, Height / 2);
             Scale = 0.3f;
-            setTint(Color.Green);
+            SetTint(Color.Black);
         }
 
-        public void setTint(Color color)
+        private void SetTint(Color color)
         {
             if (color == Color.Red ||
                 color == Color.Green ||
@@ -26,10 +27,32 @@ namespace Spectrum.Components
             {
                 Tint = color;
             }
+            else if (color.R == 0 && color.G == 255 && color.B == 0)
+            {
+                Tint = Color.Green;
+            }
             else
             {
                 Tint = new Color(90, 90, 90); // looks better than Color.Black with sprite tinting
             }
+        }
+
+        public void AbsorbTint(Color color)
+        {
+            Color combined = Color.Black;
+            if (color.R > 100 ^ Tint.R > 100)
+            {
+                combined.R = 255;
+            }
+            if (color.G > 100 ^ Tint.G > 100)
+            {
+                combined.G = 255;
+            }
+            if (color.B > 100 ^ Tint.B > 100)
+            {
+                combined.B = 255;
+            }
+            SetTint(combined);
         }
 
         public void PathPosition(Vector2 position)
