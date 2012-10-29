@@ -10,7 +10,7 @@ namespace Spectrum.Components
         public Laser(Color tint, Vector2 position, Vector2 direction) : base("laser")
         {
             Origin = new Vector2(Width / 2, Height / 2);
-            Scale = 0.5f;
+            Scale = 0.4f;
             Tint = tint;
             Position = position;
             Path = new Linear(this, direction);

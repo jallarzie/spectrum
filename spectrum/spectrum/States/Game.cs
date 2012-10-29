@@ -22,7 +22,6 @@ namespace Spectrum.States
 
             Lasers = new List<Laser>();
             LasersToRemove = new List<Laser>();
-            LaserColor = Color.Red;
         }
 
         public override void Update(GameTime gameTime)
@@ -56,7 +55,7 @@ namespace Spectrum.States
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
                     Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
-                    Laser laser = new Laser(LaserColor, Player.Position, direction);
+                    Laser laser = new Laser(Player.Tint, Player.Position, direction);
                     Lasers.Add(laser);
                     Application.Instance.Drawables.Add(laser);
                 }
@@ -66,7 +65,6 @@ namespace Spectrum.States
         private Rectangle Window;
         private Ship Player;
         private List<Laser> Lasers, LasersToRemove;
-        private Color LaserColor;
         private float LaserFireRateCounter;
     }
 }

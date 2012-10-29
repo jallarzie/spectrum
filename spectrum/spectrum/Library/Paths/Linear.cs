@@ -11,7 +11,10 @@ namespace Spectrum.Library.Paths
         {
             PathAwareEntity = null;
             Position = position;
-            direction.Normalize();
+            if (direction.X != 0 || direction.Y != 0)
+            {
+                direction.Normalize();
+            }
             Direction = direction;
         }
 
@@ -19,7 +22,10 @@ namespace Spectrum.Library.Paths
         {
             PathAwareEntity = entity as PathAware;
             Position = entity.Position;
-            direction.Normalize();
+            if (direction.X != 0 || direction.Y != 0)
+            {
+                direction.Normalize();
+            }
             Direction = direction;
         }
 
