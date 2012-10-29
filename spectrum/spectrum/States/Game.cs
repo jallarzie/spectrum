@@ -13,8 +13,11 @@ namespace Spectrum.States
     {
         public const float SPEED_PLAYER = 750f;
         public const float SPEED_LASER = 1500f;
+        public const float SPEED_ENEMY = 200f;
         public const float FIRE_RATE = 10f; // shots/sec
-        public const float POWERUP_SPAWN_INTERVAL = 3f; // in seconds
+        public const float ENEMY_SPAWN_RATE = 3f; // enemies/sec
+        public const float POWERUP_DROP_PERCENTAGE = 0.10f;
+        public const float COLLISION_DISTANCE = 50f; // pixels
 
         public override void Initialize()
         {
@@ -30,6 +33,8 @@ namespace Spectrum.States
 
             Lasers = new List<Laser>();
             LasersToRemove = new List<Laser>();
+            Enemies = new List<Enemy>();
+            EnemiesToRemove = new List<Enemy>();
             Powerups = new List<Powerup>();
             PowerupsToRemove = new List<Powerup>();
         }
@@ -37,13 +42,11 @@ namespace Spectrum.States
         public override void Update(GameTime gameTime)
         {
             Player.Path.Move((float) (SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds));
-
-            CollectPowerups();
             ShootLaser(gameTime);
             MoveLasers(gameTime);
-
-            // to test color combining system
-            SpawnRandomPowerup(gameTime);
+            Collisions();
+            SpawnRandomEnemy(gameTime);
+            MoveEnemies(gameTime);
         }
 
         private void ShootLaser(GameTime gameTime)
@@ -81,12 +84,52 @@ namespace Spectrum.States
             LasersToRemove.Clear();
         }
 
-        private void CollectPowerups()
+        private void MoveEnemies(GameTime gameTime)
         {
+            foreach (Enemy enemy in Enemies)
+            {
+                enemy.Path.Move((float)(SPEED_ENEMY * gameTime.ElapsedGameTime.TotalSeconds));
+            }
+            foreach (Enemy enemy in EnemiesToRemove)
+            {
+                Enemies.Remove(enemy);
+                Application.Instance.Drawables.Remove(enemy);
+            }
+            EnemiesToRemove.Clear();
+        }
+
+        private void Collisions()
+        {
+            foreach (Enemy enemy in Enemies)
+            {
+                Vector2 distance = enemy.Position - Player.Position;
+                if (distance.Length() <= COLLISION_DISTANCE)
+                {
+                    Player.LoseTint(enemy.Tint);
+                    EnemiesToRemove.Add(enemy);
+                }
+                foreach (Laser laser in Lasers)
+                {
+                    distance = enemy.Position - laser.Position;
+                    if (distance.Length() <= COLLISION_DISTANCE)
+                    {
+                        if (RNG.NextDouble() <= POWERUP_DROP_PERCENTAGE)
+                        {
+                            Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
+                            if (powerup.Tint != Color.Black)
+                            {
+                                Powerups.Add(powerup);
+                                Application.Instance.Drawables.Add(powerup);
+                            }
+                        }
+                        EnemiesToRemove.Add(enemy);
+                    }
+                }
+            }
             foreach (Powerup powerup in Powerups)
             {
                 Vector2 distance = Player.Position - powerup.Position;
-                if (distance.Length() <= 50)
+                if (distance.Length() <= COLLISION_DISTANCE)
                 {
                     Player.AbsorbTint(powerup.Tint);
                     PowerupsToRemove.Add(powerup);
@@ -100,13 +143,12 @@ namespace Spectrum.States
             PowerupsToRemove.Clear();
         }
 
-        // to test color combining system
-        private void SpawnRandomPowerup(GameTime gameTime)
+        private void SpawnRandomEnemy(GameTime gameTime)
         {
-            PowerupSpawnCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (PowerupSpawnCounter >= POWERUP_SPAWN_INTERVAL)
+            EnemySpawnCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (EnemySpawnCounter >= 1 / ENEMY_SPAWN_RATE)
             {
-                PowerupSpawnCounter = 0f;
+                EnemySpawnCounter = 0f;
                 Color color = Color.Black;
                 switch (RNG.Next(7))
                 {
@@ -118,9 +160,16 @@ namespace Spectrum.States
                     case 5: color = Color.Yellow; break;
                     case 6: color = Color.White; break;
                 }
-                Powerup powerup = new Powerup(color, new Vector2(RNG.Next(Viewport.Width), RNG.Next(Viewport.Height)));
-                Powerups.Add(powerup);
-                Application.Instance.Drawables.Add(powerup);
+
+                // to spawn enemies just outside the playing area
+                float angle = (float)RNG.NextDouble() * MathHelper.TwoPi;
+                Vector2 direction = new Vector2((float)Math.Sin(angle), -(float)Math.Cos(angle));
+                direction *= Math.Max(Viewport.Width, Viewport.Height) * (1 + (float)RNG.NextDouble() / 4);
+                Vector2 center = new Vector2(Viewport.Width / 2, Viewport.Height / 2);
+
+                Enemy enemy = new Enemy(color, center + direction, Player);
+                Enemies.Add(enemy);
+                Application.Instance.Drawables.Add(enemy);
             }
         }
 
@@ -128,7 +177,8 @@ namespace Spectrum.States
         private Viewport Viewport;
         private Ship Player;
         private List<Laser> Lasers, LasersToRemove;
+        private List<Enemy> Enemies, EnemiesToRemove;
         private List<Powerup> Powerups, PowerupsToRemove;
-        private float LaserFireRateCounter, PowerupSpawnCounter;
+        private float LaserFireRateCounter, EnemySpawnCounter;
     }
 }

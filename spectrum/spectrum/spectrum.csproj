@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Background.cs" />
+    <Compile Include="Components\Enemy.cs" />
     <Compile Include="Components\PowerCore.cs" />
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\Powerup.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Library\Collisions\Sphere.cs" />
     <Compile Include="Library\Collisions\Area.cs" />
     <Compile Include="Components\Ship.cs" />
+    <Compile Include="Library\Paths\Follow.cs" />
     <Compile Include="Library\Paths\Linear.cs" />
     <Compile Include="Library\Paths\Path.cs" />
     <Compile Include="Library\Geometry\Node.cs" />

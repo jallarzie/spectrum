@@ -15,7 +15,7 @@ namespace Spectrum.Components
             SetTint(Color.Black);
         }
 
-        private void SetTint(Color color)
+        protected void SetTint(Color color)
         {
             if (color == Color.Red ||
                 color == Color.Green ||
@@ -40,18 +40,18 @@ namespace Spectrum.Components
         public void AbsorbTint(Color color)
         {
             Color combined = Color.Black;
-            if (color.R > 100 ^ Tint.R > 100)
-            {
-                combined.R = 255;
-            }
-            if (color.G > 100 ^ Tint.G > 100)
-            {
-                combined.G = 255;
-            }
-            if (color.B > 100 ^ Tint.B > 100)
-            {
-                combined.B = 255;
-            }
+            if (color.R > 100 ^ Tint.R > 100) combined.R = 255;
+            if (color.G > 100 ^ Tint.G > 100) combined.G = 255;
+            if (color.B > 100 ^ Tint.B > 100) combined.B = 255;
+            SetTint(combined);
+        }
+
+        public void LoseTint(Color color)
+        {
+            Color combined = Color.Black;
+            if (color.R <= 100 && Tint.R > 100) combined.R = 255;
+            if (color.G <= 100 && Tint.G > 100) combined.G = 255;
+            if (color.B <= 100 && Tint.B > 100) combined.B = 255;
             SetTint(combined);
         }
 

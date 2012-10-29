@@ -29,7 +29,7 @@ namespace Spectrum.Library.Paths
             Direction = direction;
         }
 
-        public Vector2 Move(float distance)
+        public virtual Vector2 Move(float distance)
         {
             Position += Direction * distance;
 
@@ -47,9 +47,9 @@ namespace Spectrum.Library.Paths
             Position = position;
         }
 
-        private PathAware PathAwareEntity;
+        protected PathAware PathAwareEntity;
 
-        private Vector2 Position;
-        private Vector2 Direction;
+        protected Vector2 Position;
+        protected Vector2 Direction;
     }
 }
