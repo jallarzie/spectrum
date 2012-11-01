@@ -18,6 +18,7 @@ namespace Spectrum.States
         public const float ENEMY_SPAWN_RATE = 3f; // enemies/sec
         public const float POWERUP_DROP_PERCENTAGE = 0.10f;
         public const float COLLISION_DISTANCE = 50f; // pixels
+        public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 
         public override void Initialize()
         {
@@ -26,6 +27,7 @@ namespace Spectrum.States
             Player = new Ship();
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player);
+            feedbackTime = 0f;
 
             Application.Instance.Drawables.Add(new Background());
             Application.Instance.Drawables.Add(new PowerCore());
@@ -41,6 +43,7 @@ namespace Spectrum.States
 
         public override void Update(GameTime gameTime)
         {
+            HandleForceFeedback(gameTime);
             Player.Path.Move((float) (SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds));
             ShootLaser(gameTime);
             MoveLasers(gameTime);
@@ -84,13 +87,28 @@ namespace Spectrum.States
             {
                 LaserFireRateCounter = 0f;
                 MouseState mouseState = Mouse.GetState();
-                if (mouseState.LeftButton == ButtonState.Pressed)
+                GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
+                if (gamepadState.IsConnected)
                 {
-                    Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
-                    Laser laser = new Laser(Player.Tint, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
-                    Lasers.Add(laser);
-                    Application.Instance.Drawables.Add(laser);
+                    if (gamepadState.ThumbSticks.Right.X !=0 || gamepadState.ThumbSticks.Right.Y != 0)
+                    {
+                        Vector2 direction = new Vector2(gamepadState.ThumbSticks.Right.X, -gamepadState.ThumbSticks.Right.Y);
+                        Laser laser = new Laser(Player.Tint, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
+                        Lasers.Add(laser);
+                        Application.Instance.Drawables.Add(laser);
+                    }
                 }
+                else
+                {
+                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
+                        Laser laser = new Laser(Player.Tint, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
+                        Lasers.Add(laser);
+                        Application.Instance.Drawables.Add(laser);
+                    }
+                }
+                
             }
         }
 
@@ -156,6 +174,8 @@ namespace Spectrum.States
                     if (distance.Length() <= COLLISION_DISTANCE)
                     {
                         Player.LoseTint(laser.Tint);
+                        GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
+                        feedbackTime = DAMAGE_FEEDBACK_TIME;
                         LasersToRemove.Add(laser);
                     }
                 }
@@ -166,6 +186,8 @@ namespace Spectrum.States
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
                     Player.LoseTint(enemy.Tint);
+                    GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
+                    feedbackTime = DAMAGE_FEEDBACK_TIME;
                     EnemiesToRemove.Add(enemy);
                 }
             }
@@ -220,6 +242,21 @@ namespace Spectrum.States
             }
         }
 
+        private void HandleForceFeedback(GameTime gameTime)
+        {
+            if (feedbackTime > 0.0f)
+            {
+                feedbackTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            
+            if (feedbackTime < 0.0f)
+            {
+                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
+                feedbackTime = 0.0f;
+            }
+            
+        }
+
         private Random RNG;
         private Viewport Viewport;
         private Ship Player;
@@ -227,5 +264,6 @@ namespace Spectrum.States
         private List<Enemy> Enemies, EnemiesToRemove;
         private List<Powerup> Powerups, PowerupsToRemove;
         private float LaserFireRateCounter, EnemySpawnCounter;
+        private float feedbackTime;
     }
 }
