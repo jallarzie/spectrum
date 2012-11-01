@@ -5,15 +5,19 @@ using Spectrum.Library.Paths;
 
 namespace Spectrum.Components
 {
+    public enum LaserAlignment { Player, Enemy }
+
     public class Laser : Sprite, PathAware
     {
-        public Laser(Color tint, Vector2 position, Vector2 direction) : base("laser")
+        public Laser(Color tint, Vector2 position, Vector2 direction, float speed, LaserAlignment alignment) : base("laser")
         {
             Origin = new Vector2(Width / 2, Height / 2);
             Scale = 0.4f;
             Tint = tint;
             Position = position;
             Path = new Linear(this, direction);
+            Alignment = alignment;
+            Speed = speed;
         }
 
         public void PathPosition(Vector2 position)
@@ -35,5 +39,7 @@ namespace Spectrum.Components
         }
 
         public Path Path;
+        public float Speed;
+        public LaserAlignment Alignment;
     }
 }

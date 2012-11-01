@@ -20,6 +20,6 @@ namespace Spectrum.Library.Paths
             return base.Move(distance);
         }
 
-        private Entity2D Target;
+        protected Entity2D Target;
     }
 }

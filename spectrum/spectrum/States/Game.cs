@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Spectrum.Components;
+using Spectrum.Components.EnemyTypes;
 using Spectrum.Library.States;
 using Spectrum.Library.Paths;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ namespace Spectrum.States
     {
         public const float SPEED_PLAYER = 750f;
         public const float SPEED_LASER = 1500f;
-        public const float SPEED_ENEMY = 200f;
         public const float FIRE_RATE = 10f; // shots/sec
         public const float ENEMY_SPAWN_RATE = 3f; // enemies/sec
         public const float POWERUP_DROP_PERCENTAGE = 0.10f;
@@ -47,6 +47,7 @@ namespace Spectrum.States
             Collisions();
             SpawnRandomEnemy(gameTime);
             MoveEnemies(gameTime);
+            EnemyAttacks(gameTime);
         }
 
         private void ShootLaser(GameTime gameTime)
@@ -59,7 +60,34 @@ namespace Spectrum.States
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
                     Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
-                    Laser laser = new Laser(Player.Tint, Player.Position, direction);
+                    Laser laser = new Laser(Player.Tint, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
+                    Lasers.Add(laser);
+                    Application.Instance.Drawables.Add(laser);
+                }
+            }
+        }
+
+        private void EnemyAttacks(GameTime gameTime)
+        {
+            foreach (Enemy enemy in Enemies)
+            {
+                Laser laser = enemy.Attack((float)gameTime.ElapsedGameTime.TotalSeconds);
+                if (laser != null)
+                {
+                    Lasers.Add(laser);
+                    Application.Instance.Drawables.Add(laser);
+                }
+            }
+            
+            LaserFireRateCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (LaserFireRateCounter >= 1 / FIRE_RATE)
+            {
+                LaserFireRateCounter = 0f;
+                MouseState mouseState = Mouse.GetState();
+                if (mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
+                    Laser laser = new Laser(Player.Tint, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
                     Lasers.Add(laser);
                     Application.Instance.Drawables.Add(laser);
                 }
@@ -70,7 +98,7 @@ namespace Spectrum.States
         {
             foreach (Laser laser in Lasers)
             {
-                laser.Path.Move((float)(SPEED_LASER * gameTime.ElapsedGameTime.TotalSeconds));
+                laser.Path.Move((float)(laser.Speed * gameTime.ElapsedGameTime.TotalSeconds));
                 if (!laser.IsVisible(Viewport))
                 {
                     LasersToRemove.Add(laser);
@@ -88,7 +116,7 @@ namespace Spectrum.States
         {
             foreach (Enemy enemy in Enemies)
             {
-                enemy.Path.Move((float)(SPEED_ENEMY * gameTime.ElapsedGameTime.TotalSeconds));
+                enemy.Path.Move((float)(enemy.Speed * gameTime.ElapsedGameTime.TotalSeconds));
             }
             foreach (Enemy enemy in EnemiesToRemove)
             {
@@ -100,6 +128,38 @@ namespace Spectrum.States
 
         private void Collisions()
         {
+            foreach (Laser laser in Lasers)
+            {
+                if (laser.Alignment == LaserAlignment.Player)
+                {
+                    foreach (Enemy enemy in Enemies)
+                    {
+                        Vector2 distance = enemy.Position - laser.Position;
+                        if (distance.Length() <= COLLISION_DISTANCE)
+                        {
+                            if (RNG.NextDouble() <= POWERUP_DROP_PERCENTAGE)
+                            {
+                                Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
+                                if (powerup.Tint != Color.Black)
+                                {
+                                    Powerups.Add(powerup);
+                                    Application.Instance.Drawables.Add(powerup);
+                                }
+                            }
+                            EnemiesToRemove.Add(enemy);
+                        }
+                    }
+                }
+                else if (laser.Alignment == LaserAlignment.Enemy)
+                {
+                    Vector2 distance = Player.Position - laser.Position;
+                    if (distance.Length() <= COLLISION_DISTANCE)
+                    {
+                        Player.LoseTint(laser.Tint);
+                        LasersToRemove.Add(laser);
+                    }
+                }
+            }
             foreach (Enemy enemy in Enemies)
             {
                 Vector2 distance = enemy.Position - Player.Position;
@@ -107,23 +167,6 @@ namespace Spectrum.States
                 {
                     Player.LoseTint(enemy.Tint);
                     EnemiesToRemove.Add(enemy);
-                }
-                foreach (Laser laser in Lasers)
-                {
-                    distance = enemy.Position - laser.Position;
-                    if (distance.Length() <= COLLISION_DISTANCE)
-                    {
-                        if (RNG.NextDouble() <= POWERUP_DROP_PERCENTAGE)
-                        {
-                            Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
-                            if (powerup.Tint != Color.Black)
-                            {
-                                Powerups.Add(powerup);
-                                Application.Instance.Drawables.Add(powerup);
-                            }
-                        }
-                        EnemiesToRemove.Add(enemy);
-                    }
                 }
             }
             foreach (Powerup powerup in Powerups)
@@ -167,7 +210,11 @@ namespace Spectrum.States
                 direction *= Math.Max(Viewport.Width, Viewport.Height) * (1 + (float)RNG.NextDouble() / 4);
                 Vector2 center = new Vector2(Viewport.Width / 2, Viewport.Height / 2);
 
-                Enemy enemy = new Enemy(color, center + direction, Player);
+                Enemy enemy;
+                if (RNG.Next(2) == 0)
+                    enemy = new Seeker(color, center + direction, Player);
+                else
+                    enemy = new Observer(color, center + direction, Player);
                 Enemies.Add(enemy);
                 Application.Instance.Drawables.Add(enemy);
             }
