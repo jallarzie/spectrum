@@ -27,10 +27,11 @@ namespace Spectrum.States
             Player = new Ship();
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player);
+            Core = new PowerCore();
             feedbackTime = 0f;
 
             Application.Instance.Drawables.Add(new Background());
-            Application.Instance.Drawables.Add(new PowerCore());
+            Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);
 
             Lasers = new List<Laser>();
@@ -51,6 +52,7 @@ namespace Spectrum.States
             SpawnRandomEnemy(gameTime);
             MoveEnemies(gameTime);
             EnemyAttacks(gameTime);
+            Core.Update(gameTime);
         }
 
         private void ShootLaser(GameTime gameTime)
@@ -260,6 +262,7 @@ namespace Spectrum.States
         private Random RNG;
         private Viewport Viewport;
         private Ship Player;
+        private PowerCore Core;
         private List<Laser> Lasers, LasersToRemove;
         private List<Enemy> Enemies, EnemiesToRemove;
         private List<Powerup> Powerups, PowerupsToRemove;
