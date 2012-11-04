@@ -19,13 +19,13 @@ namespace Spectrum.Components
         private static readonly int REGEN_INTERVAL = 3000;
 
         /// <summary>
-        /// The Amount Health the Core Regains at each Health Regeneration
+        /// The amount of HP the Core Regains at each Health Regeneration
         /// </summary>
-        private static readonly float REGEN_RATE = 0.1f;
+        private static readonly int REGEN_RATE = 1;
 
         public PowerCore() : base("powercore")
         {
-            Health = 0.1f;
+            Health = 1;
 
             // Place the PowerCore at the center of the ViewPort
             Viewport viewPort = Application.Instance.GraphicsDevice.Viewport;
@@ -42,11 +42,11 @@ namespace Spectrum.Components
                 TimeElapsedSinceLastRegen = new TimeSpan(0);
             }
 
-            Scale = Health + 1.0f;
+            Scale = Health/10f + 1.0f;
         }
 
         /// <summary>
-        /// Increast the Power Core's health
+        /// Increas the Power Core's health
         /// </summary>
         private void RegainHealth() 
         {
@@ -54,9 +54,9 @@ namespace Spectrum.Components
         }
 
         /// <summary>
-        /// Current Health of the Power Core (in % between 0 and 1)
+        /// Current Health of the Power Core (in HP)
         /// </summary>
-        public float Health;
+        public int Health;
 
         private TimeSpan TimeElapsedSinceLastRegen = new TimeSpan(0);
     }

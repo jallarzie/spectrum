@@ -18,6 +18,8 @@ namespace Spectrum.Components
             Path = new Linear(this, direction);
             Alignment = alignment;
             Speed = speed;
+
+            Damage = 1;
         }
 
         public void PathPosition(Vector2 position)
@@ -41,5 +43,10 @@ namespace Spectrum.Components
         public Path Path;
         public float Speed;
         public LaserAlignment Alignment;
+
+        /// <summary>
+        /// The amount of health point that will drop on the should the laser hit it.
+        /// </summary>
+        public int Damage;
     }
 }
