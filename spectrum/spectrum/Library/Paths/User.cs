@@ -7,7 +7,10 @@ namespace Spectrum.Library.Paths
 {
     public class User : Path
     {
-        public User(Vector2 position = new Vector2())
+        public User()
+            : this(new Vector2()) { }
+
+        public User(Vector2 position)
         {
             PathAwareEntity = null;
             Position = position;

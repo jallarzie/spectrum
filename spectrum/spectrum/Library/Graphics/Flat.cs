@@ -6,7 +6,9 @@ namespace Spectrum.Library.Graphics
 {
     class Flat : Entity2D
     {
-        public Flat(CoordinateSystem parent = null)
+        public Flat() : this(null) { }
+
+        public Flat(CoordinateSystem parent)
             : base(null, parent)
         {
             Dirty = true;

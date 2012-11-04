@@ -7,7 +7,9 @@ namespace Spectrum.Library.Paths
 {
     public class Linear : Path
     {
-        public Linear(Vector2 position = new Vector2(), Vector2 direction = new Vector2())
+        public Linear() : this(new Vector2(), new Vector2()) { }
+
+        public Linear(Vector2 position , Vector2 direction)
         {
             PathAwareEntity = null;
             Position = position;
@@ -18,7 +20,9 @@ namespace Spectrum.Library.Paths
             Direction = direction;
         }
 
-        public Linear(CoordinateSystem entity, Vector2 direction = new Vector2())
+        public Linear(CoordinateSystem entity) : this(entity, new Vector2()) { }
+
+        public Linear(CoordinateSystem entity, Vector2 direction)
         {
             PathAwareEntity = entity as PathAware;
             Position = entity.Position;

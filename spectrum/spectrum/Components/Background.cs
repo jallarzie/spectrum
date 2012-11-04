@@ -34,15 +34,15 @@ namespace Spectrum.Components
                 for (int j = 0; j < (int)Math.Ceiling((double)viewPort.Height / DUST_SRC_RECTANGLE.Height); j++)
                 {
                     spriteBatch.Draw(
-                        texture: texture,
-                        position: new Vector2(i * DUST_SRC_RECTANGLE.Width, j * DUST_SRC_RECTANGLE.Height),
-                        sourceRectangle: DUST_SRC_RECTANGLE,
-                        color: Color.White,
-                        rotation: 0,
-                        origin: Vector2.Zero,
-                        scale: 1.0f,
-                        effects: SpriteEffects.None,
-                        layerDepth: 1.0f);
+                        texture,
+                        new Vector2(i * DUST_SRC_RECTANGLE.Width, j * DUST_SRC_RECTANGLE.Height),
+                        DUST_SRC_RECTANGLE,
+                        Color.White,
+                        0,
+                        Vector2.Zero,
+                        1.0f,
+                        SpriteEffects.None,
+                        1.0f);
                 }
             }
         }

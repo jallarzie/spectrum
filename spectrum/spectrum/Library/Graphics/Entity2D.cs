@@ -6,7 +6,9 @@ namespace Spectrum.Library.Graphics
 {
     public class Entity2D : Drawable, CoordinateSystem
     {
-        public Entity2D(Texture2D texture, CoordinateSystem parent = null)
+        public Entity2D(Texture2D texture) : this(texture, null) { }
+
+        public Entity2D(Texture2D texture, CoordinateSystem parent)
         {
             Dirty = false;
             Texture = texture;

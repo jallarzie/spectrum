@@ -4,7 +4,9 @@ namespace Spectrum.Library.Geometry
 {
     public class Node : CoordinateSystem
     {
-        public Node(CoordinateSystem parent = null)
+        public Node() : this(null) { }
+
+        public Node(CoordinateSystem parent)
         {
             Parent = parent;
             Position = new Vector2(0, 0);
