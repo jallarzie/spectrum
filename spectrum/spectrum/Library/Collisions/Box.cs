@@ -10,17 +10,24 @@ namespace Spectrum.Library.Collisions
             Shape = new Rect(topLeft, width, height);
         }
 
-        public bool CollidesWith(Area area)
+        public override bool CollidesWith(Area area)
         {
-            return CollisionDetector2D.ShapeShapeIntersecting(this.GetShape(), area.GetShape());
+            return CollisionDetector2D.ShapeShapeIntersecting(this.Shape, area.Shape);
         }
 
-        public Shape GetShape()
+        /// <summary>
+        /// The Shape Object casted to a Rect Object
+        /// </summary>
+        public Rect Rect
         {
-            return Shape;
+            get
+            {
+                return (Rect)Shape;
+            }
+            set
+            {
+                this.Shape = value;
+            }
         }
-
-        private Shape Shape;
-
     }
 }

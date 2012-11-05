@@ -11,16 +11,24 @@ namespace Spectrum.Library.Collisions
             Shape = new Ellipse(center, radius, radius); 
         }
 
-        public bool CollidesWith(Area area)
+        public override bool CollidesWith(Area area)
         {
-            return CollisionDetector2D.ShapeShapeIntersecting(this.GetShape(), area.GetShape());
+            return CollisionDetector2D.ShapeShapeIntersecting(this.Shape, area.Shape);
         }
 
-        public Shape GetShape()
-        {
-            return Shape;
+        /// <summary>
+        /// The Shape Object casted to a Circle Object
+        /// </summary>
+        public Ellipse Circle 
+        { 
+            get 
+            { 
+                return (Ellipse)Shape;
+            } 
+            set 
+            { 
+                this.Shape = value;
+            }
         }
-
-        private Shape Shape;
     }
 }

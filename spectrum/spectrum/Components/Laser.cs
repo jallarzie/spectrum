@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Spectrum.Library.Graphics;
 using Spectrum.Library.Paths;
+using Spectrum.Library.Collisions;
 
 namespace Spectrum.Components
 {
@@ -20,16 +21,19 @@ namespace Spectrum.Components
             Speed = speed;
 
             Damage = 1;
+            Box = new Box(Position, Width, Height);
         }
 
         public void PathPosition(Vector2 position)
         {
             Position = position;
+            this.Box.Rect.Center = Position;
         }
 
         public void PathDirection(float angle)
         {
             Rotation = angle;
+            this.Box.Rect.Rotation = Rotation;
         }
 
         public bool IsVisible(Viewport viewport)
@@ -40,6 +44,11 @@ namespace Spectrum.Components
                     Position.Y - Height / 2 < viewport.Height);
         }
 
+        public Box GetBoundingBox() 
+        {
+            return Box;
+        }
+
         public Path Path;
         public float Speed;
         public LaserAlignment Alignment;
@@ -48,5 +57,7 @@ namespace Spectrum.Components
         /// The amount of health point that will drop on the should the laser hit it.
         /// </summary>
         public int Damage;
+
+        private Box Box;
     }
 }

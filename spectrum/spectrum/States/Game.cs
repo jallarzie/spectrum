@@ -152,6 +152,12 @@ namespace Spectrum.States
             {
                 if (laser.Alignment == LaserAlignment.Player)
                 {
+                    // Check Collision with Power Core
+                    if (laser.GetBoundingBox().CollidesWith(Core.GetBoundingSphere()))
+                    {
+                        Core.DecreaseHealthBy(laser.Damage);
+                    }
+
                     foreach (Enemy enemy in Enemies)
                     {
                         Vector2 distance = enemy.Position - laser.Position;
