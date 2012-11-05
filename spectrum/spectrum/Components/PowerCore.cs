@@ -71,6 +71,11 @@ namespace Spectrum.Components
         public void DecreaseHealthBy(int damage) 
         {
             Health = (int)MathHelper.Clamp(Health - damage, 0, Health - damage);
+
+            if (Health == 0 && Observer != null) 
+            {
+                Observer.OnPowerCoreHealthReachedZero();
+            }
         }
 
         /// <summary>
@@ -98,6 +103,11 @@ namespace Spectrum.Components
         {
             Health = Health + REGEN_RATE;
         }
+
+        /// <summary>
+        /// This object's observer
+        /// </summary>
+        public EventObservers.PowerCoreObserver Observer;
 
         private int Health;
 
