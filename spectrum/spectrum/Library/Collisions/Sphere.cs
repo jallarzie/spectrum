@@ -1,17 +1,26 @@
 ﻿using Shapes.Geometry;
+using Microsoft.Xna.Framework;
+using Shapes.Misc;
 
 namespace Spectrum.Library.Collisions
 {
     public class Sphere : Area
     {
+        public Sphere(Vector2 center, float radius) 
+        {
+            Shape = new Ellipse(center, radius, radius); 
+        }
+
         public bool CollidesWith(Area area)
         {
-            throw new System.NotImplementedException();
+            return CollisionDetector2D.ShapeShapeIntersecting(this.GetShape(), area.GetShape());
         }
 
         public Shape GetShape()
         {
-            throw new System.NotImplementedException();
+            return Shape;
         }
+
+        private Shape Shape;
     }
 }
