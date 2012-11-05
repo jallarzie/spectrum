@@ -15,6 +15,11 @@ namespace Spectrum.Components
         private static readonly int TEXTURE_WIDTH = 129;
 
         /// <summary>
+        /// The Power Core Health at the beggining of the game
+        /// </summary>
+        private static int INITIAL_HEALTH = 1;
+
+        /// <summary>
         /// The interval at which the Core Regains Health (in ms).
         /// </summary>
         private static readonly int REGEN_INTERVAL = 3000;
@@ -24,10 +29,13 @@ namespace Spectrum.Components
         /// </summary>
         private static readonly int REGEN_RATE = 1;
 
+        private enum State {Normal, Destroyed}
+
         public PowerCore() : base("powercore")
         {
-            Health = 1;
+            Health = INITIAL_HEALTH;
             TimeElapsedSinceLastRegen = new TimeSpan(0);
+            CurrentState = State.Normal;
 
             // Place the PowerCore at the center of the ViewPort
             Viewport viewPort = Application.Instance.GraphicsDevice.Viewport;
@@ -39,15 +47,36 @@ namespace Spectrum.Components
         
         public void Update(GameTime gameTime)        
         {
-            TimeElapsedSinceLastRegen = TimeElapsedSinceLastRegen.Add(gameTime.ElapsedGameTime);
-            if (TimeElapsedSinceLastRegen.TotalMilliseconds > REGEN_INTERVAL) 
+            switch (CurrentState) 
             {
-                RegainHealth();
-                TimeElapsedSinceLastRegen = new TimeSpan(0);
-            }
+                case State.Normal:
+                    TimeElapsedSinceLastRegen = TimeElapsedSinceLastRegen.Add(gameTime.ElapsedGameTime);
+                    if (TimeElapsedSinceLastRegen.TotalMilliseconds > REGEN_INTERVAL) 
+                    {
+                        RegainHealth();
+                        TimeElapsedSinceLastRegen = new TimeSpan(0);
+                    }
 
-            Scale = CalculateCurrentScale();
-            BoundingSphere.Circle.ChangeRadius(CalculateCurrentRadius(), CalculateCurrentRadius());
+                    Scale = CalculateCurrentScale();
+                    BoundingSphere.Circle.ChangeRadius(CalculateCurrentRadius(), CalculateCurrentRadius());
+                    break;
+
+                case State.Destroyed:
+                    break;
+            }
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
+        {
+            switch (CurrentState)
+            {
+                case State.Normal:
+                    base.Draw(gameTime, targetSpriteBatch);                    
+                    break;
+
+                case State.Destroyed:
+                    break;
+            }
         }
 
         public Sphere GetBoundingSphere() 
@@ -75,7 +104,15 @@ namespace Spectrum.Components
             if (Health == 0 && Observer != null) 
             {
                 Observer.OnPowerCoreHealthReachedZero();
+                DestroyCore();
             }
+        }
+
+        private void DestroyCore() 
+        {
+            CurrentState = State.Destroyed;
+            BoundingSphere = new Sphere(Position, 0);
+            Texture = null;
         }
 
         /// <summary>
@@ -110,7 +147,7 @@ namespace Spectrum.Components
         public EventObservers.PowerCoreObserver Observer;
 
         private int Health;
-
+        private State CurrentState;
         private Sphere BoundingSphere;
         private TimeSpan TimeElapsedSinceLastRegen;
     }
