@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using Spectrum.Components.EventObservers;
 
 namespace Spectrum.States
 {
-    public class Game : State
+    public class Game : State, PowerCoreObserver
     {
         public const float SPEED_PLAYER = 750f;
         public const float SPEED_LASER = 1500f;
@@ -28,6 +29,7 @@ namespace Spectrum.States
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player);
             Core = new PowerCore();
+            Core.Observer = this;
             feedbackTime = 0f;
 
             Application.Instance.Drawables.Add(new Background());
@@ -53,6 +55,11 @@ namespace Spectrum.States
             MoveEnemies(gameTime);
             EnemyAttacks(gameTime);
             Core.Update(gameTime);
+        }
+
+        public void OnPowerCoreHealthReachedZero()
+        {
+            // Switch to player Wins state.
         }
 
         private void ShootLaser(GameTime gameTime)
