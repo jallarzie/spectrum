@@ -101,10 +101,13 @@ namespace Spectrum.Components
         {
             Health = (int)MathHelper.Clamp(Health - damage, 0, Health - damage);
 
-            if (Health == 0 && Observer != null) 
+            if (Health == 0 ) 
             {
-                Observer.OnPowerCoreHealthReachedZero();
                 DestroyCore();
+                if (Observer != null)
+                {
+                    Observer.OnPowerCoreHealthReachedZero();
+                }
             }
         }
 
