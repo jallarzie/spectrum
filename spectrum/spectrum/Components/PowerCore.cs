@@ -17,17 +17,17 @@ namespace Spectrum.Components
         /// <summary>
         /// The Power Core Health at the beggining of the game
         /// </summary>
-        private static int INITIAL_HEALTH = 1;
+        private static int INITIAL_HEALTH = 1000;
 
         /// <summary>
         /// The interval at which the Core Regains Health (in ms).
         /// </summary>
-        private static readonly int REGEN_INTERVAL = 3000;
+        private static readonly int REGEN_INTERVAL = 100;
 
         /// <summary>
         /// The amount of HP the Core Regains at each Health Regeneration
         /// </summary>
-        private static readonly int REGEN_RATE = 1;
+        private static readonly int REGEN_RATE = 3;
 
         private enum State {Normal, Destroyed}
 
@@ -133,7 +133,7 @@ namespace Spectrum.Components
         /// <returns></returns>
         private float CalculateCurrentScale()
         {
-            return Health/10f + 1.0f;
+            return Health/1000f;
         }
 
         /// <summary>
