@@ -30,7 +30,7 @@ namespace Spectrum.Library.Paths
 
             if (gamepadState.IsConnected)
             {
-                if (gamepadState.ThumbSticks.Left.Length() != 0)
+                if (gamepadState.ThumbSticks.Left.LengthSquared() != 0)
                 {
                     direction = gamepadState.ThumbSticks.Left;
                     direction.Y *= -1;

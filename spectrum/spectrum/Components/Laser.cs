@@ -10,10 +10,12 @@ namespace Spectrum.Components
 
     public class Laser : Sprite, PathAware
     {
-        public Laser(Color tint, Vector2 position, Vector2 direction, float speed, LaserAlignment alignment) : base("laser")
+        public Laser(Color tint, float charge, Vector2 position, Vector2 direction, float speed, LaserAlignment alignment) : base("laser")
         {
+            Charge = MathHelper.Clamp(charge, 0f, 1f);
+
             Origin = new Vector2(Width / 2, Height / 2);
-            Scale = 0.4f;
+            Scale = 0.4f * (1 + Charge);
             Tint = tint;
             Position = position;
             Path = new Linear(this, direction);
@@ -21,7 +23,7 @@ namespace Spectrum.Components
             Speed = speed;
 
             Damage = 1;
-            Box = new Box(Position, Width, Height);
+            Box = new Box(Position, Width * Scale, Height * Scale);
         }
 
         public void PathPosition(Vector2 position)
@@ -50,7 +52,7 @@ namespace Spectrum.Components
         }
 
         public Path Path;
-        public float Speed;
+        public float Speed, Charge;
         public LaserAlignment Alignment;
 
         /// <summary>

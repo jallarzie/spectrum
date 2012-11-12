@@ -13,11 +13,11 @@ namespace Spectrum.States
 {
     public class Game : State, PowerCoreObserver
     {
-        public const float SPEED_PLAYER = 750f;
-        public const float SPEED_LASER = 1500f;
-        public const float FIRE_RATE = 10f; // shots/sec
-        public const float ENEMY_SPAWN_RATE = 3f; // enemies/sec
-        public const float POWERUP_DROP_PERCENTAGE = 0.10f;
+        public const float SPEED_PLAYER = 300f;
+        public const float SPEED_LASER = 500f;
+        public const float FIRE_RATE = 5f; // shots/sec
+        public const float LASER_MAX_CHARGE_TIME = 3f; // sec
+        public const float ENEMY_SPAWN_RATE = 1f; // enemies/sec
         public const float COLLISION_DISTANCE = 50f; // pixels
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 
@@ -65,17 +65,40 @@ namespace Spectrum.States
         private void ShootLaser(GameTime gameTime)
         {
             LaserFireRateCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (LaserFireRateCounter >= 1 / FIRE_RATE)
+            MouseState mouseState = Mouse.GetState();
+            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
+            Vector2 direction = new Vector2();
+
+            if (gamepadState.IsConnected)
             {
-                LaserFireRateCounter = 0f;
-                MouseState mouseState = Mouse.GetState();
+                LaserCharge = gamepadState.Triggers.Right;
+                if (gamepadState.ThumbSticks.Right.LengthSquared() != 0)
+                {
+                    direction = gamepadState.ThumbSticks.Right;
+                    direction.Y *= -1;
+                }
+            }
+            else
+            {
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
-                    Laser laser = new Laser(Player.Tint, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
-                    Lasers.Add(laser);
-                    Application.Instance.Drawables.Add(laser);
+                    LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
+                    LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
                 }
+                else
+                {
+                    direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
+                }
+            }
+
+            // more laser charge -> slower fire rate
+            if (direction.LengthSquared() != 0 && LaserFireRateCounter >= (1 + LaserCharge * 5) / FIRE_RATE)
+            {
+                Laser laser = new Laser(Player.Tint, LaserCharge, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
+                Lasers.Add(laser);
+                Application.Instance.Drawables.Add(laser);
+                LaserFireRateCounter = 0f;
+                LaserCharge = 0f;
             }
         }
 
@@ -89,35 +112,6 @@ namespace Spectrum.States
                     Lasers.Add(laser);
                     Application.Instance.Drawables.Add(laser);
                 }
-            }
-            
-            LaserFireRateCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (LaserFireRateCounter >= 1 / FIRE_RATE)
-            {
-                LaserFireRateCounter = 0f;
-                MouseState mouseState = Mouse.GetState();
-                GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
-                if (gamepadState.IsConnected)
-                {
-                    if (gamepadState.ThumbSticks.Right.X !=0 || gamepadState.ThumbSticks.Right.Y != 0)
-                    {
-                        Vector2 direction = new Vector2(gamepadState.ThumbSticks.Right.X, -gamepadState.ThumbSticks.Right.Y);
-                        Laser laser = new Laser(Player.Tint, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
-                        Lasers.Add(laser);
-                        Application.Instance.Drawables.Add(laser);
-                    }
-                }
-                else
-                {
-                    if (mouseState.LeftButton == ButtonState.Pressed)
-                    {
-                        Vector2 direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
-                        Laser laser = new Laser(Player.Tint, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
-                        Lasers.Add(laser);
-                        Application.Instance.Drawables.Add(laser);
-                    }
-                }
-                
             }
         }
 
@@ -170,7 +164,8 @@ namespace Spectrum.States
                         Vector2 distance = enemy.Position - laser.Position;
                         if (distance.Length() <= COLLISION_DISTANCE)
                         {
-                            if (RNG.NextDouble() <= POWERUP_DROP_PERCENTAGE)
+                            // % chance of a powerup dropping is 100 - (laser charge %)
+                            if (RNG.NextDouble() + laser.Charge >= 1)
                             {
                                 Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
                                 if (powerup.Tint != Color.Black)
@@ -279,7 +274,7 @@ namespace Spectrum.States
         private List<Laser> Lasers, LasersToRemove;
         private List<Enemy> Enemies, EnemiesToRemove;
         private List<Powerup> Powerups, PowerupsToRemove;
-        private float LaserFireRateCounter, EnemySpawnCounter;
+        private float LaserFireRateCounter, LaserCharge, EnemySpawnCounter;
         private float feedbackTime;
     }
 }
