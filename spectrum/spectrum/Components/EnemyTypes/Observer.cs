@@ -32,5 +32,10 @@ namespace Spectrum.Components.EnemyTypes
 
             return null;
         }
+
+        public override int GetScoreValue()
+        {
+            return 20;
+        }
     }
 }

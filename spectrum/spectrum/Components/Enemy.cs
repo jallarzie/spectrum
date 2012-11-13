@@ -48,5 +48,10 @@ namespace Spectrum.Components
         }
 
         public abstract Laser Attack(float seconds);
+
+        /// <summary>
+        /// Returns the Ship's Score Value.
+        /// </summary>
+        public abstract int GetScoreValue();
     }
 }

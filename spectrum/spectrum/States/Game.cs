@@ -185,6 +185,7 @@ namespace Spectrum.States
                                     Application.Instance.Drawables.Add(powerup);
                                 }
                             }
+                            ScoreKeeper.AddPoints(enemy.GetScoreValue());
                             EnemiesToRemove.Add(enemy);
                         }
                     }
