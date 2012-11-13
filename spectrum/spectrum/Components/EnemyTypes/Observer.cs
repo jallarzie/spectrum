@@ -13,7 +13,7 @@ namespace Spectrum.Components.EnemyTypes
         public Observer(Color tint, Vector2 position, Entity2D target)
             : base(tint, position, target)
         {
-            Path = new DistantFollow(this, target, 500);
+            Path = new DistantFollow(this, target, 400, new Random().Next(75, 150));
             Speed = 290f;
             FireRate = 2.5f;
         }

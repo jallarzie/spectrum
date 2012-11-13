@@ -9,20 +9,40 @@ namespace Spectrum.Library.Paths
     class DistantFollow : Follow
     {
         private int targetDistance;
+        private int leeway;
+        private bool moving;
 
         public DistantFollow(CoordinateSystem entity, Entity2D target, int distance)
             : base(entity, target)
         {
             targetDistance = distance;
+            leeway = 0;
+            moving = false;
+        }
+
+        public DistantFollow(CoordinateSystem entity, Entity2D target, int distance, int leeway)
+            : base(entity, target)
+        {
+            targetDistance = distance;
+            this.leeway = leeway;
+            moving = false;
         }
 
         public override Vector2 Move(float distance)
         {
-            if (Vector2.Distance(Target.Position, Position) > targetDistance)
+            float currentDistance = Vector2.Distance(Target.Position, Position);
+
+            if ((moving && currentDistance > targetDistance) ||
+                !moving && currentDistance > targetDistance + leeway)
             {
                 Direction = Target.Position - Position;
                 Direction.Normalize();
+                moving = true;
                 return base.Move(distance);
+            }
+            else
+            {
+                moving = false;
             }
 
             return base.Move(0);
