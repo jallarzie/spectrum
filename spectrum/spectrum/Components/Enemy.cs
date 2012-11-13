@@ -8,14 +8,14 @@ using System;
 
 namespace Spectrum.Components
 {
-    public abstract class Enemy : Ship
+    public abstract class Enemy : Sprite, PathAware
     {
         public Entity2D Target { get; protected set; }
         public float Speed { get; protected set; }
         public float FireRate { get; protected set; }
         public float LastFired { get; protected set; }
         
-        public Enemy(Color tint, Vector2 position, Entity2D target)
+        public Enemy(String textureName, Color tint, Vector2 position, Entity2D target) : base(textureName)
         {
             Origin = new Vector2(Width / 2, Height / 2);
             Scale = 0.15f;
@@ -46,6 +46,18 @@ namespace Spectrum.Components
             if (possibleColors.Count > 0) return new Powerup(possibleColors[RNG.Next(possibleColors.Count)], Position);
             else return new Powerup(Color.Black, Position); // using black as a null value
         }
+
+        public void PathPosition(Vector2 position)
+        {
+            Position = position;
+        }
+
+        public void PathDirection(float angle)
+        {
+            Rotation = angle;
+        }
+
+        public Path Path;
 
         public abstract Laser Attack(float seconds);
 

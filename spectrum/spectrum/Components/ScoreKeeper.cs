@@ -14,16 +14,6 @@ namespace Spectrum.Components
     public class ScoreKeeper : Drawable
     {
         /// <summary>
-        /// Score Value of an Observer Ennemy
-        /// </summary>
-        public static readonly int ENNEMY_OBSERVER_SCORE_VALUE = 20;
-
-        /// <summary>
-        /// Score Value of an Follower Ennemy
-        /// </summary>
-        public static readonly int ENNEMY_FOLLOWER_SCORE_VALUE = 20;
-
-        /// <summary>
         /// Score Value of a Power Core Hit
         /// </summary>
         public static readonly int POWERCORE_HIT_SCORE_VALUE = 5;

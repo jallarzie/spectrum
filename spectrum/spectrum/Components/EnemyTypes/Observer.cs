@@ -11,7 +11,7 @@ namespace Spectrum.Components.EnemyTypes
     public class Observer : Enemy
     {
         public Observer(Color tint, Vector2 position, Entity2D target)
-            : base(tint, position, target)
+            : base("ship", tint, position, target)
         {
             Path = new DistantFollow(this, target, 500);
             Speed = 290f;

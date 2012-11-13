@@ -53,6 +53,44 @@ namespace Spectrum.Library.Graphics
             targetSpriteBatch.Draw(Texture, this.WorldPosition(), null, Tint * Opacity, this.WorldRotation(), Origin, Scale, Flip, Layer);
         }
 
+        protected void SetTint(Color color)
+        {
+            if (color == Color.Red ||
+                color == Color.Lime ||
+                color == Color.Blue ||
+                color == Color.Cyan ||
+                color == Color.Magenta ||
+                color == Color.Yellow ||
+                color == Color.White)
+            {
+                Tint = color;
+            }
+            else
+            {
+                Tint = new Color(90, 90, 90); // looks better than Color.Black with sprite tinting
+            }
+        }
+
+        public void AbsorbTint(Color color)
+        {
+            Color combined = Color.Black;
+            // use ^ so absorbed colors are lost if already present
+            // use || so absorbed colors are always contained in new color
+            if (color.R > 100 || Tint.R > 100) combined.R = 255;
+            if (color.G > 100 || Tint.G > 100) combined.G = 255;
+            if (color.B > 100 || Tint.B > 100) combined.B = 255;
+            SetTint(combined);
+        }
+
+        public void LoseTint(Color color)
+        {
+            Color combined = Color.Black;
+            if (color.R <= 100 && Tint.R > 100) combined.R = 255;
+            if (color.G <= 100 && Tint.G > 100) combined.G = 255;
+            if (color.B <= 100 && Tint.B > 100) combined.B = 255;
+            SetTint(combined);
+        }
+
         protected Texture2D Texture;
         protected bool Dirty;
 
