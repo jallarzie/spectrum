@@ -19,6 +19,7 @@ namespace Spectrum.States
         public const float LASER_MAX_CHARGE_TIME = 2f; // sec
         public const float ENEMY_SPAWN_RATE = 0.5f; // enemies/sec
         public const float COLLISION_DISTANCE = 20f; // pixels
+        public const float RECOIL_DISTANCE = 30f;
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 
         public override void Initialize()
@@ -27,7 +28,7 @@ namespace Spectrum.States
             Viewport = Application.Instance.GraphicsDevice.Viewport;
             Player = new Ship();
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
-            Player.Path = new User(Player);
+            Player.Path = new User(Player, new Rectangle(0, 0, Viewport.Width, Viewport.Height));
             Core = new PowerCore(RNG);
             Core.Observer = this;
             feedbackTime = 0f;
@@ -71,11 +72,18 @@ namespace Spectrum.States
 
             if (gamepadState.IsConnected)
             {
-                LaserCharge = gamepadState.Triggers.Right;
-                if (gamepadState.ThumbSticks.Right.LengthSquared() != 0)
+                if (gamepadState.Triggers.Right != 0)
                 {
-                    direction = gamepadState.ThumbSticks.Right;
-                    direction.Y *= -1;
+                    LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
+                    LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
+                }
+                else
+                {
+                    if (gamepadState.ThumbSticks.Right.LengthSquared() != 0)
+                    {
+                        direction = gamepadState.ThumbSticks.Right;
+                        direction.Y *= -1;
+                    }
                 }
             }
             else
@@ -150,14 +158,19 @@ namespace Spectrum.States
         private void Collisions()
         {
             Vector2 distance;
+            if (Core.BoundingArea.CollidesWith(Player.BoundingArea))
+            {
+                Player.LoseTint(Core.Tint);
+                GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
+                feedbackTime = DAMAGE_FEEDBACK_TIME;
+                Player.Path.Recoil(Core.Position, RECOIL_DISTANCE);
+            }
             foreach (Laser laser in Lasers)
             {
                 if (laser.Alignment == LaserAlignment.Player)
                 {
                     // Check Collision with Power Core
-                    distance = Core.Position - laser.Position;
-                    if (distance.Length() <= COLLISION_DISTANCE + Core.GetBoundingSphere().Circle.MajorRadius)
-                    //if (laser.GetBoundingBox().CollidesWith(Core.GetBoundingSphere()))
+                    if (laser.BoundingArea.CollidesWith(Core.BoundingArea))
                     {
                         Core.ProcessHit(laser.Tint, laser.Damage);
                         LasersToRemove.Add(laser);

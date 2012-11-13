@@ -11,9 +11,6 @@ namespace Spectrum.Components
 {
     public class PowerCore : Sprite
     {
-        private static readonly int TEXTURE_HEIGHT = 129;
-        private static readonly int TEXTURE_WIDTH = 129;
-
         /// <summary>
         /// The Power Core Health at the beggining of the game
         /// </summary>
@@ -44,9 +41,9 @@ namespace Spectrum.Components
             // Place the PowerCore at the center of the ViewPort
             Viewport viewPort = Application.Instance.GraphicsDevice.Viewport;
             Position = new Vector2(viewPort.Width/2, viewPort.Height/2);
-            Origin = new Vector2(TEXTURE_WIDTH / 2, TEXTURE_HEIGHT / 2);
+            Origin = new Vector2(Width / 2, Height / 2);
 
-            BoundingSphere = new Sphere(Position, CalculateCurrentRadius());
+            BoundingArea = new Sphere(Position, CalculateCurrentRadius());
             CreateRandomForcefield();
         }
         
@@ -62,7 +59,7 @@ namespace Spectrum.Components
                         TimeElapsedSinceLastRegen = new TimeSpan(0);
                     }
                     Scale = CalculateCurrentScale();
-                    float radius = CalculateCurrentRadius();
+                    float radius = Texture.Width / 2 * Scale;
 
                     if (Forcefield != null)
                     {
@@ -79,7 +76,7 @@ namespace Spectrum.Components
                         }
                     }
 
-                    BoundingSphere.Circle.ChangeRadius(radius, radius);
+                    BoundingArea = new Sphere(Position, radius);
                     break;
 
                 case State.Destroyed:
@@ -99,19 +96,6 @@ namespace Spectrum.Components
                 case State.Destroyed:
                     break;
             }
-        }
-
-        public Sphere GetBoundingSphere() 
-        {
-            return BoundingSphere;
-        }
-
-        /// <summary>
-        /// Returns the current Health of the Power Core (in HP)
-        /// </summary>
-        public int GetHealth() 
-        {
-            return Health;
         }
 
         /// <summary>
@@ -152,7 +136,7 @@ namespace Spectrum.Components
         private void DestroyCore() 
         {
             CurrentState = State.Destroyed;
-            BoundingSphere = new Sphere(Position, 0);
+            BoundingArea = new Sphere(Position, 0);
             Texture = null;
         }
 
@@ -162,7 +146,7 @@ namespace Spectrum.Components
         /// <returns></returns>
         private float CalculateCurrentRadius()
         {
-            return TEXTURE_HEIGHT / 2 * CalculateCurrentScale();
+            return Texture.Width / 2 * CalculateCurrentScale();
         }
 
         /// <summary>
@@ -206,9 +190,8 @@ namespace Spectrum.Components
         public EventObservers.PowerCoreObserver Observer;
 
         private Random RNG;
-        private int Health;
+        public int Health { get; private set; }
         private State CurrentState;
-        private Sphere BoundingSphere;
         private TimeSpan TimeElapsedSinceLastRegen, ForcefieldRechargeTime;
         private Forcefield Forcefield;
     }

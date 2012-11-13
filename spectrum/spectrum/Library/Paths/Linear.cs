@@ -46,6 +46,25 @@ namespace Spectrum.Library.Paths
             return Position;
         }
 
+        /// <summary>
+        /// Recoil away form a position
+        /// </summary>
+        /// <param name="position"></param>
+        public virtual Vector2 Recoil(Vector2 position, float distance)
+        {
+            Vector2 recoil = Position - position;
+            recoil.Normalize();
+
+            Position += distance * recoil;
+
+            if (PathAwareEntity != null)
+            {
+                PathAwareEntity.PathPosition(Position);
+            }
+
+            return Position;
+        }
+
         public void Collide(Vector2 normal, Vector2 position)
         {
             Position = position;

@@ -18,6 +18,7 @@ namespace Spectrum.Components
             Scale = 0.3f * (1 + Charge);
             Tint = tint;
             Position = position;
+            BoundingArea = new Sphere(position, 20.0f);
             Path = new Linear(this, direction);
             Alignment = alignment;
             Speed = speed;

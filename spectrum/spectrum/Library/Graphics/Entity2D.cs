@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Spectrum.Library.Geometry;
+using Spectrum.Library.Collisions;
 
 namespace Spectrum.Library.Graphics
 {
@@ -14,6 +15,7 @@ namespace Spectrum.Library.Graphics
             Texture = texture;
 
             Parent = parent;
+            BoundingArea = new Sphere(new Vector2(0, 0), 1);
             Position = new Vector2(0, 0);
             Rotation = 0f;
             Scale = 1f;
@@ -57,10 +59,23 @@ namespace Spectrum.Library.Graphics
         protected bool Dirty;
 
         public CoordinateSystem Parent { get; set; }
-        public Vector2 Position { get; set; }
+        private Vector2 position;
+        public Vector2 Position
+        {
+            get
+            {
+                return position;
+            }
+            set
+            {
+                position = value;
+                BoundingArea.Shape.Center = value;
+            }
+        }
         public float Rotation { get; set; }
         public float Scale { get; set; }
         public Color Tint { get; set; }
+        public Area BoundingArea { get; protected set; }
 
         public Vector2 Origin;
         public float Layer;
