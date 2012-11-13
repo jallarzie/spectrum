@@ -37,7 +37,6 @@ Global
 		{BECFA046-BEA5-4EA0-8239-9A543ED3ED0C}.Release|Xbox 360.ActiveCfg = Release|x86
 		{5A42D6B2-0230-408E-922E-968835517EA3}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
 		{5A42D6B2-0230-408E-922E-968835517EA3}.Debug|Mixed Platforms.Build.0 = Debug|Xbox 360
-		{5A42D6B2-0230-408E-922E-968835517EA3}.Debug|Mixed Platforms.Deploy.0 = Debug|Xbox 360
 		{5A42D6B2-0230-408E-922E-968835517EA3}.Debug|x86.ActiveCfg = Debug|Xbox 360
 		{5A42D6B2-0230-408E-922E-968835517EA3}.Debug|x86.Build.0 = Debug|Xbox 360
 		{5A42D6B2-0230-408E-922E-968835517EA3}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360

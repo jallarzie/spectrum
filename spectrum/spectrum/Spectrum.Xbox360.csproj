@@ -74,6 +74,7 @@
     <Compile Include="Components\PowerCore.cs" />
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\Powerup.cs" />
+    <Compile Include="Components\ScoreKeeper.cs" />
     <Compile Include="Library\Collisions\Box.cs" />
     <Compile Include="Library\Collisions\Sphere.cs" />
     <Compile Include="Library\Collisions\Area.cs" />
@@ -102,7 +103,9 @@
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>

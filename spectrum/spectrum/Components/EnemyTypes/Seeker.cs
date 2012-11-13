@@ -11,9 +11,10 @@ namespace Spectrum.Components.EnemyTypes
     public class Seeker : Enemy
     {
         public Seeker(Color tint, Vector2 position, Entity2D target)
-            : base(tint, position, target)
+            : base("seekerEnemy", tint, position, target)
         {
             Path = new Follow(this, target);
+            Scale = 0.2f;
             Speed = 250f;
             FireRate = 0f;
         }
@@ -22,5 +23,11 @@ namespace Spectrum.Components.EnemyTypes
         {
             return null;
         }
+
+        public override int GetScoreValue()
+        {
+            return 10;
+        }
+
     }
 }

@@ -122,6 +122,10 @@ namespace Spectrum.Components
             else
             {
                 Health -= damage;
+                if (Observer != null)
+                {
+                    Observer.OnPowerCoreHealthReduced(damage);
+                }
             }
             if (Health <= 0) 
             {
