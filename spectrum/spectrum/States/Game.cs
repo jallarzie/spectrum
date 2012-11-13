@@ -13,12 +13,12 @@ namespace Spectrum.States
 {
     public class Game : State, PowerCoreObserver
     {
-        public const float SPEED_PLAYER = 300f;
+        public const float SPEED_PLAYER = 350f;
         public const float SPEED_LASER = 500f;
         public const float FIRE_RATE = 5f; // shots/sec
-        public const float LASER_MAX_CHARGE_TIME = 3f; // sec
-        public const float ENEMY_SPAWN_RATE = 1f; // enemies/sec
-        public const float COLLISION_DISTANCE = 50f; // pixels
+        public const float LASER_MAX_CHARGE_TIME = 2f; // sec
+        public const float ENEMY_SPAWN_RATE = 0.5f; // enemies/sec
+        public const float COLLISION_DISTANCE = 20f; // pixels
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 
         public override void Initialize()
@@ -28,7 +28,7 @@ namespace Spectrum.States
             Player = new Ship();
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player);
-            Core = new PowerCore();
+            Core = new PowerCore(RNG);
             Core.Observer = this;
             feedbackTime = 0f;
 
@@ -149,19 +149,23 @@ namespace Spectrum.States
 
         private void Collisions()
         {
+            Vector2 distance;
             foreach (Laser laser in Lasers)
             {
                 if (laser.Alignment == LaserAlignment.Player)
                 {
                     // Check Collision with Power Core
-                    if (laser.GetBoundingBox().CollidesWith(Core.GetBoundingSphere()))
+                    distance = Core.Position - laser.Position;
+                    if (distance.Length() <= COLLISION_DISTANCE + Core.GetBoundingSphere().Circle.MajorRadius)
+                    //if (laser.GetBoundingBox().CollidesWith(Core.GetBoundingSphere()))
                     {
-                        Core.DecreaseHealthBy(laser.Damage);
+                        Core.ProcessHit(laser.Tint, laser.Damage);
+                        LasersToRemove.Add(laser);
                     }
 
                     foreach (Enemy enemy in Enemies)
                     {
-                        Vector2 distance = enemy.Position - laser.Position;
+                        distance = enemy.Position - laser.Position;
                         if (distance.Length() <= COLLISION_DISTANCE)
                         {
                             // % chance of a powerup dropping is 100 - (laser charge %)
@@ -180,7 +184,7 @@ namespace Spectrum.States
                 }
                 else if (laser.Alignment == LaserAlignment.Enemy)
                 {
-                    Vector2 distance = Player.Position - laser.Position;
+                    distance = Player.Position - laser.Position;
                     if (distance.Length() <= COLLISION_DISTANCE)
                     {
                         Player.LoseTint(laser.Tint);
@@ -192,7 +196,7 @@ namespace Spectrum.States
             }
             foreach (Enemy enemy in Enemies)
             {
-                Vector2 distance = enemy.Position - Player.Position;
+                distance = enemy.Position - Player.Position;
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
                     Player.LoseTint(enemy.Tint);
@@ -203,7 +207,7 @@ namespace Spectrum.States
             }
             foreach (Powerup powerup in Powerups)
             {
-                Vector2 distance = Player.Position - powerup.Position;
+                distance = Player.Position - powerup.Position;
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
                     Player.AbsorbTint(powerup.Tint);
@@ -228,7 +232,7 @@ namespace Spectrum.States
                 switch (RNG.Next(7))
                 {
                     case 0: color = Color.Red; break;
-                    case 1: color = Color.Green; break;
+                    case 1: color = Color.Lime; break;
                     case 2: color = Color.Blue; break;
                     case 3: color = Color.Cyan; break;
                     case 4: color = Color.Magenta; break;
@@ -243,7 +247,7 @@ namespace Spectrum.States
                 Vector2 center = new Vector2(Viewport.Width / 2, Viewport.Height / 2);
 
                 Enemy enemy;
-                if (RNG.Next(2) == 0)
+                if (RNG.Next(3) > 0)
                     enemy = new Seeker(color, center + direction, Player);
                 else
                     enemy = new Observer(color, center + direction, Player);

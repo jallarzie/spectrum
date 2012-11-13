@@ -70,6 +70,7 @@
     <Compile Include="Components\EnemyTypes\Observer.cs" />
     <Compile Include="Components\EnemyTypes\Seeker.cs" />
     <Compile Include="Components\EventObservers\PowerCoreObserver.cs" />
+    <Compile Include="Components\Forcefield.cs" />
     <Compile Include="Components\PowerCore.cs" />
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\Powerup.cs" />
