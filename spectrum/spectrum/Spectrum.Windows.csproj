@@ -119,6 +119,7 @@
     <Compile Include="Components\PowerCore.cs" />
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\Powerup.cs" />
+    <Compile Include="Components\ScoreKeeper.cs" />
     <Compile Include="Library\Collisions\Box.cs" />
     <Compile Include="Library\Collisions\Sphere.cs" />
     <Compile Include="Library\Collisions\Area.cs" />
@@ -180,6 +181,9 @@
       <ProductName>Microsoft XNA Framework Redistributable 4.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

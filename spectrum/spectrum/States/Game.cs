@@ -30,9 +30,11 @@ namespace Spectrum.States
             Player.Path = new User(Player);
             Core = new PowerCore(RNG);
             Core.Observer = this;
+            ScoreKeeper = new ScoreKeeper();
             feedbackTime = 0f;
 
             Application.Instance.Drawables.Add(new Background());
+            Application.Instance.Drawables.Add(ScoreKeeper);
             Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);
 
@@ -60,6 +62,11 @@ namespace Spectrum.States
         public void OnPowerCoreHealthReachedZero()
         {
             // Switch to player Wins state.
+        }
+
+        public void OnPowerCoreHealthReduced(int Damage)
+        {
+            ScoreKeeper.AddPoints(Damage * ScoreKeeper.POWERCORE_HIT_SCORE_VALUE);
         }
 
         private void ShootLaser(GameTime gameTime)
@@ -278,6 +285,7 @@ namespace Spectrum.States
         private List<Laser> Lasers, LasersToRemove;
         private List<Enemy> Enemies, EnemiesToRemove;
         private List<Powerup> Powerups, PowerupsToRemove;
+        private ScoreKeeper ScoreKeeper;
         private float LaserFireRateCounter, LaserCharge, EnemySpawnCounter;
         private float feedbackTime;
     }

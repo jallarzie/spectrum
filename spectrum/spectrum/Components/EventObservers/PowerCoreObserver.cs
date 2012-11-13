@@ -14,5 +14,11 @@ namespace Spectrum.Components.EventObservers
         /// Executes When the PowerCore reaches zero
         /// </summary>
         void OnPowerCoreHealthReachedZero();
+
+        /// <summary>
+        /// Executes when the PowerCore's health is reduced.
+        /// </summary>
+        /// <param name="Damage">The Amount of HP lost by the PowerCore</param>
+        void OnPowerCoreHealthReduced(int Damage);
     }
 }
