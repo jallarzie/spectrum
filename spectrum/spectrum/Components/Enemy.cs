@@ -18,7 +18,7 @@ namespace Spectrum.Components
         public Enemy(Color tint, Vector2 position, Entity2D target)
         {
             Origin = new Vector2(Width / 2, Height / 2);
-            Scale = 0.2f;
+            Scale = 0.15f;
             SetTint(tint);
             Position = position;
             Speed = 0f;
@@ -28,6 +28,7 @@ namespace Spectrum.Components
 
         public Powerup DropPowerup(Color excluded, Random RNG)
         {
+            
             List<Color> possibleColors = new List<Color>();
             if (excluded.R <= 100 && Tint.R > 100)
             {

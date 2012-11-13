@@ -13,7 +13,6 @@ namespace Spectrum.Components.EnemyTypes
         public Seeker(Color tint, Vector2 position, Entity2D target)
             : base(tint, position, target)
         {
-            Scale = 0.2f;
             Path = new Follow(this, target);
             Speed = 250f;
             FireRate = 0f;

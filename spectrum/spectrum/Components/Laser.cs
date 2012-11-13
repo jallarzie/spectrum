@@ -15,14 +15,14 @@ namespace Spectrum.Components
             Charge = MathHelper.Clamp(charge, 0f, 1f);
 
             Origin = new Vector2(Width / 2, Height / 2);
-            Scale = 0.4f * (1 + Charge);
+            Scale = 0.3f * (1 + Charge);
             Tint = tint;
             Position = position;
             Path = new Linear(this, direction);
             Alignment = alignment;
             Speed = speed;
 
-            Damage = 1;
+            Damage = 10 + (int)(Charge * 40);
             Box = new Box(Position, Width * Scale, Height * Scale);
         }
 

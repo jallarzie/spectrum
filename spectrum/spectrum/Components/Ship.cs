@@ -11,14 +11,14 @@ namespace Spectrum.Components
         public Ship() : base("ship")
         {
             Origin = new Vector2(Width / 2, Height / 2);
-            Scale = 0.3f;
+            Scale = 0.2f;
             SetTint(Color.Black);
         }
 
         protected void SetTint(Color color)
         {
             if (color == Color.Red ||
-                color == Color.Green ||
+                color == Color.Lime ||
                 color == Color.Blue ||
                 color == Color.Cyan ||
                 color == Color.Magenta ||
@@ -26,10 +26,6 @@ namespace Spectrum.Components
                 color == Color.White)
             {
                 Tint = color;
-            }
-            else if (color.R == 0 && color.G == 255 && color.B == 0)
-            {
-                Tint = Color.Green;
             }
             else
             {
