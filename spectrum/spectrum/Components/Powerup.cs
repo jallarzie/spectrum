@@ -10,7 +10,7 @@ namespace Spectrum.Components
         public Powerup(Color tint, Vector2 position) : base("powerup")
         {
             Origin = new Vector2(Width / 2, Height / 2);
-            Scale = 0.2f;
+            Scale = 1f;
             Tint = tint;
             Position = position;
         }
