@@ -58,7 +58,7 @@ namespace Spectrum
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.LightGray);
+            GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.Begin();
             Drawables.Draw(gameTime, SpriteBatch);

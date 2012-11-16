@@ -34,7 +34,7 @@ namespace Spectrum.States
             ScoreKeeper = new ScoreKeeper();
             feedbackTime = 0f;
 
-            Application.Instance.Drawables.Add(new Background());
+            Application.Instance.Drawables.Add(new Background(2000, RNG));
             Application.Instance.Drawables.Add(ScoreKeeper);
             Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);

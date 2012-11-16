@@ -1,49 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Spectrum.Library.Graphics;
+using System.Collections.Generic;
+using System;
 
 namespace Spectrum.Components
 {
     /// <summary>
     /// Component That Draws the Background
     /// </summary>
-    public class Background : Spectrum.Library.Graphics.Drawable
+    public class Background : Sprite
     {
-        /// <summary>
-        /// The SourceRectangle of the dust-like texture.
-        /// </summary>
-        private static readonly Rectangle DUST_SRC_RECTANGLE = new Rectangle(255, 702, 128, 128);
+        private static readonly Rectangle STAR_SRC = new Rectangle(351, 21, 128, 170);
 
-        private Texture2D texture;
-
-        public Background() 
+        private struct Star
         {
-            texture = Application.Instance.Content.Load<Texture2D>("background");
+            public Color color;
+            public float scale;
+            public Vector2 position;
+
+            public Star(Color color, float scale, Vector2 position)
+            {
+                this.color = color;
+                this.scale = scale;
+                this.position = position;
+            }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        private List<Star> Stars;
+
+        public Background(int nbStars, Random RNG) : base("particles")
         {
             Viewport viewPort = Application.Instance.GraphicsDevice.Viewport;
-
-            // Draw the Texture until it fills the entire ViewPort
-            for (int i = 0; i < (int)Math.Ceiling((double)viewPort.Width/DUST_SRC_RECTANGLE.Width); i++)
+            Stars = new List<Star>();
+            for (int i = 0; i < nbStars; i++)
             {
-                for (int j = 0; j < (int)Math.Ceiling((double)viewPort.Height / DUST_SRC_RECTANGLE.Height); j++)
-                {
-                    spriteBatch.Draw(
-                        texture,
-                        new Vector2(i * DUST_SRC_RECTANGLE.Width, j * DUST_SRC_RECTANGLE.Height),
-                        DUST_SRC_RECTANGLE,
-                        Color.White,
-                        0,
-                        Vector2.Zero,
-                        1.0f,
-                        SpriteEffects.None,
-                        1.0f);
-                }
+                Color color = Color.White;
+                color.R -= (byte)RNG.Next(50);
+                color.G -= (byte)RNG.Next(50);
+                color.B -= (byte)RNG.Next(50);
+                //color.A -= (byte)RNG.Next(200); // why does this do nothing?
+                Star star = new Star(color,
+                                     MathHelper.Clamp((float)RNG.NextDouble() * 12 - 8, 1, 4), // to get more small stars
+                                     new Vector2(RNG.Next(viewPort.Width), RNG.Next(viewPort.Height)));
+                Stars.Add(star);
+            }
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            foreach (Star star in Stars)
+            {
+                spriteBatch.Draw(Texture, star.position, STAR_SRC, star.color, Rotation, Origin, star.scale * 0.02f, Flip, Layer);
             }
         }
     }

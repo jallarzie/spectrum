@@ -27,20 +27,11 @@ namespace Spectrum.Components
 
         public Powerup DropPowerup(Color excluded, Random RNG)
         {
-            
             List<Color> possibleColors = new List<Color>();
-            if (excluded.R <= 100 && Tint.R > 100)
-            {
-                possibleColors.Add(Color.Red);
-            }
-            if (excluded.G <= 100 && Tint.G > 100)
-            {
-                possibleColors.Add(Color.Green);
-            }
-            if (excluded.B <= 100 && Tint.B > 100)
-            {
-                possibleColors.Add(Color.Blue);
-            }
+
+            if (excluded.R <= 200 && Tint.R > 200) possibleColors.Add(Color.Red);
+            if (excluded.G <= 200 && Tint.G > 200) possibleColors.Add(Color.Lime);
+            if (excluded.B <= 200 && Tint.B > 200) possibleColors.Add(Color.Blue);
 
             if (possibleColors.Count > 0) return new Powerup(possibleColors[RNG.Next(possibleColors.Count)], Position);
             else return new Powerup(Color.Black, Position); // using black as a null value

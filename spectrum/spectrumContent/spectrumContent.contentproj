@@ -56,18 +56,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="powerup.png">
-      <Name>powerup</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="background.png">
-      <Name>background</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="powercore.png">
       <Name>powercore</Name>
       <Importer>TextureImporter</Importer>
@@ -98,6 +86,20 @@
   <ItemGroup>
     <Compile Include="seekerEnemy.png">
       <Name>seekerEnemy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="particles.png">
+      <Name>particles</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="powerup.png">
+      <Name>powerup</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
