@@ -15,7 +15,7 @@ namespace Spectrum.Components
         public float FireRate { get; protected set; }
         public float LastFired { get; protected set; }
         
-        public Enemy(String textureName, Color tint, Vector2 position, Entity2D target) : base(textureName)
+        public Enemy(string textureName, Color tint, Vector2 position, Entity2D target) : base(textureName)
         {
             Origin = new Vector2(Width / 2, Height / 2);           
             SetTint(tint);

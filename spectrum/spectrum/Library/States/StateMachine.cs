@@ -11,50 +11,59 @@ namespace Spectrum.Library.States
 
         public void Initialize(State initialState)
         {
-            State = initialState;
+            mState = initialState;
             this.Initialize();
         }
 
         public State Take()
         {
-            State state = State;
-            State = null;
+            State state = mState;
+            mState = null;
             return state;
+        }
+
+        public bool SetState(State state)
+        {
+            mState = state;
+            this.Initialize();
+            return true;
+        }
+
+        public bool ChangeState(State state)
+        {
+            this.Destroy();
+            this.SetState(state);
+            return true;
         }
 
         public void Update(GameTime gameTime)
         {
-            State.Update(gameTime);
-            if (this.Transition( )) {
-                GameTime newGameTime = new GameTime(gameTime.TotalGameTime, new TimeSpan(0));
-                this.Update(gameTime);
+            mTotalTime = gameTime.TotalGameTime;
+
+            if (!this.Transition())
+            {
+                mState.Update(gameTime);
             }
         }
 
         private void Initialize()
         {
-            State.Initialize( );
-            this.Transition( );
-        }
+            mState.Initialize();
 
-        private bool Transition()
-        {
-            State newState = State.Transition();
-
-            if (newState == null)
-                return false;
-
-            State = newState;
-            this.Initialize();
-
-            return true;
+            this.Update(new GameTime(mTotalTime, new TimeSpan(0)));
         }
 
         private void Destroy()
         {
-            State.Destroy();
+            mState.Destroy();
         }
 
-        private State State;
+        private bool Transition()
+        {
+            return mState.Transition();
+        }
+
+        private TimeSpan mTotalTime;
+        private State mState;
     }
 }

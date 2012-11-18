@@ -6,14 +6,12 @@ namespace Spectrum.Library.Graphics
 {
     class Flat : Entity2D
     {
-        public Flat() : this(null) { }
-
-        public Flat(CoordinateSystem parent)
+        public Flat(Vector2 size, Color color, CoordinateSystem parent)
             : base(null, parent)
         {
             Dirty = true;
-            Size = new Vector2(0, 0);
-            Color = Color.Black;
+            Size = size;
+            Color = color;
         }
 
         public override void Update()

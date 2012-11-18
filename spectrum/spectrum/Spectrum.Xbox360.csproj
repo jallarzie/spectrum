@@ -75,10 +75,12 @@
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\Powerup.cs" />
     <Compile Include="Components\ScoreKeeper.cs" />
+    <Compile Include="Layers.cs" />
     <Compile Include="Library\Collisions\Box.cs" />
     <Compile Include="Library\Collisions\Sphere.cs" />
     <Compile Include="Library\Collisions\Area.cs" />
     <Compile Include="Components\Ship.cs" />
+    <Compile Include="Library\Graphics\String.cs" />
     <Compile Include="Library\Paths\DistantFollow.cs" />
     <Compile Include="Library\Paths\Follow.cs" />
     <Compile Include="Library\Paths\Linear.cs" />
@@ -98,6 +100,8 @@
     <Compile Include="States\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application.cs" />
+    <Compile Include="States\Menu.cs" />
+    <Compile Include="States\Pause.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -12,9 +12,9 @@ namespace Spectrum.Library.States
         {
         }
 
-        public virtual State Transition()
+        public virtual bool Transition()
         {
-            return null;
+            return false;
         }
 
         public virtual void Destroy()

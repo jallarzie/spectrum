@@ -22,19 +22,20 @@ namespace Spectrum.States
         public const float RECOIL_DISTANCE = 30f;
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 
-        public override void Initialize()
+        public Game()
         {
             RNG = new Random();
             Viewport = Application.Instance.GraphicsDevice.Viewport;
             Player = new Ship();
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player, new Rectangle(0, 0, Viewport.Width, Viewport.Height));
+            mBackground = new Background(2000, RNG);
             Core = new PowerCore(RNG);
             Core.Observer = this;
             ScoreKeeper = new ScoreKeeper();
             feedbackTime = 0f;
 
-            Application.Instance.Drawables.Add(new Background(2000, RNG));
+            Application.Instance.Drawables.Add(mBackground);
             Application.Instance.Drawables.Add(ScoreKeeper);
             Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);
@@ -45,6 +46,32 @@ namespace Spectrum.States
             EnemiesToRemove = new List<Enemy>();
             Powerups = new List<Powerup>();
             PowerupsToRemove = new List<Powerup>();
+        }
+
+        public override void Destroy()
+        {
+            Application.Instance.Drawables.Remove(mBackground);
+            Application.Instance.Drawables.Remove(ScoreKeeper);
+            Application.Instance.Drawables.Remove(Core);
+            Application.Instance.Drawables.Remove(Player);
+
+            Lasers.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Remove(laser); });
+            LasersToRemove.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Remove(laser); });
+
+            Enemies.ForEach(delegate(Enemy enemy) { Application.Instance.Drawables.Remove(enemy); });
+            EnemiesToRemove.ForEach(delegate(Enemy enemy) { Application.Instance.Drawables.Remove(enemy); });
+
+            Powerups.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Remove(powerup); });
+            PowerupsToRemove.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Remove(powerup); });
+        }
+
+        public override bool Transition()
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+            if (keyboardState.IsKeyDown(Keys.Escape))
+                return Application.Instance.StateMachine.SetState(new States.Pause(this));
+
+            return false;
         }
 
         public override void Update(GameTime gameTime)
@@ -293,6 +320,7 @@ namespace Spectrum.States
         }
 
         private Random RNG;
+        private Background mBackground;
         private Viewport Viewport;
         private Ship Player;
         private PowerCore Core;
