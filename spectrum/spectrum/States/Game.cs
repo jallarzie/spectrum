@@ -14,11 +14,11 @@ namespace Spectrum.States
     public class Game : State, PowerCoreObserver
     {
         public const float SPEED_PLAYER = 350f;
-        public const float SPEED_LASER = 500f;
-        public const float FIRE_RATE = 5f; // shots/sec
+        public const float SPEED_LASER = 600f;
+        public const float FIRE_RATE = 7f; // shots/sec
         public const float LASER_MAX_CHARGE_TIME = 2f; // sec
         public const float ENEMY_SPAWN_RATE = 0.5f; // enemies/sec
-        public const float COLLISION_DISTANCE = 20f; // pixels
+        public const float COLLISION_DISTANCE = 30f; // pixels
         public const float RECOIL_DISTANCE = 30f;
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 

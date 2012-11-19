@@ -14,19 +14,19 @@ namespace Spectrum.Components
         /// <summary>
         /// The Power Core Health at the beggining of the game
         /// </summary>
-        private static int INITIAL_HEALTH = 1000;
+        private static int INITIAL_HEALTH = 1500;
 
         /// <summary>
         /// The interval at which the Core Regains Health (in ms).
         /// </summary>
-        private static readonly int REGEN_INTERVAL = 100;
+        private static readonly int REGEN_INTERVAL = 50;
 
         /// <summary>
         /// The amount of HP the Core Regains at each Health Regeneration
         /// </summary>
         private static readonly int REGEN_RATE = 1;
 
-        private static readonly int FORCEFIELD_RECHARGE_INTERVAL = 10; // sec
+        private static readonly int FORCEFIELD_RECHARGE_INTERVAL = 6; // sec
 
         private enum State {Normal, Destroyed}
 
@@ -114,7 +114,6 @@ namespace Spectrum.Components
                     Forcefield.Health -= damage;
                     if (Forcefield.Health <= 0)
                     {
-                        Application.Instance.Drawables.Remove(Forcefield);
                         Forcefield = null;
                     }
                 }
@@ -159,7 +158,7 @@ namespace Spectrum.Components
         /// <returns></returns>
         private float CalculateCurrentScale()
         {
-            return Health/1000f + 0.5f;
+            return Health / (float)INITIAL_HEALTH + 0.5f;
         }
 
         /// <summary>
@@ -185,7 +184,6 @@ namespace Spectrum.Components
             }
             Forcefield = new Forcefield(Position, color);
             Forcefield.Health = 100;
-            Application.Instance.Drawables.Add(Forcefield);
         }
 
         /// <summary>
