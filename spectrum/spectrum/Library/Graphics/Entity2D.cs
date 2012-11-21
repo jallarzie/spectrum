@@ -14,6 +14,8 @@ namespace Spectrum.Library.Graphics
 
         public Entity2D(Texture2D texture, CoordinateSystem parent)
         {
+            SourceRectangle = null;
+
             Dirty = false;
             Texture = texture;
 
@@ -55,7 +57,7 @@ namespace Spectrum.Library.Graphics
         public virtual void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
         {
             if (Dirty) this.Update();
-            targetSpriteBatch.Draw(Texture, this.WorldPosition(), null, Tint * Opacity, this.WorldRotation(), Origin, Scale, Flip, Layer);
+            targetSpriteBatch.Draw(Texture, this.WorldPosition(), SourceRectangle, Tint * Opacity, this.WorldRotation(), Origin, Scale, Flip, Layer);
         }
 
         protected void SetTint(Color color)
@@ -116,6 +118,7 @@ namespace Spectrum.Library.Graphics
 
         public float Rotation { get; set; }
         public float Scale { get; set; }
+        public Rectangle? SourceRectangle { get; set; }
         public Color Tint { get; set; }
         public Area BoundingArea { get; protected set; }
 
