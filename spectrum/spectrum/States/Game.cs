@@ -46,6 +46,7 @@ namespace Spectrum.States
             EnemiesToRemove = new List<Enemy>();
             Powerups = new List<Powerup>();
             PowerupsToRemove = new List<Powerup>();
+            Explosions = new List<Explosion>();
         }
 
         public override void Destroy()
@@ -80,11 +81,12 @@ namespace Spectrum.States
             Player.Path.Move((float) (SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds));
             ShootLaser(gameTime);
             MoveLasers(gameTime);
-            Collisions();
+            Collisions(gameTime);
             SpawnRandomEnemy(gameTime);
             MoveEnemies(gameTime);
             EnemyAttacks(gameTime);
             Core.Update(gameTime);
+            Explosions.ForEach(explosion => explosion.Update(gameTime));
         }
 
         public void OnPowerCoreHealthReachedZero()
@@ -189,7 +191,7 @@ namespace Spectrum.States
             EnemiesToRemove.Clear();
         }
 
-        private void Collisions()
+        private void Collisions(GameTime gameTime)
         {
             Vector2 distance;
             if (Core.BoundingArea.CollidesWith(Player.BoundingArea))
@@ -227,6 +229,10 @@ namespace Spectrum.States
                             }
                             ScoreKeeper.AddPoints(enemy.GetScoreValue());
                             EnemiesToRemove.Add(enemy);
+
+                            Explosion explosion = new Explosion(enemy, gameTime.TotalGameTime.TotalMilliseconds);
+                            Explosions.Add(explosion);
+                            Application.Instance.Drawables.Add(explosion);
                         }
                     }
                 }
@@ -251,6 +257,7 @@ namespace Spectrum.States
                     GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                     feedbackTime = DAMAGE_FEEDBACK_TIME;
                     EnemiesToRemove.Add(enemy);
+                    Explosions.Add(new Explosion(enemy, gameTime.TotalGameTime.TotalMilliseconds));
                 }
             }
             foreach (Powerup powerup in Powerups)
@@ -327,6 +334,7 @@ namespace Spectrum.States
         private List<Laser> Lasers, LasersToRemove;
         private List<Enemy> Enemies, EnemiesToRemove;
         private List<Powerup> Powerups, PowerupsToRemove;
+        private List<Explosion> Explosions, ExplosionsToRemove;
         private ScoreKeeper ScoreKeeper;
         private float LaserFireRateCounter, LaserCharge, EnemySpawnCounter;
         private float feedbackTime;

@@ -22,11 +22,11 @@ namespace Spectrum.Components
         /// <summary>
         /// The time at wich the Entity has been destroyed.
         /// </summary>
-        private GameTime DestroyedGameTime;
+        private double DestroyedGameTime;
 
         private int CurrentFrameIndex;
 
-        public Explosion(Entity2D explodingEntity, GameTime destroyedGameTime)
+        public Explosion(Entity2D explodingEntity, double destroyedGameTime)
             : base("smallExplosion")
         {
             DestroyedGameTime = destroyedGameTime;
@@ -35,13 +35,16 @@ namespace Spectrum.Components
 
             ExplodingEntity = explodingEntity;
             Position = ExplodingEntity.Position;
+            Origin = new Vector2(SRC_RECTANGLE_WIDTH/2, SRC_RECTANGLE_HEIGHT/2);
+            Layer = ExplodingEntity.Layer;
+            Rotation = ExplodingEntity.Rotation;
             SetTint(ExplodingEntity.Tint);
         }
 
         public void Update(GameTime gameTime)
         {
-            if (DestroyedGameTime.TotalGameTime.TotalMilliseconds + FRAME_SWITCH_TIME_INTERVAL * (CurrentFrameIndex)
-                                < gameTime.TotalGameTime.TotalMilliseconds)
+            if (DestroyedGameTime + FRAME_SWITCH_TIME_INTERVAL * CurrentFrameIndex
+                    < gameTime.TotalGameTime.TotalMilliseconds)
             {
                 CurrentFrameIndex++;
                 if (CurrentFrameIndex < NUMBER_OF_FRAMES)
