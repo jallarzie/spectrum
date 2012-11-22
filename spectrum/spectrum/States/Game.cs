@@ -29,6 +29,7 @@ namespace Spectrum.States
             Player = new Ship();
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player, new Rectangle(0, 0, Viewport.Width, Viewport.Height));
+            PlayerHealthBar = new HealthBar(Player);
             mBackground = new Background(2000, RNG);
             Core = new PowerCore(RNG);
             Core.Observer = this;
@@ -39,6 +40,7 @@ namespace Spectrum.States
             Application.Instance.Drawables.Add(ScoreKeeper);
             Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);
+            Application.Instance.Drawables.Add(PlayerHealthBar);
 
             Lasers = new List<Laser>();
             LasersToRemove = new List<Laser>();
@@ -55,6 +57,7 @@ namespace Spectrum.States
             Application.Instance.Drawables.Remove(ScoreKeeper);
             Application.Instance.Drawables.Remove(Core);
             Application.Instance.Drawables.Remove(Player);
+            Application.Instance.Drawables.Remove(PlayerHealthBar);
 
             Lasers.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Remove(laser); });
             LasersToRemove.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Remove(laser); });
@@ -336,6 +339,7 @@ namespace Spectrum.States
         private Background mBackground;
         private Viewport Viewport;
         private Ship Player;
+        private HealthBar PlayerHealthBar;
         private PowerCore Core;
         private List<Laser> Lasers, LasersToRemove;
         private List<Enemy> Enemies, EnemiesToRemove;

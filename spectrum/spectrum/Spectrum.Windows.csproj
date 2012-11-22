@@ -117,6 +117,7 @@
     <Compile Include="Components\EventObservers\PowerCoreObserver.cs" />
     <Compile Include="Components\Explosion.cs" />
     <Compile Include="Components\Forcefield.cs" />
+    <Compile Include="Components\HealthBar.cs" />
     <Compile Include="Components\PowerCore.cs" />
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\Powerup.cs" />

@@ -27,7 +27,7 @@ namespace Spectrum.Components
         private int CurrentFrameIndex;
 
         public Explosion(Entity2D explodingEntity, double destroyedGameTime)
-            : base("smallExplosion")
+            : base("Explosion")
         {
             DestroyedGameTime = destroyedGameTime;
             SourceRectangle = new Rectangle(0, 0, SRC_RECTANGLE_WIDTH, SRC_RECTANGLE_HEIGHT);
