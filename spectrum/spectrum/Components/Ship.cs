@@ -10,6 +10,9 @@ namespace Spectrum.Components
     {
         public Ship() : base("ship")
         {
+            MaxHealthPoints = 5;
+            CurrentHealthPoints = MaxHealthPoints;
+
             Origin = new Vector2(Width / 2, Height / 2);
             BoundingArea = new Sphere(Position, 0.2f * (Height / 2), 0.2f * (Width / 2));
             Scale = 0.2f;
@@ -27,6 +30,21 @@ namespace Spectrum.Components
             BoundingArea.Shape.Rotation = angle;
         }
 
+        public float GetHealthRatio() 
+        {
+            return CurrentHealthPoints / MaxHealthPoints;
+        }
+
         public Path Path;
+
+        /// <summary>
+        /// The Ship's current HP
+        /// </summary>
+        public int CurrentHealthPoints;
+
+        /// <summary>
+        /// The Ship's max HP
+        /// </summary>
+        public int MaxHealthPoints;        
     }
 }

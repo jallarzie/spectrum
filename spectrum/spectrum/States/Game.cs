@@ -85,6 +85,7 @@ namespace Spectrum.States
         {
             HandleForceFeedback(gameTime);
             Player.Path.Move((float) (SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds));
+            PlayerHealthBar.Update(gameTime);
             ShootLaser(gameTime);
             MoveLasers(gameTime);
             Collisions(gameTime);
