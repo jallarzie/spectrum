@@ -64,6 +64,9 @@ namespace Spectrum.States
 
             Powerups.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Remove(powerup); });
             PowerupsToRemove.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Remove(powerup); });
+
+            Explosions.ForEach(explosion => Application.Instance.Drawables.Remove(explosion));
+            Explosions.Clear();
         }
 
         public override bool Transition()
