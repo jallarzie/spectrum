@@ -55,5 +55,12 @@ namespace Spectrum.Components
         /// Returns the Ship's Score Value.
         /// </summary>
         public abstract int GetScoreValue();
+
+        /// <summary>
+        /// Returns the Explosion to display when the object is hit.
+        /// </summary>
+        /// <param name="destroyedTime">the time at which the object gets destroyed.</param>
+        /// <returns></returns>
+        public abstract Explosion GetExplosion(double destroyedTime);
     }
 }

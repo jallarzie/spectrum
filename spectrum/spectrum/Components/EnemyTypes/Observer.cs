@@ -38,5 +38,10 @@ namespace Spectrum.Components.EnemyTypes
         {
             return 20;
         }
+
+        public override Explosion GetExplosion(double destroyedTime)
+        {
+            return new Explosion(this, destroyedTime);
+        }
     }
 }

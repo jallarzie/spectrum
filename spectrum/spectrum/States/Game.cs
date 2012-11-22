@@ -233,7 +233,7 @@ namespace Spectrum.States
                             ScoreKeeper.AddPoints(enemy.GetScoreValue());
                             EnemiesToRemove.Add(enemy);
 
-                            Explosion explosion = new Explosion(enemy, gameTime.TotalGameTime.TotalMilliseconds);
+                            Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);
                             Explosions.Add(explosion);
                             Application.Instance.Drawables.Add(explosion);
                         }
@@ -260,7 +260,10 @@ namespace Spectrum.States
                     GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                     feedbackTime = DAMAGE_FEEDBACK_TIME;
                     EnemiesToRemove.Add(enemy);
-                    Explosions.Add(new Explosion(enemy, gameTime.TotalGameTime.TotalMilliseconds));
+
+                    Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);
+                    Explosions.Add(explosion);
+                    Application.Instance.Drawables.Add(explosion);
                 }
             }
             foreach (Powerup powerup in Powerups)
@@ -337,7 +340,7 @@ namespace Spectrum.States
         private List<Laser> Lasers, LasersToRemove;
         private List<Enemy> Enemies, EnemiesToRemove;
         private List<Powerup> Powerups, PowerupsToRemove;
-        private List<Explosion> Explosions, ExplosionsToRemove;
+        private List<Explosion> Explosions;
         private ScoreKeeper ScoreKeeper;
         private float LaserFireRateCounter, LaserCharge, EnemySpawnCounter;
         private float feedbackTime;

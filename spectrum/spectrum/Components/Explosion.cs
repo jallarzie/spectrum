@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Spectrum.Components
 {
-    class Explosion : Sprite
+    public class Explosion : Sprite
     {
         private static int SRC_RECTANGLE_WIDTH = 70;
         private static int SRC_RECTANGLE_HEIGHT = 70;
