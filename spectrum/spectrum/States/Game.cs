@@ -75,8 +75,12 @@ namespace Spectrum.States
         public override bool Transition()
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Escape))
+            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
+            if (keyboardState.IsKeyDown(Keys.Escape) || gamepadState.Buttons.Start == ButtonState.Pressed)
+            {
+                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
                 return Application.Instance.StateMachine.SetState(new States.Pause(this));
+            }
 
             return false;
         }

@@ -28,7 +28,7 @@ namespace Spectrum.States
 
         public const float SPEED_DISPLAY = 1f;
 
-        public const float REPEAT_DELAY = .2f;
+        public const float REPEAT_DELAY = .35f;
 
         public delegate Library.States.State ActionTarget();
 
@@ -83,7 +83,11 @@ namespace Spectrum.States
         public override bool Transition()
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            if (mOffsetX == Application.Instance.GraphicsDevice.Viewport.Width / 2 && (keyboardState.IsKeyDown(Keys.Enter) || keyboardState.IsKeyDown(Keys.Space)) && mSelection != -1)
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+
+            if (mOffsetX == Application.Instance.GraphicsDevice.Viewport.Width / 2 
+                && (keyboardState.IsKeyDown(Keys.Enter) || keyboardState.IsKeyDown(Keys.Space) || gamePadState.IsButtonDown(Buttons.A))
+                && mSelection != -1)
                 return Application.Instance.StateMachine.ChangeState(mActions[mSelection].Target());
 
             return false;
@@ -195,13 +199,14 @@ namespace Spectrum.States
                 return;
 
             KeyboardState keyboardState = Keyboard.GetState();
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            if (mCurrentKeyCode != Keys.None && keyboardState.IsKeyUp(mCurrentKeyCode))
-                mCurrentKeyCode = Keys.None;
-            if (keyboardState.IsKeyDown(Keys.Down) ^ keyboardState.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.Down) ^ keyboardState.IsKeyDown(Keys.Up) ||
+                gamePadState.IsButtonDown(Buttons.DPadDown) ^ gamePadState.IsButtonDown(Buttons.LeftThumbstickUp) ||
+                gamePadState.IsButtonDown(Buttons.LeftThumbstickDown) ^ gamePadState.IsButtonDown(Buttons.DPadUp))
             {
-                Keys key = keyboardState.IsKeyDown(Keys.Down) ? Keys.Down : Keys.Up;
-                if (mCurrentKeyCode == Keys.None || mCurrentKeyCode != key || gameTime.TotalGameTime.TotalSeconds - mCurrentKeyTime >= REPEAT_DELAY)
+                Keys key = keyboardState.IsKeyDown(Keys.Down) || gamePadState.IsButtonDown(Buttons.DPadDown) || gamePadState.IsButtonDown(Buttons.LeftThumbstickDown) ? Keys.Down : Keys.Up;
+                if (mCurrentKeyCode == Keys.None || gameTime.TotalGameTime.TotalSeconds - mCurrentKeyTime >= REPEAT_DELAY)
                 {
                     mCurrentKeyCode = key;
                     mCurrentKeyTime = gameTime.TotalGameTime.TotalSeconds;
@@ -217,6 +222,10 @@ namespace Spectrum.States
                             break;
                     }
                 }
+            }
+            else
+            {
+                mCurrentKeyCode = Keys.None;
             }
         }
 
