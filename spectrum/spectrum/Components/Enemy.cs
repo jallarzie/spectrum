@@ -17,9 +17,10 @@ namespace Spectrum.Components
         
         public Enemy(string textureName, Color tint, Vector2 position, Entity2D target) : base(textureName)
         {
-            Origin = new Vector2(Width / 2, Height / 2);           
+            Origin = new Vector2(Width / 2, Height / 2);
             SetTint(tint);
             Position = position;
+            Layer = 0.5f;
             Speed = 0f;
             FireRate = 0f;
             Target = target;

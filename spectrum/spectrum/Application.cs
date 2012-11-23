@@ -60,7 +60,7 @@ namespace Spectrum
         {
             GraphicsDevice.Clear(Color.Black);
 
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             Drawables.Draw(gameTime, SpriteBatch);
             SpriteBatch.End();
         }

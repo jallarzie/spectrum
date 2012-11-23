@@ -20,6 +20,7 @@ namespace Spectrum.Components
             Ship = entity;
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
             Scale = 0.5f;
+            Layer = 0.1f;
 
             Position = Ship.Position + DISTANCE_FROM_SHIP;
             CurrentHealth = Ship.GetHealthRatio();

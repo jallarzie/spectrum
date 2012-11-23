@@ -37,10 +37,10 @@ namespace Spectrum.States
             feedbackTime = 0f;
 
             Application.Instance.Drawables.Add(mBackground);
-            Application.Instance.Drawables.Add(ScoreKeeper);
             Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);
             Application.Instance.Drawables.Add(PlayerHealthBar);
+            Application.Instance.Drawables.Add(ScoreKeeper);
 
             Lasers = new List<Laser>();
             LasersToRemove = new List<Laser>();
