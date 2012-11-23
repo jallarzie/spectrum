@@ -10,6 +10,8 @@ namespace Spectrum.Components
 {
     public abstract class Enemy : Sprite, PathAware
     {
+        private static float layerModifier = 0.0f;
+        
         public Entity2D Target { get; protected set; }
         public float Speed { get; protected set; }
         public float FireRate { get; protected set; }
@@ -20,7 +22,10 @@ namespace Spectrum.Components
             Origin = new Vector2(Width / 2, Height / 2);
             SetTint(tint);
             Position = position;
-            Layer = Layers.Enemies;
+            Layer = Layers.Enemies - layerModifier;
+            layerModifier += 0.00001f;
+            if (layerModifier > 0.01f)
+                layerModifier = 0.0f;
             Speed = 0f;
             FireRate = 0f;
             Target = target;
@@ -34,8 +39,8 @@ namespace Spectrum.Components
             if (excluded.G <= 200 && Tint.G > 200) possibleColors.Add(Color.Lime);
             if (excluded.B <= 200 && Tint.B > 200) possibleColors.Add(Color.Blue);
 
-            if (possibleColors.Count > 0) return new Powerup(possibleColors[RNG.Next(possibleColors.Count)], Position);
-            else return new Powerup(Color.Black, Position); // using black as a null value
+            if (possibleColors.Count > 0) return new Powerup(possibleColors[RNG.Next(possibleColors.Count)], Position, Layer + 0.01f);
+            else return new Powerup(Color.Black, Position, Layer + 0.01f); // using black as a null value
         }
 
         public void PathPosition(Vector2 position)

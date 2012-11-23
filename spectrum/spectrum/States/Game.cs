@@ -89,6 +89,7 @@ namespace Spectrum.States
             ShootLaser(gameTime);
             MoveLasers(gameTime);
             Collisions(gameTime);
+            UpdatePowerups(gameTime);
             SpawnRandomEnemy(gameTime);
             MoveEnemies(gameTime);
             EnemyAttacks(gameTime);
@@ -196,6 +197,22 @@ namespace Spectrum.States
                 Application.Instance.Drawables.Remove(enemy);
             }
             EnemiesToRemove.Clear();
+        }
+
+        private void UpdatePowerups(GameTime gameTime)
+        {
+            foreach (Powerup powerup in Powerups)
+            {
+                powerup.UpdateLifespan(gameTime);
+                if (powerup.TimeToLive <= 0)
+                    PowerupsToRemove.Add(powerup);
+            }
+            foreach (Powerup powerup in PowerupsToRemove)
+            {
+                Powerups.Remove(powerup);
+                Application.Instance.Drawables.Remove(powerup);
+            }
+            PowerupsToRemove.Clear();
         }
 
         private void Collisions(GameTime gameTime)
