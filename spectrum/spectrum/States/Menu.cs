@@ -56,6 +56,7 @@ namespace Spectrum.States
         {
             mBackground = new Library.Graphics.Flat(new Vector2(Application.Instance.GraphicsDevice.Viewport.Width, Application.Instance.GraphicsDevice.Viewport.Height), Color.Black, null);
             mBackground.Layer = Layers.Menu;
+
             mBackground.Opacity = .75f;
             Application.Instance.Drawables.Add(mBackground);
 

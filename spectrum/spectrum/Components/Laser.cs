@@ -16,7 +16,7 @@ namespace Spectrum.Components
 
             Origin = new Vector2(Width / 2, Height / 2);
             Scale = 0.3f * (1 + Charge);
-            Layer = 0.5f;
+            Layer = Layers.Lasers;
             Tint = tint;
             Position = position;
             BoundingArea = new Sphere(position, 20.0f);

@@ -33,7 +33,7 @@ namespace Spectrum.Components
         {
             Viewport viewPort = Application.Instance.GraphicsDevice.Viewport;
             Stars = new List<Star>();
-            Layer = 1.0f;
+            Layer = Layers.Background;
             for (int i = 0; i < nbStars; i++)
             {
                 Color color = Color.White;

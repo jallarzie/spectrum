@@ -20,7 +20,7 @@ namespace Spectrum.Components
             Origin = new Vector2(Width / 2, Height / 2);
             SetTint(tint);
             Position = position;
-            Layer = 0.5f;
+            Layer = Layers.Enemies;
             Speed = 0f;
             FireRate = 0f;
             Target = target;

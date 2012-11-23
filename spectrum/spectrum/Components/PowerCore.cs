@@ -42,7 +42,7 @@ namespace Spectrum.Components
             Viewport viewPort = Application.Instance.GraphicsDevice.Viewport;
             Position = new Vector2(viewPort.Width/2, viewPort.Height/2);
             Origin = new Vector2(Width / 2, Height / 2);
-            Layer = 0.9f;
+            Layer = Layers.PowerCore;
 
             BoundingArea = new Sphere(Position, CalculateCurrentRadius());
             CreateRandomForcefield();
