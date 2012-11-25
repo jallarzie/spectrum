@@ -12,6 +12,7 @@ namespace Spectrum.Components
         {
             Origin = new Vector2(Width / 2, Height / 2);
             Scale = 0.2f;
+            Layer = Layers.Forcefield;
             Tint = tint;
             Position = position;
 

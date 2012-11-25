@@ -37,10 +37,10 @@ namespace Spectrum.States
             feedbackTime = 0f;
 
             Application.Instance.Drawables.Add(mBackground);
-            Application.Instance.Drawables.Add(ScoreKeeper);
             Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);
             Application.Instance.Drawables.Add(PlayerHealthBar);
+            Application.Instance.Drawables.Add(ScoreKeeper);
 
             Lasers = new List<Laser>();
             LasersToRemove = new List<Laser>();
@@ -75,8 +75,12 @@ namespace Spectrum.States
         public override bool Transition()
         {
             KeyboardState keyboardState = Keyboard.GetState();
-            if (keyboardState.IsKeyDown(Keys.Escape))
+            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
+            if (keyboardState.IsKeyDown(Keys.Escape) || gamepadState.Buttons.Start == ButtonState.Pressed)
+            {
+                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
                 return Application.Instance.StateMachine.SetState(new States.Pause(this));
+            }
 
             return false;
         }
@@ -89,6 +93,7 @@ namespace Spectrum.States
             ShootLaser(gameTime);
             MoveLasers(gameTime);
             Collisions(gameTime);
+            UpdatePowerups(gameTime);
             SpawnRandomEnemy(gameTime);
             MoveEnemies(gameTime);
             EnemyAttacks(gameTime);
@@ -196,6 +201,22 @@ namespace Spectrum.States
                 Application.Instance.Drawables.Remove(enemy);
             }
             EnemiesToRemove.Clear();
+        }
+
+        private void UpdatePowerups(GameTime gameTime)
+        {
+            foreach (Powerup powerup in Powerups)
+            {
+                powerup.UpdateLifespan(gameTime);
+                if (powerup.TimeToLive <= 0)
+                    PowerupsToRemove.Add(powerup);
+            }
+            foreach (Powerup powerup in PowerupsToRemove)
+            {
+                Powerups.Remove(powerup);
+                Application.Instance.Drawables.Remove(powerup);
+            }
+            PowerupsToRemove.Clear();
         }
 
         private void Collisions(GameTime gameTime)
