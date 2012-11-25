@@ -155,6 +155,8 @@ namespace Spectrum.States
                 Application.Instance.Drawables.Add(laser);
                 LaserFireRateCounter = 0f;
                 LaserCharge = 0f;
+
+                SoundPlayer.PlayPlayerShootsSound();
             }
         }
 
