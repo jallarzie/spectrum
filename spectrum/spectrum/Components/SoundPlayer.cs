@@ -113,6 +113,7 @@ namespace Spectrum.Components
         public static void PlayMainGameSong() 
         {
             MediaPlayer.Stop();
+            MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(MainGameSong);
         }
     }
