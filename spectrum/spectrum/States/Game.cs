@@ -334,9 +334,9 @@ namespace Spectrum.States
 
                 Enemy enemy;
                 if (RNG.Next(3) > 0)
-                    enemy = new Seeker(color, center + direction, Player);
+                    enemy = new Seeker(color, center + direction, Player, Enemies, Core);
                 else
-                    enemy = new Observer(color, center + direction, Player);
+                    enemy = new Observer(color, center + direction, Player, Enemies, Core);
                 Enemies.Add(enemy);
                 Application.Instance.Drawables.Add(enemy);
             }

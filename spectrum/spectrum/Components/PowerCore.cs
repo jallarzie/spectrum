@@ -19,7 +19,7 @@ namespace Spectrum.Components
         /// <summary>
         /// The interval at which the Core Regains Health (in ms).
         /// </summary>
-        private static readonly int REGEN_INTERVAL = 50;
+        private static readonly int REGEN_INTERVAL = 200;
 
         /// <summary>
         /// The amount of HP the Core Regains at each Health Regeneration
@@ -148,7 +148,7 @@ namespace Spectrum.Components
         /// Returns the new radius of the Core's Bounding Sphere.
         /// </summary>
         /// <returns></returns>
-        private float CalculateCurrentRadius()
+        public float CalculateCurrentRadius()
         {
             return Texture.Width / 2 * CalculateCurrentScale();
         }

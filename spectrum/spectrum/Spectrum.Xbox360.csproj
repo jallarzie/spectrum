@@ -84,6 +84,7 @@
     <Compile Include="Components\Ship.cs" />
     <Compile Include="Library\Graphics\String.cs" />
     <Compile Include="Library\Paths\DistantFollow.cs" />
+    <Compile Include="Library\Paths\Flock.cs" />
     <Compile Include="Library\Paths\Follow.cs" />
     <Compile Include="Library\Paths\Linear.cs" />
     <Compile Include="Library\Paths\Path.cs" />

@@ -63,8 +63,8 @@ namespace Spectrum.Library.Paths
 
             if (direction.X == 0 && direction.Y == 0)
                 return Position;
-
-            direction.Normalize();
+            if (direction.LengthSquared() > 1)
+                direction.Normalize();
 
             Position += direction * distance;
 

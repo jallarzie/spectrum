@@ -8,9 +8,9 @@ namespace Spectrum.Library.Paths
 {
     class DistantFollow : Follow
     {
-        private int targetDistance;
-        private int leeway;
-        private bool moving;
+        protected int targetDistance;
+        protected int leeway;
+        protected bool moving;
 
         public DistantFollow(CoordinateSystem entity, Entity2D target, int distance)
             : base(entity, target)
