@@ -150,6 +150,8 @@ namespace Spectrum.Components
         /// <returns></returns>
         public float CalculateCurrentRadius()
         {
+            if (Texture == null)
+                return 0;
             return Texture.Width / 2 * CalculateCurrentScale();
         }
 
