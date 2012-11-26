@@ -10,19 +10,19 @@ namespace Spectrum.States
         {
             this.AddAction("continue", delegate() {
 
-                SoundPlayer.PlayPauseUntriggeredSound();
+                SoundPlayer.PlayMenuItemSelectionClickedSound();
                 return this.ReleasePreviousState();
             });
 
             this.AddAction("restart", delegate() {
 
-                SoundPlayer.PlayPauseUntriggeredSound();
+                SoundPlayer.PlayMenuItemSelectionClickedSound();
                 return new States.Game();
             });
 
             this.AddAction("exit", delegate() {
 
-                SoundPlayer.PlayPauseUntriggeredSound();
+                SoundPlayer.PlayMenuItemSelectionClickedSound();
                 return new States.Exit();
             });
         }

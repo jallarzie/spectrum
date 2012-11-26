@@ -112,9 +112,12 @@ namespace Spectrum.Components
             {
                 if (Forcefield.Tint == laserColor)
                 {
+                    SoundPlayer.PlayForceFieldHitSound();
                     Forcefield.Health -= damage;
+
                     if (Forcefield.Health <= 0)
                     {
+                        SoundPlayer.PlayForceFieldDisappearSound();
                         Forcefield = null;
                     }
                 }
@@ -122,6 +125,7 @@ namespace Spectrum.Components
             else
             {
                 Health -= damage;
+                SoundPlayer.PlayPowerCoreHitSound();
                 if (Observer != null)
                 {
                     Observer.OnPowerCoreHealthReduced(damage);
