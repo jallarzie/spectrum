@@ -255,24 +255,15 @@ namespace Spectrum.States
                         if (distance.Length() <= COLLISION_DISTANCE)
                         {
                             enemy.ProcessHit(laser);
-                            if (!enemy.IsAlive())
+                            // % chance of a powerup dropping is 100 - (laser charge %)
+                            if (!enemy.IsAlive() && RNG.NextDouble() + laser.Charge >= 1)
                             {
-                                // % chance of a powerup dropping is 100 - (laser charge %)
-                                if (RNG.NextDouble() + laser.Charge >= 1)
+                                Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
+                                if (powerup.Tint != Color.Black)
                                 {
-                                    Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
-                                    if (powerup.Tint != Color.Black)
-                                    {
-                                        Powerups.Add(powerup);
-                                        Application.Instance.Drawables.Add(powerup);
-                                    }
+                                    Powerups.Add(powerup);
+                                    Application.Instance.Drawables.Add(powerup);
                                 }
-                                ScoreKeeper.AddPoints(enemy.GetScoreValue());
-                                EnemiesToRemove.Add(enemy);
-
-                                Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);
-                                Explosions.Add(explosion);
-                                Application.Instance.Drawables.Add(explosion);
                             }
                             LasersToRemove.Add(laser);
                         }
@@ -301,9 +292,14 @@ namespace Spectrum.States
                     {
                         Player.CurrentHealthPoints -= enemy.CurrentHealthPoints;
                         if (Player.CurrentHealthPoints < 0) Player.CurrentHealthPoints = 0;
+                        enemy.CurrentHealthPoints = 0;
                     }
                     GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                     feedbackTime = DAMAGE_FEEDBACK_TIME;
+                }
+                if (!enemy.IsAlive())
+                {
+                    ScoreKeeper.AddPoints(enemy.GetScoreValue());
                     EnemiesToRemove.Add(enemy);
 
                     Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);

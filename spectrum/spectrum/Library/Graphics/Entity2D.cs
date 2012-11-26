@@ -154,8 +154,8 @@ namespace Spectrum.Library.Graphics
             {
                 int damage = laser.Damage;
 
-                // Red effect: laser does 1.5x more damage
-                if (laser.Tint.R > 200) damage = damage * 3 / 2;
+                // Red effect: laser does 2x more damage
+                if (laser.Tint.R > 200) damage = damage * 2;
 
                 // Green effect: laser does 0.5x extra damage per second for MAX_POISON_TIME extra seconds
                 if (laser.Tint.G > 200)
@@ -180,13 +180,12 @@ namespace Spectrum.Library.Graphics
             }
         }
 
-        // IN PROGRESS
         public void UpdateStatusEffects(GameTime gameTime)
         {
             if (IsPoisoned)
             {
-                PoisonRateCounter -= gameTime.ElapsedGameTime.Seconds;
-                CurrentPoisonTime -= gameTime.ElapsedGameTime.Seconds;
+                PoisonRateCounter -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+                CurrentPoisonTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (PoisonRateCounter < 0)
                 {
                     CurrentHealthPoints -= PoisonDamage;
@@ -201,7 +200,7 @@ namespace Spectrum.Library.Graphics
             }
             if (IsSlowed)
             {
-                CurrentSlowTime -= gameTime.ElapsedGameTime.Seconds;
+                CurrentSlowTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (CurrentSlowTime < 0)
                 {
                     IsSlowed = false;
@@ -227,9 +226,9 @@ namespace Spectrum.Library.Graphics
 
         private float CurrentPoisonTime, PoisonRateCounter, CurrentSlowTime;
         private int PoisonDamage;
-        private static float MAX_POISON_TIME = 3; // in seconds
+        private static float MAX_POISON_TIME = 4; // in seconds
         private static float POISON_RATE = 0.5f; // in seconds
-        private static float MAX_SLOW_TIME = 3; // in seconds
+        private static float MAX_SLOW_TIME = 5; // in seconds
         public static float SLOW_SPEED_MULTIPLIER = 0.5f;
     }
 }
