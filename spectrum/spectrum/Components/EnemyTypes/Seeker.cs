@@ -13,6 +13,7 @@ namespace Spectrum.Components.EnemyTypes
         public Seeker(Color tint, Vector2 position, Entity2D target, List<Enemy> flockmates, PowerCore core)
             : base("seekerEnemy", tint, position, target)
         {
+            CurrentHealthPoints = MaxHealthPoints = 30;
             Path = new Flock(this, flockmates, core, target, 0, 0);
             Scale = 0.2f;
             Speed = 250f;

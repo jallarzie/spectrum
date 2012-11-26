@@ -10,9 +10,8 @@ namespace Spectrum.Components
     {
         public Ship() : base("ship")
         {
-            MaxHealthPoints = 20;
-            CurrentHealthPoints = MaxHealthPoints;
-
+            HealthBar = new HealthBar(this);
+            CurrentHealthPoints = MaxHealthPoints = 200;
             Origin = new Vector2(Width / 2, Height / 2);
             BoundingArea = new Sphere(Position, 0.2f * (Height / 2), 0.2f * (Width / 2));
             Scale = 0.2f;
@@ -31,21 +30,13 @@ namespace Spectrum.Components
             BoundingArea.Shape.Rotation = angle;
         }
 
-        public float GetHealthRatio() 
+        public override void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
         {
-            return CurrentHealthPoints / (float)MaxHealthPoints;
+            base.Draw(gameTime, targetSpriteBatch);
+            HealthBar.Draw(gameTime, targetSpriteBatch);
         }
 
         public Path Path;
-
-        /// <summary>
-        /// The Ship's current HP
-        /// </summary>
-        public int CurrentHealthPoints;
-
-        /// <summary>
-        /// The Ship's max HP
-        /// </summary>
-        public int MaxHealthPoints;        
+        public HealthBar HealthBar;
     }
 }

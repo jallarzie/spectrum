@@ -19,6 +19,7 @@ namespace Spectrum.Components
         
         public Enemy(string textureName, Color tint, Vector2 position, Entity2D target) : base(textureName)
         {
+            HealthBar = new HealthBar(this);
             Origin = new Vector2(Width / 2, Height / 2);
             SetTint(tint);
             Position = position;
@@ -53,7 +54,14 @@ namespace Spectrum.Components
             Rotation = angle;
         }
 
+        public override void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
+        {
+            base.Draw(gameTime, targetSpriteBatch);
+            HealthBar.Draw(gameTime, targetSpriteBatch);
+        }
+
         public Path Path;
+        public HealthBar HealthBar;
 
         public abstract Laser Attack(float seconds);
 

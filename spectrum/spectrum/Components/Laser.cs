@@ -15,7 +15,7 @@ namespace Spectrum.Components
             Charge = MathHelper.Clamp(charge, 0f, 1f);
 
             Origin = new Vector2(Width / 2, Height / 2);
-            Scale = 0.3f * (1 + Charge);
+            Scale = 0.3f * (1 + Charge / 1.5f);
             Layer = Layers.Lasers;
             Tint = tint;
             Position = position;

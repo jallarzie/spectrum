@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Spectrum.Library.Geometry;
 using Spectrum.Library.Collisions;
+using Spectrum.Components;
 
 namespace Spectrum.Library.Graphics
 {
@@ -116,6 +117,80 @@ namespace Spectrum.Library.Graphics
             }
         }
 
+        public float GetHealthRatio()
+        {
+            return CurrentHealthPoints / (float)MaxHealthPoints;
+        }
+
+        public bool IsAlive()
+        {
+            return CurrentHealthPoints > 0;
+        }
+
+        public void ProcessHit(Laser laser)
+        {
+            Color oldTint = Tint;
+            LoseTint(laser.Tint);
+            if (oldTint == Tint)
+            {
+                int damage = laser.Damage;
+
+                // Red effect: laser does 1.5x more damage
+                if (laser.Tint.R > 200) damage = damage * 3 / 2;
+
+                // Green effect: laser does 0.5x extra damage per second for MAX_POISON_TIME extra seconds
+                if (laser.Tint.G > 200)
+                {
+                    CurrentPoisonTime = MAX_POISON_TIME;
+                    IsPoisoned = true;
+                    if (damage >= PoisonDamage * 2)
+                    {
+                        PoisonDamage = damage / 2;
+                    }
+                }
+
+                // Blue effect: slows the entity down for MAX_SLOW_TIME seconds
+                if (laser.Tint.B > 200)
+                {
+                    CurrentSlowTime = MAX_SLOW_TIME;
+                    IsSlowed = true;
+                }
+
+                CurrentHealthPoints -= damage;
+                if (CurrentHealthPoints < 0) CurrentHealthPoints = 0;
+            }
+        }
+
+        // IN PROGRESS
+        public void UpdateStatusEffects(GameTime gameTime)
+        {
+            if (IsPoisoned)
+            {
+                PoisonRateCounter -= gameTime.ElapsedGameTime.Seconds;
+                CurrentPoisonTime -= gameTime.ElapsedGameTime.Seconds;
+                if (PoisonRateCounter < 0)
+                {
+                    CurrentHealthPoints -= PoisonDamage;
+                    if (CurrentHealthPoints < 0) CurrentHealthPoints = 0;
+                    PoisonRateCounter += POISON_RATE;
+                }
+                if (CurrentPoisonTime < 0)
+                {
+                    IsPoisoned = false;
+                    PoisonRateCounter = CurrentPoisonTime = PoisonDamage = 0;
+                }
+            }
+            if (IsSlowed)
+            {
+                CurrentSlowTime -= gameTime.ElapsedGameTime.Seconds;
+                if (CurrentSlowTime < 0)
+                {
+                    IsSlowed = false;
+                    CurrentSlowTime = 0;
+                }
+            }
+        }
+
         public float Rotation { get; set; }
         public float Scale { get; set; }
         public Rectangle? SourceRectangle { get; set; }
@@ -126,5 +201,16 @@ namespace Spectrum.Library.Graphics
         public float Layer;
         public float Opacity;
         public SpriteEffects Flip;
+
+        public int CurrentHealthPoints;
+        public int MaxHealthPoints;
+        public bool IsPoisoned, IsSlowed;
+
+        private float CurrentPoisonTime, PoisonRateCounter, CurrentSlowTime;
+        private int PoisonDamage;
+        private static float MAX_POISON_TIME = 3; // in seconds
+        private static float POISON_RATE = 0.5f; // in seconds
+        private static float MAX_SLOW_TIME = 3; // in seconds
+        public static float SLOW_SPEED_MULTIPLIER = 0.5f;
     }
 }

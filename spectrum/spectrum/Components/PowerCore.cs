@@ -26,7 +26,7 @@ namespace Spectrum.Components
         /// </summary>
         private static readonly int REGEN_RATE = 1;
 
-        private static readonly int FORCEFIELD_RECHARGE_INTERVAL = 6; // sec
+        private static readonly int FORCEFIELD_RECHARGE_INTERVAL = 7; // sec
 
         private enum State {Normal, Destroyed}
 
@@ -150,7 +150,10 @@ namespace Spectrum.Components
         /// <returns></returns>
         public float CalculateCurrentRadius()
         {
-            return Texture.Width / 2 * CalculateCurrentScale();
+            if (Health > 0)
+                return Texture.Width / 2 * CalculateCurrentScale();
+            else
+                return 0;
         }
 
         /// <summary>

@@ -10,27 +10,27 @@ namespace Spectrum.Components
 {
     public class HealthBar : Sprite
     {
-        private static readonly Vector2 DISTANCE_FROM_SHIP = new Vector2(0, 14);
+        private static readonly Vector2 DISTANCE_FROM_SHIP = new Vector2(0, 25);
 
         private static readonly Color NEGATIVE_SPACE_COLOR = new Color(90, 90, 90);
         private static readonly Color HEALTH_BAR_COLOR_FULL = Color.DarkGreen;
         private static readonly Color HEALTH_BAR_COLOR_LOW = Color.DarkRed;
 
-        public HealthBar(Ship entity) : base("HealthBar") 
+        public HealthBar(Entity2D entity) : base("HealthBar") 
         {
-            Ship = entity;
+            Entity = entity;
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
             Scale = 0.5f;
             Layer = Layers.HealthBar;
 
-            Position = Ship.Position + DISTANCE_FROM_SHIP;
-            CurrentHealth = Ship.GetHealthRatio();
+            Position = Entity.Position + DISTANCE_FROM_SHIP;
+            CurrentHealth = Entity.GetHealthRatio();
         }
 
         public void Update(GameTime gameTime) 
-        {            
-            Position = Ship.Position + DISTANCE_FROM_SHIP;
-            CurrentHealth = Ship.GetHealthRatio();
+        {
+            Position = Entity.Position + DISTANCE_FROM_SHIP;
+            CurrentHealth = Entity.GetHealthRatio();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
@@ -73,6 +73,6 @@ namespace Spectrum.Components
         private Rectangle NegativeSpaceRectangle;
         private Rectangle PositiveSpaceRectangle;
 
-        public Ship Ship { get; private set; }
+        public Entity2D Entity { get; private set; }
     }
 }

@@ -13,6 +13,7 @@ namespace Spectrum.Components.EnemyTypes
         public Observer(Color tint, Vector2 position, Entity2D target, List<Enemy> flockmates, PowerCore core)
             : base("observerEnemy", tint, position, target)
         {
+            CurrentHealthPoints = MaxHealthPoints = 100;
             Path = new Flock(this, flockmates, core, target, 400, new Random().Next(75, 150));
             Scale = 0.2f;
             Speed = 290f;

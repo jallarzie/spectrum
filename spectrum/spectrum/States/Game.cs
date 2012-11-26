@@ -8,12 +8,13 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using Spectrum.Components.EventObservers;
+using Spectrum.Library.Graphics;
 
 namespace Spectrum.States
 {
     public class Game : State, PowerCoreObserver
     {
-        public const float SPEED_PLAYER = 350f;
+        public const float SPEED_PLAYER = 450f;
         public const float SPEED_LASER = 600f;
         public const float FIRE_RATE = 7f; // shots/sec
         public const float LASER_MAX_CHARGE_TIME = 2f; // sec
@@ -29,7 +30,6 @@ namespace Spectrum.States
             Player = new Ship();
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player, new Rectangle(0, 0, Viewport.Width, Viewport.Height));
-            PlayerHealthBar = new HealthBar(Player);
             mBackground = new Background(2000, RNG);
             Core = new PowerCore(RNG);
             Core.Observer = this;
@@ -39,7 +39,6 @@ namespace Spectrum.States
             Application.Instance.Drawables.Add(mBackground);
             Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);
-            Application.Instance.Drawables.Add(PlayerHealthBar);
             Application.Instance.Drawables.Add(ScoreKeeper);
 
             Lasers = new List<Laser>();
@@ -57,7 +56,6 @@ namespace Spectrum.States
             Application.Instance.Drawables.Remove(ScoreKeeper);
             Application.Instance.Drawables.Remove(Core);
             Application.Instance.Drawables.Remove(Player);
-            Application.Instance.Drawables.Remove(PlayerHealthBar);
 
             Lasers.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Remove(laser); });
             LasersToRemove.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Remove(laser); });
@@ -88,8 +86,9 @@ namespace Spectrum.States
         public override void Update(GameTime gameTime)
         {
             HandleForceFeedback(gameTime);
-            Player.Path.Move((float) (SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds));
-            PlayerHealthBar.Update(gameTime);
+            Player.Path.Move((float)(SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds * (Player.IsSlowed ? Entity2D.SLOW_SPEED_MULTIPLIER : 1f)));
+            Player.UpdateStatusEffects(gameTime);
+            Player.HealthBar.Update(gameTime);
             ShootLaser(gameTime);
             MoveLasers(gameTime);
             Collisions(gameTime);
@@ -128,9 +127,10 @@ namespace Spectrum.States
                 }
                 if (gamepadState.Triggers.Right != 0)
                 {
-                    direction = Vector2.Zero;
-                    LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
-                    LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
+                    //direction = Vector2.Zero;
+                    //LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
+                    //LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
+                    LaserCharge = gamepadState.Triggers.Right;
                 }
             }
             else
@@ -146,7 +146,7 @@ namespace Spectrum.States
             }
 
             // more laser charge -> slower fire rate
-            if (direction.LengthSquared() != 0 && LaserFireRateCounter >= (1 + LaserCharge * 5) / FIRE_RATE)
+            if (direction.LengthSquared() != 0 && LaserFireRateCounter >= (1 + LaserCharge * 3) / FIRE_RATE)
             {
                 Laser laser = new Laser(Player.Tint, LaserCharge, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
                 Lasers.Add(laser);
@@ -191,7 +191,9 @@ namespace Spectrum.States
         {
             foreach (Enemy enemy in Enemies)
             {
-                enemy.Path.Move((float)(enemy.Speed * gameTime.ElapsedGameTime.TotalSeconds));
+                enemy.Path.Move((float)(enemy.Speed * gameTime.ElapsedGameTime.TotalSeconds * (enemy.IsSlowed ? Entity2D.SLOW_SPEED_MULTIPLIER : 1f)));
+                enemy.UpdateStatusEffects(gameTime);
+                enemy.HealthBar.Update(gameTime);
             }
             foreach (Enemy enemy in EnemiesToRemove)
             {
@@ -243,22 +245,27 @@ namespace Spectrum.States
                         distance = enemy.Position - laser.Position;
                         if (distance.Length() <= COLLISION_DISTANCE)
                         {
-                            // % chance of a powerup dropping is 100 - (laser charge %)
-                            if (RNG.NextDouble() + laser.Charge >= 1)
+                            enemy.ProcessHit(laser);
+                            if (!enemy.IsAlive())
                             {
-                                Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
-                                if (powerup.Tint != Color.Black)
+                                // % chance of a powerup dropping is 100 - (laser charge %)
+                                if (RNG.NextDouble() + laser.Charge >= 1)
                                 {
-                                    Powerups.Add(powerup);
-                                    Application.Instance.Drawables.Add(powerup);
+                                    Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
+                                    if (powerup.Tint != Color.Black)
+                                    {
+                                        Powerups.Add(powerup);
+                                        Application.Instance.Drawables.Add(powerup);
+                                    }
                                 }
-                            }
-                            ScoreKeeper.AddPoints(enemy.GetScoreValue());
-                            EnemiesToRemove.Add(enemy);
+                                ScoreKeeper.AddPoints(enemy.GetScoreValue());
+                                EnemiesToRemove.Add(enemy);
 
-                            Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);
-                            Explosions.Add(explosion);
-                            Application.Instance.Drawables.Add(explosion);
+                                Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);
+                                Explosions.Add(explosion);
+                                Application.Instance.Drawables.Add(explosion);
+                            }
+                            LasersToRemove.Add(laser);
                         }
                     }
                 }
@@ -267,14 +274,7 @@ namespace Spectrum.States
                     distance = Player.Position - laser.Position;
                     if (distance.Length() <= COLLISION_DISTANCE)
                     {
-                        Color oldTint = Player.Tint;
-                        Player.LoseTint(laser.Tint);
-                        Color newTint = Player.Tint;
-                        if (oldTint == newTint)
-                        {
-                            Player.CurrentHealthPoints -= 1;
-                            if (Player.CurrentHealthPoints < 0) Player.CurrentHealthPoints = 0;
-                        }
+                        Player.ProcessHit(laser);
                         GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                         feedbackTime = DAMAGE_FEEDBACK_TIME;
                         LasersToRemove.Add(laser);
@@ -288,10 +288,9 @@ namespace Spectrum.States
                 {
                     Color oldTint = Player.Tint;
                     Player.LoseTint(enemy.Tint);
-                    Color newTint = Player.Tint;
-                    if (oldTint == newTint)
+                    if (oldTint == Player.Tint)
                     {
-                        Player.CurrentHealthPoints -= 1;
+                        Player.CurrentHealthPoints -= enemy.CurrentHealthPoints;
                         if (Player.CurrentHealthPoints < 0) Player.CurrentHealthPoints = 0;
                     }
                     GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
@@ -309,7 +308,9 @@ namespace Spectrum.States
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
                     Player.AbsorbTint(powerup.Tint);
-                    Player.CurrentHealthPoints = Player.MaxHealthPoints;
+                    Player.CurrentHealthPoints += 50;
+                    if (Player.CurrentHealthPoints > Player.MaxHealthPoints)
+                        Player.CurrentHealthPoints = Player.MaxHealthPoints;
                     PowerupsToRemove.Add(powerup);
                 }
             }
@@ -374,7 +375,6 @@ namespace Spectrum.States
         private Background mBackground;
         private Viewport Viewport;
         private Ship Player;
-        private HealthBar PlayerHealthBar;
         private PowerCore Core;
         private List<Laser> Lasers, LasersToRemove;
         private List<Enemy> Enemies, EnemiesToRemove;
