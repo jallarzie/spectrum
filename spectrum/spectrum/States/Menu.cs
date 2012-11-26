@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System;
+using Spectrum.Components;
 
 namespace Spectrum.States
 {
@@ -205,6 +206,7 @@ namespace Spectrum.States
                 gamePadState.IsButtonDown(Buttons.DPadDown) ^ gamePadState.IsButtonDown(Buttons.LeftThumbstickUp) ||
                 gamePadState.IsButtonDown(Buttons.LeftThumbstickDown) ^ gamePadState.IsButtonDown(Buttons.DPadUp))
             {
+                SoundPlayer.PlayMenuItemSelectionChangeSound();
                 Keys key = keyboardState.IsKeyDown(Keys.Down) || gamePadState.IsButtonDown(Buttons.DPadDown) || gamePadState.IsButtonDown(Buttons.LeftThumbstickDown) ? Keys.Down : Keys.Up;
                 if (mCurrentKeyCode == Keys.None || gameTime.TotalGameTime.TotalSeconds - mCurrentKeyTime >= REPEAT_DELAY)
                 {

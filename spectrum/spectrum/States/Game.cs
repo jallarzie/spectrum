@@ -48,6 +48,8 @@ namespace Spectrum.States
             Powerups = new List<Powerup>();
             PowerupsToRemove = new List<Powerup>();
             Explosions = new List<Explosion>();
+
+            SoundPlayer.PlayMainGameSong();
         }
 
         public override void Destroy()
@@ -74,9 +76,13 @@ namespace Spectrum.States
         {
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
+
             if (keyboardState.IsKeyDown(Keys.Escape) || gamepadState.Buttons.Start == ButtonState.Pressed)
             {
-                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
+                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);               
+                SoundPlayer.ReduceMainGameSongVolume();
+                SoundPlayer.PlayPauseTriggeredSound();
+
                 return Application.Instance.StateMachine.SetState(new States.Pause(this));
             }
 
@@ -153,6 +159,8 @@ namespace Spectrum.States
                 Application.Instance.Drawables.Add(laser);
                 LaserFireRateCounter = 0f;
                 LaserCharge = 0f;
+
+                SoundPlayer.PlayPlayerShootsSound();
             }
         }
 
@@ -224,6 +232,7 @@ namespace Spectrum.States
             Vector2 distance;
             if (Core.BoundingArea.CollidesWith(Player.BoundingArea))
             {
+                
                 Player.LoseTint(Core.Tint);
                 GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                 feedbackTime = DAMAGE_FEEDBACK_TIME;
@@ -307,6 +316,7 @@ namespace Spectrum.States
                 distance = Player.Position - powerup.Position;
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
+                    SoundPlayer.PlayPlayerPowersUpSound();
                     Player.AbsorbTint(powerup.Tint);
                     Player.CurrentHealthPoints += 50;
                     if (Player.CurrentHealthPoints > Player.MaxHealthPoints)

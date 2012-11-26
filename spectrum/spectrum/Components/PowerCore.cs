@@ -112,9 +112,12 @@ namespace Spectrum.Components
             {
                 if (Forcefield.Tint == laserColor)
                 {
+                    SoundPlayer.PlayForceFieldHitSound();
                     Forcefield.Health -= damage;
+
                     if (Forcefield.Health <= 0)
                     {
+                        SoundPlayer.PlayForceFieldDisappearSound();
                         Forcefield = null;
                     }
                 }
@@ -122,6 +125,7 @@ namespace Spectrum.Components
             else
             {
                 Health -= damage;
+                SoundPlayer.PlayPowerCoreHitSound();
                 if (Observer != null)
                 {
                     Observer.OnPowerCoreHealthReduced(damage);
@@ -150,10 +154,16 @@ namespace Spectrum.Components
         /// <returns></returns>
         public float CalculateCurrentRadius()
         {
-            if (Health > 0)
+<<<<<<< HEAD
+            if (Health > 0 && Texture != null)
                 return Texture.Width / 2 * CalculateCurrentScale();
             else
                 return 0;
+=======
+            if (Texture == null)
+                return 0;
+            return Texture.Width / 2 * CalculateCurrentScale();
+>>>>>>> origin/master
         }
 
         /// <summary>
