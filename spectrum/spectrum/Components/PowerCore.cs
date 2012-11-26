@@ -14,12 +14,12 @@ namespace Spectrum.Components
         /// <summary>
         /// The Power Core Health at the beggining of the game
         /// </summary>
-        private static int INITIAL_HEALTH = 1500;
+        private static int INITIAL_HEALTH = 1000;
 
         /// <summary>
         /// The interval at which the Core Regains Health (in ms).
         /// </summary>
-        private static readonly int REGEN_INTERVAL = 200;
+        private static readonly int REGEN_INTERVAL = 125;
 
         /// <summary>
         /// The amount of HP the Core Regains at each Health Regeneration
