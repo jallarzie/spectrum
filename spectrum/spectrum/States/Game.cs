@@ -49,6 +49,8 @@ namespace Spectrum.States
             Powerups = new List<Powerup>();
             PowerupsToRemove = new List<Powerup>();
             Explosions = new List<Explosion>();
+
+            SoundPlayer.PlayMainGameSong();
         }
 
         public override void Destroy()

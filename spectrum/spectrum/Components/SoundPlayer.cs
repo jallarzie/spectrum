@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Spectrum.Components
 {
@@ -20,6 +21,10 @@ namespace Spectrum.Components
         private static SoundEffect PlayerLooseColorEffect;
         private static SoundEffect PowerCoreHitEffect;
 
+
+        private static MediaLibrary MediaLibrary;
+        private static Song MainGameSong;
+
         static SoundPlayer()
         {
             ForceFieldDisappearEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/force_field_disappear");
@@ -33,6 +38,9 @@ namespace Spectrum.Components
 			PlayerShootsEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/player_shoots");
             PlayerLooseColorEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/player_looses_color");
             PowerCoreHitEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/power_core_hit");
+
+            MediaLibrary = new MediaLibrary();
+            MainGameSong = Application.Instance.Content.Load<Song>("Sounds/Bizarre_creation_46860_choices");
         }
 
 		public static void PlayForceFieldDisappearSound()
@@ -101,5 +109,11 @@ namespace Spectrum.Components
             SoundEffectInstance instance = PowerCoreHitEffect.CreateInstance();
 			instance.Play();
 		}
+
+        public static void PlayMainGameSong() 
+        {
+            MediaPlayer.Stop();
+            MediaPlayer.Play(MainGameSong);
+        }
     }
 }
