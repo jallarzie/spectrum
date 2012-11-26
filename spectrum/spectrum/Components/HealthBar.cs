@@ -12,8 +12,9 @@ namespace Spectrum.Components
     {
         private static readonly Vector2 DISTANCE_FROM_SHIP = new Vector2(0, 14);
 
-        private static readonly Color NEGATIVE_SPACE_COLOR = Color.Gray;
-        private static readonly Color HEALTH_BAR_COLOR = Color.LawnGreen;
+        private static readonly Color NEGATIVE_SPACE_COLOR = new Color(90, 90, 90);
+        private static readonly Color HEALTH_BAR_COLOR_FULL = Color.DarkGreen;
+        private static readonly Color HEALTH_BAR_COLOR_LOW = Color.DarkRed;
 
         public HealthBar(Ship entity) : base("HealthBar") 
         {
@@ -38,7 +39,8 @@ namespace Spectrum.Components
             targetSpriteBatch.Draw(Texture, Position, NegativeSpaceRectangle, NEGATIVE_SPACE_COLOR, 0f, Origin, Scale, SpriteEffects.None, Layer);
 
             //Draw the current health level based on the current Health
-            targetSpriteBatch.Draw(Texture, Position, PositiveSpaceRectangle, HEALTH_BAR_COLOR, 0f, Origin, Scale, SpriteEffects.None, Layer);
+            targetSpriteBatch.Draw(Texture, Position, PositiveSpaceRectangle, Color.Lerp(HEALTH_BAR_COLOR_LOW, HEALTH_BAR_COLOR_FULL, CurrentHealth), 
+                0f, Origin, Scale, SpriteEffects.None, Layer - 0.01f);
         }
 
         /// <summary>
@@ -53,9 +55,9 @@ namespace Spectrum.Components
             private set
             {
                 NegativeSpaceRectangle = new Rectangle(
-                    (int)(Texture.Width * value),
                     0,
-                    (int)(Texture.Width * (1 - value)),
+                    0,
+                    Texture.Width,
                     Texture.Height);
                 PositiveSpaceRectangle = new Rectangle(
                     0,

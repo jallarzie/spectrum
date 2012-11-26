@@ -10,7 +10,7 @@ namespace Spectrum.Components
     {
         public Ship() : base("ship")
         {
-            MaxHealthPoints = 5;
+            MaxHealthPoints = 20;
             CurrentHealthPoints = MaxHealthPoints;
 
             Origin = new Vector2(Width / 2, Height / 2);
@@ -33,7 +33,7 @@ namespace Spectrum.Components
 
         public float GetHealthRatio() 
         {
-            return CurrentHealthPoints / MaxHealthPoints;
+            return CurrentHealthPoints / (float)MaxHealthPoints;
         }
 
         public Path Path;

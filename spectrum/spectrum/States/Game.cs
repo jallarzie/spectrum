@@ -116,34 +116,32 @@ namespace Spectrum.States
             LaserFireRateCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
             MouseState mouseState = Mouse.GetState();
             GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
-            Vector2 direction = new Vector2();
+            Vector2 direction = Vector2.Zero;
 
             if (gamepadState.IsConnected)
             {
+                if (gamepadState.ThumbSticks.Right.LengthSquared() != 0)
+                {
+                    direction = gamepadState.ThumbSticks.Right;
+                    direction.Y *= -1;
+                    Player.PathDirection((float)Math.Atan2(direction.X, -direction.Y));
+                }
                 if (gamepadState.Triggers.Right != 0)
                 {
+                    direction = Vector2.Zero;
                     LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
                     LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
-                }
-                else
-                {
-                    if (gamepadState.ThumbSticks.Right.LengthSquared() != 0)
-                    {
-                        direction = gamepadState.ThumbSticks.Right;
-                        direction.Y *= -1;
-                    }
                 }
             }
             else
             {
+                direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
+                Player.PathDirection((float)Math.Atan2(direction.X, -direction.Y));
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
                     LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
                     LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
-                }
-                else
-                {
-                    direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
+                    direction = Vector2.Zero;
                 }
             }
 
@@ -269,7 +267,14 @@ namespace Spectrum.States
                     distance = Player.Position - laser.Position;
                     if (distance.Length() <= COLLISION_DISTANCE)
                     {
+                        Color oldTint = Player.Tint;
                         Player.LoseTint(laser.Tint);
+                        Color newTint = Player.Tint;
+                        if (oldTint == newTint)
+                        {
+                            Player.CurrentHealthPoints -= 1;
+                            if (Player.CurrentHealthPoints < 0) Player.CurrentHealthPoints = 0;
+                        }
                         GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                         feedbackTime = DAMAGE_FEEDBACK_TIME;
                         LasersToRemove.Add(laser);
@@ -281,7 +286,14 @@ namespace Spectrum.States
                 distance = enemy.Position - Player.Position;
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
+                    Color oldTint = Player.Tint;
                     Player.LoseTint(enemy.Tint);
+                    Color newTint = Player.Tint;
+                    if (oldTint == newTint)
+                    {
+                        Player.CurrentHealthPoints -= 1;
+                        if (Player.CurrentHealthPoints < 0) Player.CurrentHealthPoints = 0;
+                    }
                     GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                     feedbackTime = DAMAGE_FEEDBACK_TIME;
                     EnemiesToRemove.Add(enemy);
@@ -297,6 +309,7 @@ namespace Spectrum.States
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
                     Player.AbsorbTint(powerup.Tint);
+                    Player.CurrentHealthPoints = Player.MaxHealthPoints;
                     PowerupsToRemove.Add(powerup);
                 }
             }
