@@ -229,14 +229,14 @@ namespace Spectrum.States
             }
             foreach (Laser laser in Lasers)
             {
+                // Check Collision with Power Core
+                if (laser.BoundingArea.CollidesWith(Core.BoundingArea))
+                {
+                    Core.ProcessHit(laser.Tint, laser.Damage);
+                    LasersToRemove.Add(laser);
+                }
                 if (laser.Alignment == LaserAlignment.Player)
                 {
-                    // Check Collision with Power Core
-                    if (laser.BoundingArea.CollidesWith(Core.BoundingArea))
-                    {
-                        Core.ProcessHit(laser.Tint, laser.Damage);
-                        LasersToRemove.Add(laser);
-                    }
 
                     foreach (Enemy enemy in Enemies)
                     {
