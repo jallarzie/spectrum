@@ -21,8 +21,6 @@ namespace Spectrum.Components
         private static SoundEffect PlayerLooseColorEffect;
         private static SoundEffect PowerCoreHitEffect;
 
-
-        private static MediaLibrary MediaLibrary;
         private static Song MainGameSong;
 
         static SoundPlayer()
@@ -39,8 +37,9 @@ namespace Spectrum.Components
             PlayerLooseColorEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/player_looses_color");
             PowerCoreHitEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/power_core_hit");
 
-            MediaLibrary = new MediaLibrary();
             MainGameSong = Application.Instance.Content.Load<Song>("Sounds/Bizarre_creation_46860_choices");
+            MediaPlayer.Stop();
+            MediaPlayer.IsRepeating = true;
         }
 
 		public static void PlayForceFieldDisappearSound()
@@ -112,9 +111,17 @@ namespace Spectrum.Components
 
         public static void PlayMainGameSong() 
         {
-            MediaPlayer.Stop();
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(MainGameSong);
+            MediaPlayer.Play(MainGameSong);        
+        }
+
+        public static void IncreaseMainGameSoundVolume()
+        {
+            MediaPlayer.Volume = 1f;
+        }
+
+        public static void ReduceMainGameSongVolume() 
+        {
+            MediaPlayer.Volume = 0.5f;
         }
     }
 }
