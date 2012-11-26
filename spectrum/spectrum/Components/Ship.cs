@@ -38,7 +38,7 @@ namespace Spectrum.Components
 
         public Path Path;
 
-        /// <summary>
+            /// <summary>
         /// The Ship's current HP
         /// </summary>
         public int CurrentHealthPoints;

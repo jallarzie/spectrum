@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Spectrum.Library.Geometry;
 using Spectrum.Library.Collisions;
+using Spectrum.Components;
 
 namespace Spectrum.Library.Graphics
 {
@@ -92,10 +93,34 @@ namespace Spectrum.Library.Graphics
         public void LoseTint(Color color)
         {
             Color combined = Color.Black;
-            if (color.R <= 200 && Tint.R > 200) combined.R = 255;
-            if (color.G <= 200 && Tint.G > 200) combined.G = 255;
-            if (color.B <= 200 && Tint.B > 200) combined.B = 255;
+
+            bool colorChanged = false;
+
+            if (color.R <= 200 && Tint.R > 200) 
+            {
+                combined.R = 255;
+                colorChanged = true;
+            }
+
+            if (color.G <= 200 && Tint.G > 200) 
+            {
+                combined.G = 255;
+                colorChanged = true;
+            }
+
+            if (color.B <= 200 && Tint.B > 200) 
+            {
+                combined.B = 255;
+                colorChanged = true;
+            }
+
+            if (colorChanged || (combined == Color.Black && Tint != Color.Black)) 
+            {
+                SoundPlayer.PlayPlayerLooseColorSound();
+            }
+
             SetTint(combined);
+
         }
 
         protected Texture2D Texture;

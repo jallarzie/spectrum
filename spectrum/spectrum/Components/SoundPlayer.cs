@@ -17,6 +17,7 @@ namespace Spectrum.Components
         private static SoundEffect PauseUntriggeredEffect;
         private static SoundEffect PlayerPowersUpEffect;
         private static SoundEffect PlayerShootsEffect;
+        private static SoundEffect PlayerLooseColorEffect;
         private static SoundEffect PowerCoreHitEffect;
 
         static SoundPlayer()
@@ -30,6 +31,7 @@ namespace Spectrum.Components
             PauseUntriggeredEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/pause_untriggered");
             PlayerPowersUpEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/player_powers_up");
 			PlayerShootsEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/player_shoots");
+            PlayerLooseColorEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/player_looses_color");
             PowerCoreHitEffect = Application.Instance.Content.Load<SoundEffect>("Sounds/power_core_hit");
         }
 
@@ -86,6 +88,13 @@ namespace Spectrum.Components
             SoundEffectInstance instance = PlayerShootsEffect.CreateInstance();
             instance.Play();
         }
+
+        public static void PlayPlayerLooseColorSound()
+        {
+            SoundEffectInstance instance = PlayerLooseColorEffect.CreateInstance();
+            instance.Play();
+        }
+
 
         public static void PlayPowerCoreHitSound()
 		{

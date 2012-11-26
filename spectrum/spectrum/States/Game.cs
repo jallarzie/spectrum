@@ -228,6 +228,7 @@ namespace Spectrum.States
             Vector2 distance;
             if (Core.BoundingArea.CollidesWith(Player.BoundingArea))
             {
+                
                 Player.LoseTint(Core.Tint);
                 GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                 feedbackTime = DAMAGE_FEEDBACK_TIME;
@@ -273,6 +274,7 @@ namespace Spectrum.States
                     distance = Player.Position - laser.Position;
                     if (distance.Length() <= COLLISION_DISTANCE)
                     {
+                        
                         Player.LoseTint(laser.Tint);
                         GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                         feedbackTime = DAMAGE_FEEDBACK_TIME;
@@ -285,6 +287,7 @@ namespace Spectrum.States
                 distance = enemy.Position - Player.Position;
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
+                    
                     Player.LoseTint(enemy.Tint);
                     GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                     feedbackTime = DAMAGE_FEEDBACK_TIME;
@@ -300,6 +303,7 @@ namespace Spectrum.States
                 distance = Player.Position - powerup.Position;
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
+                    SoundPlayer.PlayPlayerPowersUpSound();
                     Player.AbsorbTint(powerup.Tint);
                     PowerupsToRemove.Add(powerup);
                 }
