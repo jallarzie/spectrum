@@ -93,10 +93,29 @@ namespace Spectrum.Library.Graphics
         public void LoseTint(Color color)
         {
             Color combined = Color.Black;
-            if (color.R <= 200 && Tint.R > 200) combined.R = 255;
-            if (color.G <= 200 && Tint.G > 200) combined.G = 255;
-            if (color.B <= 200 && Tint.B > 200) combined.B = 255;
+
+            if (color.R <= 200 && Tint.R > 200) 
+            {
+                combined.R = 255;
+            }
+
+            if (color.G <= 200 && Tint.G > 200) 
+            {
+                combined.G = 255;
+            }
+
+            if (color.B <= 200 && Tint.B > 200) 
+            {
+                combined.B = 255;
+            }
+
+            Color oldTint = Tint;
             SetTint(combined);
+
+            if (oldTint != Tint) 
+            {
+                SoundPlayer.PlayPlayerLooseColorSound();
+            }
         }
 
         protected Texture2D Texture;

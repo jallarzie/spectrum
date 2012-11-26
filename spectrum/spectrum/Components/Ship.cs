@@ -37,6 +37,37 @@ namespace Spectrum.Components
         }
 
         public Path Path;
+<<<<<<< HEAD
         public HealthBar HealthBar;
+=======
+
+        private int currentHealthPoints;
+          
+        /// <summary>
+        /// The Ship's current HP
+        /// </summary>
+        public int CurrentHealthPoints
+        {
+            get
+            {
+                return currentHealthPoints;
+            }
+            set
+            {
+                if(value == 0 && currentHealthPoints != 0)
+                {
+                    SoundPlayer.PlayGameOverSound();
+                }
+
+                currentHealthPoints = (int)MathHelper.Clamp(value, 0, value);
+
+            }
+        }
+
+        /// <summary>
+        /// The Ship's max HP
+        /// </summary>
+        public int MaxHealthPoints;        
+>>>>>>> origin/master
     }
 }
