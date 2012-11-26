@@ -75,7 +75,7 @@ namespace Spectrum.Library.Graphics
             }
             else
             {
-                Tint = new Color(90, 90, 90); // looks better than Color.Black with sprite tinting
+                Tint = Color.SlateGray; // looks better than Color.Black with sprite tinting
             }
         }
 
@@ -94,33 +94,28 @@ namespace Spectrum.Library.Graphics
         {
             Color combined = Color.Black;
 
-            bool colorChanged = false;
-
             if (color.R <= 200 && Tint.R > 200) 
             {
                 combined.R = 255;
-                colorChanged = true;
             }
 
             if (color.G <= 200 && Tint.G > 200) 
             {
                 combined.G = 255;
-                colorChanged = true;
             }
 
             if (color.B <= 200 && Tint.B > 200) 
             {
                 combined.B = 255;
-                colorChanged = true;
             }
 
-            if (colorChanged || (combined == Color.Black && Tint != Color.Black)) 
+            Color oldTint = Tint;
+            SetTint(combined);
+
+            if (oldTint != Tint) 
             {
                 SoundPlayer.PlayPlayerLooseColorSound();
             }
-
-            SetTint(combined);
-
         }
 
         protected Texture2D Texture;
