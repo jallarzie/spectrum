@@ -79,6 +79,8 @@ namespace Spectrum.States
             if (keyboardState.IsKeyDown(Keys.Escape) || gamepadState.Buttons.Start == ButtonState.Pressed)
             {
                 GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
+                SoundPlayer.PlayPauseTriggeredSound();
+
                 return Application.Instance.StateMachine.SetState(new States.Pause(this));
             }
 
