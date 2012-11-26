@@ -75,7 +75,7 @@ namespace Spectrum.Library.Graphics
             }
             else
             {
-                Tint = Color.SlateGray; // looks better than Color.Black with sprite tinting
+                Tint = Color.DimGray; // best choice, others are too dark or look too much like the other colors
             }
         }
 
