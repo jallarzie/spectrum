@@ -266,8 +266,7 @@ namespace Spectrum.States
             Vector2 distance;
             if (Core.BoundingArea.CollidesWith(Player.BoundingArea))
             {
-                
-                Player.LoseTint(Core.Tint);
+                //Player.LoseTint(Core.Tint);
                 GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
                 feedbackTime = DAMAGE_FEEDBACK_TIME;
                 Player.Path.Recoil(Core.Position, RECOIL_DISTANCE);
@@ -289,8 +288,7 @@ namespace Spectrum.States
                         if (distance.Length() <= COLLISION_DISTANCE)
                         {
                             enemy.ProcessHit(laser);
-                            // % chance of a powerup dropping is 100 - (laser charge %)
-                            if (!enemy.IsAlive() && RNG.NextDouble() + laser.Charge >= 1)
+                            if (!enemy.IsAlive() && RNG.NextDouble() * (1 + laser.Charge) >= 0.75)
                             {
                                 Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
                                 if (powerup.Tint != Color.Black)
@@ -347,6 +345,7 @@ namespace Spectrum.States
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
                     SoundPlayer.PlayPlayerPowersUpSound();
+                    ScoreKeeper.AddPoints(50);
                     Player.AbsorbTint(powerup.Tint);
                     Player.CurrentHealthPoints += 50;
                     if (Player.CurrentHealthPoints > Player.MaxHealthPoints)

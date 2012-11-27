@@ -103,7 +103,9 @@ namespace Spectrum.Components
 
             if (Forcefield != null)
             {
-                if (Forcefield.Tint == laserColor)
+                if ((Forcefield.Tint.R & laserColor.R) == Forcefield.Tint.R &&
+                    (Forcefield.Tint.G & laserColor.G) == Forcefield.Tint.G &&
+                    (Forcefield.Tint.B & laserColor.B) == Forcefield.Tint.B)
                 {
                     SoundPlayer.PlayForceFieldHitSound();
                     Forcefield.Health -= damage;
