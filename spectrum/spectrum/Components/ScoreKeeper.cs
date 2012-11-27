@@ -24,7 +24,7 @@ namespace Spectrum.Components
         private static readonly Vector2 POSITION = new Vector2(Application.Instance.GraphicsDevice.Viewport.Width * 0.1f,
                                                                Application.Instance.GraphicsDevice.Viewport.Height * 0.1f);
 
-        public int Value { get; private set; }
+        public int Value { get; set; }
 
         private static SpriteFont SpriteFont;
 

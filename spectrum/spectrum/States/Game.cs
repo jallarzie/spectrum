@@ -24,6 +24,11 @@ namespace Spectrum.States
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 
         public Game()
+            : this(0)
+        {
+        }
+
+        public Game(int score)
         {
             RNG = new Random();
             Viewport = Application.Instance.GraphicsDevice.Viewport;
@@ -84,6 +89,16 @@ namespace Spectrum.States
                 SoundPlayer.PlayPauseTriggeredSound();
 
                 return Application.Instance.StateMachine.SetState(new States.Pause(this));
+            }
+
+            if (Player.CurrentHealthPoints <= 0)
+            {
+                return Application.Instance.StateMachine.SetState(new States.Lost(this));
+            }
+
+            if (Core.Health <= 0)
+            {
+                return Application.Instance.StateMachine.SetState(new States.Won(this));
             }
 
             return false;
@@ -389,5 +404,18 @@ namespace Spectrum.States
         private ScoreKeeper ScoreKeeper;
         private float LaserFireRateCounter, LaserCharge, EnemySpawnCounter;
         private float feedbackTime;
+
+        public int Score
+        {
+            get
+            {
+                return ScoreKeeper.Value;
+            }
+
+            set
+            {
+                ScoreKeeper.Value = value;
+            }
+        }
     }
 }
