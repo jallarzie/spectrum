@@ -1,13 +1,15 @@
+using System;
+using System.Collections.Generic;
 using Spectrum.Components;
 
 namespace Spectrum.States
 {
-    public class Lost : States.Menu
+    public class Start : States.Menu
     {
-        public Lost(States.Game gameState)
-            : base(gameState, "Defeat", false)
+        public Start()
+            : base(null, "Spectrum", true)
         {
-            this.AddAction("try again", delegate () {
+            this.AddAction("new game", delegate () {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();
                 SoundPlayer.IncreaseMainGameSoundVolume();
 
