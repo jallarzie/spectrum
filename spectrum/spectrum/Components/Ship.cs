@@ -36,6 +36,16 @@ namespace Spectrum.Components
             HealthBar.Draw(gameTime, targetSpriteBatch);
         }
 
+        public override void ProcessHit(Laser laser)
+        {
+            Color oldTint = Tint;
+            LoseTint(laser.Tint);
+            if (oldTint == Tint)
+            {
+                base.ProcessHit(laser);
+            }
+        }
+
         public Path Path;
         public HealthBar HealthBar;
     }

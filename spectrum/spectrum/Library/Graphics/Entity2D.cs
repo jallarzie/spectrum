@@ -146,12 +146,8 @@ namespace Spectrum.Library.Graphics
             return CurrentHealthPoints > 0;
         }
 
-        public void ProcessHit(Laser laser)
+        public virtual void ProcessHit(Laser laser)
         {
-            Color oldTint = Tint;
-            LoseTint(laser.Tint);
-            if (oldTint == Tint)
-            {
                 int damage = laser.Damage;
 
                 // Red effect: laser does 2x more damage
@@ -177,7 +173,6 @@ namespace Spectrum.Library.Graphics
 
                 CurrentHealthPoints -= damage;
                 if (CurrentHealthPoints < 0) CurrentHealthPoints = 0;
-            }
         }
 
         public void UpdateStatusEffects(GameTime gameTime)
