@@ -276,7 +276,8 @@ namespace Spectrum.States
                 // Check Collision with Power Core
                 if (laser.BoundingArea.CollidesWith(Core.BoundingArea))
                 {
-                    Core.ProcessHit(laser.Tint, laser.Damage);
+                    if (laser.Alignment == LaserAlignment.Player)
+                        Core.ProcessHit(laser.Tint, laser.Damage);
                     LasersToRemove.Add(laser);
                 }
                 if (laser.Alignment == LaserAlignment.Player)
