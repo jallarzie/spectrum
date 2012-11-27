@@ -289,7 +289,7 @@ namespace Spectrum.States
                         if (distance.Length() <= COLLISION_DISTANCE)
                         {
                             enemy.ProcessHit(laser);
-                            if (!enemy.IsAlive() && RNG.NextDouble() * (1 + laser.Charge) >= 0.75)
+                            if (!enemy.IsAlive() && RNG.NextDouble() + (0.75 * laser.Charge) >= 0.75)
                             {
                                 Powerup powerup = enemy.DropPowerup(Player.Tint, RNG);
                                 if (powerup.Tint != Color.Black)
