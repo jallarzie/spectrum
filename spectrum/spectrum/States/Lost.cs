@@ -5,9 +5,9 @@ namespace Spectrum.States
     public class Lost : States.Menu
     {
         public Lost(States.Game gameState)
-            : base(gameState, "Defeat", false)
+            : base(gameState, "DEFEAT", false)
         {
-            this.AddAction("try again", delegate () {
+            this.AddAction("restart", delegate () {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();
                 SoundPlayer.IncreaseMainGameSoundVolume();
 

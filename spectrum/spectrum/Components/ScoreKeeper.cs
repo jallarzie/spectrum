@@ -25,12 +25,14 @@ namespace Spectrum.Components
                                                                Application.Instance.GraphicsDevice.Viewport.Height * 0.1f);
 
         public int Value { get; set; }
+        public int Level { get; private set; }
 
         private static SpriteFont SpriteFont;
 
-        public ScoreKeeper() 
+        public ScoreKeeper(int level) 
         {
             SpriteFont = Application.Instance.Content.Load<SpriteFont>("ScoreFont");
+            Level = level;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace Spectrum.Components
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) 
         {
-            spriteBatch.DrawString(SpriteFont, "Score", POSITION, Color.DimGray, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
+            spriteBatch.DrawString(SpriteFont, "level " + Level, POSITION, Color.DimGray, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
             spriteBatch.DrawString(SpriteFont, string.Format("{0:D8}", Value), POSITION + new Vector2(0, 18), Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
         }
     }

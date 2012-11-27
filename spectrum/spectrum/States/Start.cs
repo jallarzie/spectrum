@@ -7,7 +7,7 @@ namespace Spectrum.States
     public class Start : States.Menu
     {
         public Start()
-            : base(null, "Spectrum", true)
+            : base(null, "SPECTRUM", true)
         {
             this.AddAction("new game", delegate () {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();

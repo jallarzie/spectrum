@@ -18,19 +18,21 @@ namespace Spectrum.States
         public const float SPEED_LASER = 600f;
         public const float FIRE_RATE = 7f; // shots/sec
         public const float LASER_MAX_CHARGE_TIME = 2f; // sec
-        public const int ENEMY_WAVE_SIZE = 5; 
-        public const float ENEMY_WAVE_SPAWN_TIME = 10f; // sec
         public const float COLLISION_DISTANCE = 30f; // pixels
         public const float RECOIL_DISTANCE = 30f;
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 
         public Game()
-            : this(0)
+            : this(1, 0)
         {
         }
 
-        public Game(int score)
+        public Game(int level, int score)
         {
+            Level = level;
+            EnemyWaveSize = 3 + level;
+            EnemyWaveSpawnTime = 10 - level / 2f;
+
             RNG = new Random();
             Viewport = Application.Instance.GraphicsDevice.Viewport;
             Player = new Ship();
@@ -38,11 +40,12 @@ namespace Spectrum.States
             Player.Path = new User(Player, new Rectangle(0, 0, Viewport.Width, Viewport.Height));
             Crosshair = new Crosshair();
             mBackground = new Background(2000, RNG);
-            Core = new PowerCore(RNG);
+            Core = new PowerCore(level, RNG);
             Core.Observer = this;
-            ScoreKeeper = new ScoreKeeper();
+            ScoreKeeper = new ScoreKeeper(level);
+            Score = score;
             feedbackTime = 0f;
-            EnemySpawnCounter = ENEMY_WAVE_SPAWN_TIME;
+            EnemySpawnCounter = EnemyWaveSpawnTime;
 
             Application.Instance.Drawables.Add(mBackground);
             Application.Instance.Drawables.Add(Core);
@@ -362,11 +365,11 @@ namespace Spectrum.States
         private void SpawnRandomEnemyWave(GameTime gameTime)
         {
             EnemySpawnCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (EnemySpawnCounter >= ENEMY_WAVE_SPAWN_TIME)
+            if (EnemySpawnCounter >= EnemyWaveSpawnTime)
             {
                 EnemySpawnCounter = 0f;
                 float min = Math.Max(Viewport.Width / 2, Viewport.Height / 2);
-                SpawnRandomEnemies(ENEMY_WAVE_SIZE, min, min * 1.25f);
+                SpawnRandomEnemies(EnemyWaveSize, min, min * 1.25f);
             }
         }
 
@@ -418,6 +421,7 @@ namespace Spectrum.States
             
         }
 
+        public int Level { get; private set; }
         private Random RNG;
         private Background mBackground;
         private Viewport Viewport;
@@ -429,7 +433,8 @@ namespace Spectrum.States
         private List<Powerup> Powerups, PowerupsToRemove;
         private List<Explosion> Explosions;
         private ScoreKeeper ScoreKeeper;
-        private float LaserFireRateCounter, LaserCharge, EnemySpawnCounter;
+        private float LaserFireRateCounter, LaserCharge, EnemySpawnCounter, EnemyWaveSpawnTime;
+        private int EnemyWaveSize;
         private float feedbackTime;
 
         public int Score

@@ -11,15 +11,6 @@ namespace Spectrum.Components
 {
     public class PowerCore : Sprite
     {
-        /// <summary>
-        /// The Power Core Health at the beggining of the game
-        /// </summary>
-        private static int INITIAL_HEALTH = 1000;
-
-        /// <summary>
-        /// The interval at which the Core Regains Health (in ms).
-        /// </summary>
-        private static readonly int REGEN_INTERVAL = 125;
 
         /// <summary>
         /// The amount of HP the Core Regains at each Health Regeneration
@@ -30,10 +21,12 @@ namespace Spectrum.Components
 
         private enum State {Normal, Destroyed}
 
-        public PowerCore(Random RNG) : base("powercore")
+        public PowerCore(int level, Random RNG) : base("powercore")
         {
+
+            Health = InitialHealth = 500 + 250 * level;
+            RegenInterval = 150 - 10 * level;
             this.RNG = RNG;
-            Health = INITIAL_HEALTH;
             TimeElapsedSinceLastRegen = new TimeSpan(0);
             ForcefieldRechargeTime = new TimeSpan(0);
             CurrentState = State.Normal;
@@ -54,7 +47,7 @@ namespace Spectrum.Components
             {
                 case State.Normal:
                     TimeElapsedSinceLastRegen = TimeElapsedSinceLastRegen.Add(gameTime.ElapsedGameTime);
-                    if (TimeElapsedSinceLastRegen.TotalMilliseconds > REGEN_INTERVAL) 
+                    if (TimeElapsedSinceLastRegen.TotalMilliseconds > RegenInterval) 
                     {
                         RegainHealth();
                         TimeElapsedSinceLastRegen = new TimeSpan(0);
@@ -166,7 +159,7 @@ namespace Spectrum.Components
         /// <returns></returns>
         private float CalculateCurrentScale()
         {
-            return Health / (float)INITIAL_HEALTH + 0.5f;
+            return Health / (float)InitialHealth + 0.5f;
         }
 
         /// <summary>
@@ -200,6 +193,7 @@ namespace Spectrum.Components
         public EventObservers.PowerCoreObserver Observer;
 
         private Random RNG;
+        private int InitialHealth, RegenInterval;
         public int Health { get; private set; }
         private State CurrentState;
         private TimeSpan TimeElapsedSinceLastRegen, ForcefieldRechargeTime;

@@ -5,7 +5,7 @@ namespace Spectrum.States
     public class Pause : States.Menu
     {
         public Pause(States.Game gameState)
-            : base(gameState, "Game paused", true)
+            : base(gameState, "PAUSED", true)
         {
             this.AddAction("continue", delegate () {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();
