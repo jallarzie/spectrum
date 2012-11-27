@@ -14,7 +14,7 @@ namespace Spectrum.States
                 return new States.Game();
             });
 
-            this.AddAction("Back to start", delegate() {
+            this.AddAction("back to start", delegate() {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();
                 SoundPlayer.IncreaseMainGameSoundVolume();
 

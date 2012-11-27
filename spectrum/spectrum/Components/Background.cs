@@ -13,17 +13,19 @@ namespace Spectrum.Components
     {
         private static readonly Rectangle STAR_SRC = new Rectangle(351, 21, 128, 170);
 
-        private struct Star
+        private class Star
         {
             public Color color;
             public float scale;
             public Vector2 position;
+            public float depth;
 
-            public Star(Color color, float scale, Vector2 position)
+            public Star(Color color, float scale, Vector2 position, float depth)
             {
                 this.color = color;
-                this.scale = scale;
+                this.scale = scale / depth;
                 this.position = position;
+                this.depth = depth;
             }
         }
 
@@ -40,10 +42,11 @@ namespace Spectrum.Components
                 color.R -= (byte)RNG.Next(50);
                 color.G -= (byte)RNG.Next(50);
                 color.B -= (byte)RNG.Next(50);
-                //color.A -= (byte)RNG.Next(200); // why does this do nothing?
+                color.A -= (byte)RNG.Next(200); // why does this do nothing?
                 Star star = new Star(color,
-                                     MathHelper.Clamp((float)RNG.NextDouble() * 12 - 8, 1, 4), // to get more small stars
-                                     new Vector2(RNG.Next(viewPort.Width), RNG.Next(viewPort.Height)));
+                                     3f, // to get more small stars
+                                     new Vector2(RNG.Next(viewPort.Width), RNG.Next(viewPort.Height)),
+                                     (float) RNG.NextDouble() * 3 + 1);
                 Stars.Add(star);
             }
         }
@@ -52,6 +55,9 @@ namespace Spectrum.Components
         {
             foreach (Star star in Stars)
             {
+                star.position.X -= (float) (1f * (10f - star.depth)) / 20;
+                if (star.position.X < 0)
+                    star.position.X = Application.Instance.GraphicsDevice.Viewport.Width;
                 spriteBatch.Draw(Texture, star.position, STAR_SRC, star.color, Rotation, Origin, star.scale * 0.02f, Flip, Layer);
             }
         }
