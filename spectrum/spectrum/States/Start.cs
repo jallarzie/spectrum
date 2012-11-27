@@ -16,6 +16,17 @@ namespace Spectrum.States
                 return new States.Game();
             });
 
+            #if WINDOWS
+                this.AddAction("switch fullscreen", delegate () {
+                    SoundPlayer.PlayMenuItemSelectionClickedSound();
+                    SoundPlayer.IncreaseMainGameSoundVolume();
+
+                    Application.Instance.GraphicsDeviceManager.ToggleFullScreen();
+
+                    return null;
+                });
+            #endif
+
             this.AddAction("exit", delegate()
             {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();

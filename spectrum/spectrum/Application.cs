@@ -78,6 +78,7 @@ namespace Spectrum
 
         protected override void Draw(GameTime gameTime)
         {
+            
             GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
@@ -85,7 +86,7 @@ namespace Spectrum
             SpriteBatch.End();
         }
 
-        private GraphicsDeviceManager GraphicsDeviceManager;
+        public GraphicsDeviceManager GraphicsDeviceManager;
         private SpriteBatch SpriteBatch;
 
         private double specialInputTime;

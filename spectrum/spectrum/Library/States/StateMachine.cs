@@ -31,6 +31,9 @@ namespace Spectrum.Library.States
 
         public bool ChangeState(State state)
         {
+            if (state == null)
+                return false;
+
             this.Destroy();
             this.SetState(state);
             return true;
