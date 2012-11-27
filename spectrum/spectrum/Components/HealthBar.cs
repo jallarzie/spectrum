@@ -54,6 +54,7 @@ namespace Spectrum.Components
             }
             private set
             {
+                currentHealth = value;
                 NegativeSpaceRectangle = new Rectangle(
                     0,
                     0,
@@ -64,7 +65,6 @@ namespace Spectrum.Components
                     0,
                     (int)(Texture.Width * value),
                     Texture.Height);
-                currentHealth = value;
             }
         }
 
