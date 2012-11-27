@@ -189,7 +189,8 @@ namespace Spectrum.Library.Graphics
                 if (PoisonRateCounter < 0)
                 {
                     CurrentHealthPoints -= PoisonDamage;
-                    if (CurrentHealthPoints < 0) CurrentHealthPoints = 1;
+                    if (CurrentHealthPoints <= 0) 
+                        CurrentHealthPoints = 1;
                     PoisonRateCounter += POISON_RATE;
                 }
                 if (CurrentPoisonTime < 0)
