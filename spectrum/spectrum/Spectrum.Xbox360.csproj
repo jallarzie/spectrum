@@ -107,6 +107,7 @@
     <Compile Include="Application.cs" />
     <Compile Include="States\Menu.cs" />
     <Compile Include="States\Pause.cs" />
+    <Compile Include="States\Start.cs" />
     <Compile Include="States\Won.cs" />
   </ItemGroup>
   <ItemGroup>

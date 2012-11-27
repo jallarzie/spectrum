@@ -2,7 +2,7 @@
 
 namespace Spectrum.States
 {
-    class Won : States.Menu
+    public class Won : States.Menu
     {
         public Won(States.Game gameState)
             : base(gameState, "Victory !", false)
