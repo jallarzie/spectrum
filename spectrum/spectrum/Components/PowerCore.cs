@@ -21,7 +21,7 @@ namespace Spectrum.Components
 
         private enum State {Normal, Destroyed}
 
-        public PowerCore(int level, Random RNG) : base("powercore-white")
+        public PowerCore(int level, Random RNG) : base("powercore-gray")
         {
 
             Health = InitialHealth = 500 + 250 * level;
