@@ -206,12 +206,13 @@ namespace Spectrum.States
                 gamePadState.IsButtonDown(Buttons.DPadDown) ^ gamePadState.IsButtonDown(Buttons.LeftThumbstickUp) ||
                 gamePadState.IsButtonDown(Buttons.LeftThumbstickDown) ^ gamePadState.IsButtonDown(Buttons.DPadUp))
             {
-                SoundPlayer.PlayMenuItemSelectionChangeSound();
                 Keys key = keyboardState.IsKeyDown(Keys.Down) || gamePadState.IsButtonDown(Buttons.DPadDown) || gamePadState.IsButtonDown(Buttons.LeftThumbstickDown) ? Keys.Down : Keys.Up;
                 if (mCurrentKeyCode == Keys.None || gameTime.TotalGameTime.TotalSeconds - mCurrentKeyTime >= REPEAT_DELAY)
                 {
                     mCurrentKeyCode = key;
                     mCurrentKeyTime = gameTime.TotalGameTime.TotalSeconds;
+
+                    SoundPlayer.PlayMenuItemSelectionChangeSound();
 
                     switch (key)
                     {

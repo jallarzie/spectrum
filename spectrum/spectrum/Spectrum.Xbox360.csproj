@@ -100,12 +100,15 @@
     <Compile Include="Library\Paths\User.cs" />
     <Compile Include="Library\States\State.cs" />
     <Compile Include="Library\States\StateMachine.cs" />
+    <Compile Include="States\Lost.cs" />
     <Compile Include="States\Exit.cs" />
     <Compile Include="States\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application.cs" />
     <Compile Include="States\Menu.cs" />
     <Compile Include="States\Pause.cs" />
+    <Compile Include="States\Start.cs" />
+    <Compile Include="States\Won.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

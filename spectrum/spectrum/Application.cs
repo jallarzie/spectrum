@@ -48,7 +48,7 @@ namespace Spectrum
             StateMachine = new StateMachine();
             Drawables = new DisplayList();
 
-            StateMachine.Initialize(new States.Game());
+            StateMachine.Initialize(new States.Start());
         }
 
         protected override void Update(GameTime gameTime)
