@@ -29,7 +29,9 @@ namespace Spectrum.Components.EnemyTypes
                 LastFired -= FireRate;
 
                 Vector2 direction = Target.Position - Position;
-                return new Laser(Tint, 0, Position, direction, 300f, LaserAlignment.Enemy);
+                Laser laser = new Laser(Tint, 0, Position, direction, 300f, LaserAlignment.Enemy);
+                laser.Path.Move(30);
+                return laser;
             }
 
             return null;

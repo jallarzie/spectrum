@@ -18,7 +18,8 @@ namespace Spectrum.States
         public const float SPEED_LASER = 600f;
         public const float FIRE_RATE = 7f; // shots/sec
         public const float LASER_MAX_CHARGE_TIME = 2f; // sec
-        public const float ENEMY_SPAWN_RATE = 0.5f; // enemies/sec
+        public const int ENEMY_WAVE_SIZE = 5; 
+        public const float ENEMY_WAVE_SPAWN_TIME = 10f; // sec
         public const float COLLISION_DISTANCE = 30f; // pixels
         public const float RECOIL_DISTANCE = 30f;
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
@@ -35,6 +36,7 @@ namespace Spectrum.States
             Core.Observer = this;
             ScoreKeeper = new ScoreKeeper();
             feedbackTime = 0f;
+            EnemySpawnCounter = ENEMY_WAVE_SPAWN_TIME;
 
             Application.Instance.Drawables.Add(mBackground);
             Application.Instance.Drawables.Add(Core);
@@ -99,7 +101,7 @@ namespace Spectrum.States
             MoveLasers(gameTime);
             Collisions(gameTime);
             UpdatePowerups(gameTime);
-            SpawnRandomEnemy(gameTime);
+            SpawnRandomEnemyWave(gameTime);
             MoveEnemies(gameTime);
             EnemyAttacks(gameTime);
             Core.Update(gameTime);
@@ -155,6 +157,7 @@ namespace Spectrum.States
             if (direction.LengthSquared() != 0 && LaserFireRateCounter >= (1 + LaserCharge * 3) / FIRE_RATE)
             {
                 Laser laser = new Laser(Player.Tint, LaserCharge, Player.Position, direction, SPEED_LASER, LaserAlignment.Player);
+                laser.Path.Move(COLLISION_DISTANCE);
                 Lasers.Add(laser);
                 Application.Instance.Drawables.Add(laser);
                 LaserFireRateCounter = 0f;
@@ -328,12 +331,21 @@ namespace Spectrum.States
             PowerupsToRemove.Clear();
         }
 
-        private void SpawnRandomEnemy(GameTime gameTime)
+        private void SpawnRandomEnemyWave(GameTime gameTime)
         {
             EnemySpawnCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (EnemySpawnCounter >= 1 / ENEMY_SPAWN_RATE)
+            if (EnemySpawnCounter >= ENEMY_WAVE_SPAWN_TIME)
             {
                 EnemySpawnCounter = 0f;
+                float min = Math.Max(Viewport.Width / 2, Viewport.Height / 2);
+                SpawnRandomEnemies(ENEMY_WAVE_SIZE, min, min * 1.25f);
+            }
+        }
+
+        private void SpawnRandomEnemies(int num, float minDistanceFromCenter, float maxDistanceFromCenter)
+        {
+            for (int i = 0; i < num; i++)
+            {
                 Color color = Color.Black;
                 switch (RNG.Next(7))
                 {
@@ -349,7 +361,7 @@ namespace Spectrum.States
                 // to spawn enemies just outside the playing area
                 float angle = (float)RNG.NextDouble() * MathHelper.TwoPi;
                 Vector2 direction = new Vector2((float)Math.Sin(angle), -(float)Math.Cos(angle));
-                direction *= Math.Max(Viewport.Width, Viewport.Height) * (1 + (float)RNG.NextDouble() / 4);
+                direction *= minDistanceFromCenter + (float)RNG.NextDouble() * (maxDistanceFromCenter - minDistanceFromCenter);
                 Vector2 center = new Vector2(Viewport.Width / 2, Viewport.Height / 2);
 
                 Enemy enemy;
@@ -357,6 +369,7 @@ namespace Spectrum.States
                     enemy = new Seeker(color, center + direction, Player, Enemies, Core);
                 else
                     enemy = new Observer(color, center + direction, Player, Enemies, Core);
+                enemy.Path.Move(10);
                 Enemies.Add(enemy);
                 Application.Instance.Drawables.Add(enemy);
             }
