@@ -41,7 +41,7 @@ namespace Spectrum
 
         protected override void Initialize()
         {
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
