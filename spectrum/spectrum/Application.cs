@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Spectrum.Library.Graphics;
 using Spectrum.Library.States;
 
@@ -7,6 +8,8 @@ namespace Spectrum
 {
     class Application : Microsoft.Xna.Framework.Game
     {
+        private const double SPECIAL_INPUT_DELAY = 500; //time between acknowledgement of special inputs in miliseconds
+
         private static Application sInstance;
 
         public static Application Instance
@@ -53,7 +56,24 @@ namespace Spectrum
 
         protected override void Update(GameTime gameTime)
         {
+            UpdateSpecialInputs(gameTime);
             StateMachine.Update(gameTime);
+        }
+
+        private void UpdateSpecialInputs(GameTime gameTime)
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            specialInputTime -= gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (specialInputTime <= 0)
+            {
+                if ((keyboardState.IsKeyDown(Keys.LeftAlt) || keyboardState.IsKeyDown(Keys.RightAlt)) && keyboardState.IsKeyDown(Keys.Enter))
+                {
+                    GraphicsDeviceManager.ToggleFullScreen();
+                    specialInputTime = SPECIAL_INPUT_DELAY;
+                }
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -67,6 +87,8 @@ namespace Spectrum
 
         private GraphicsDeviceManager GraphicsDeviceManager;
         private SpriteBatch SpriteBatch;
+
+        private double specialInputTime;
 
         public StateMachine StateMachine;
         public DisplayList Drawables;
