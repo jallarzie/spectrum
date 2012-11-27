@@ -93,11 +93,13 @@ namespace Spectrum.States
 
             if (Player.CurrentHealthPoints <= 0)
             {
+                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f); 
                 return Application.Instance.StateMachine.SetState(new States.Lost(this));
             }
 
             if (Core.Health <= 0)
             {
+                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f); 
                 return Application.Instance.StateMachine.SetState(new States.Won(this));
             }
 
