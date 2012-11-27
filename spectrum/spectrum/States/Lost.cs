@@ -14,12 +14,11 @@ namespace Spectrum.States
                 return new States.Game();
             });
 
-            this.AddAction("exit", delegate()
-            {
+            this.AddAction("Back to start", delegate() {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();
                 SoundPlayer.IncreaseMainGameSoundVolume();
 
-                return new States.Exit();
+                return new States.Start();
             });
         }
     }

@@ -58,6 +58,17 @@ namespace Spectrum.States
             mBackground = new Library.Graphics.Flat(new Vector2(Application.Instance.GraphicsDevice.Viewport.Width, Application.Instance.GraphicsDevice.Viewport.Height), Color.Black, null);
             mBackground.Layer = Layers.Menu;
 
+            mIgnoreKeys = new Dictionary<Keys, bool>();
+            mIgnoreButtons = new Dictionary<Buttons, bool>();
+
+            KeyboardState keyboardState = Keyboard.GetState();
+            foreach (Keys key in new List<Keys> { Keys.Space, Keys.Enter, Keys.Up, Keys.Down })
+                mIgnoreKeys[key] = keyboardState.IsKeyDown(key);
+
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            foreach (Buttons button in new List<Buttons> { Buttons.A, Buttons.DPadUp, Buttons.LeftThumbstickUp, Buttons.DPadDown, Buttons.LeftThumbstickDown })
+                mIgnoreButtons[button] = gamePadState.IsButtonDown(button);
+
             mBackground.Opacity = .75f;
             Application.Instance.Drawables.Add(mBackground);
 
@@ -87,7 +98,7 @@ namespace Spectrum.States
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
             if (mOffsetX == Application.Instance.GraphicsDevice.Viewport.Width / 2 
-                && (keyboardState.IsKeyDown(Keys.Enter) || keyboardState.IsKeyDown(Keys.Space) || gamePadState.IsButtonDown(Buttons.A))
+                && (this.IsKeyDown(Keys.Enter) || this.IsKeyDown(Keys.Space) || this.IsButtonDown(Buttons.A))
                 && mSelection != -1)
                 return Application.Instance.StateMachine.ChangeState(mActions[mSelection].Target());
 
@@ -96,6 +107,7 @@ namespace Spectrum.States
 
         public override void Update(GameTime gameTime)
         {
+            this.UpdateIgnoredKeys();
             this.UpdateAnimation(gameTime);
             this.UpdateSelection(gameTime);
         }
@@ -181,6 +193,21 @@ namespace Spectrum.States
             mSelection = -1;
         }
 
+        private void UpdateIgnoredKeys()
+        {
+            Dictionary<Keys, bool> newIgnoredKeys = new Dictionary<Keys, bool>();
+            KeyboardState keyboardState = Keyboard.GetState();
+            foreach (KeyValuePair<Keys, bool> status in mIgnoreKeys)
+                newIgnoredKeys[status.Key] = mIgnoreKeys[status.Key] && keyboardState.IsKeyDown(status.Key);
+            mIgnoreKeys = newIgnoredKeys;
+
+            Dictionary<Buttons, bool> newIgnoredButtons = new Dictionary<Buttons, bool>();
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            foreach (KeyValuePair<Buttons, bool> status in mIgnoreButtons)
+                newIgnoredButtons[status.Key] = mIgnoreButtons[status.Key] && gamePadState.IsButtonUp(status.Key);
+            mIgnoreButtons = newIgnoredButtons;
+        }
+
         private void UpdateAnimation(GameTime gameTime)
         {
             mOffsetX -= (Application.Instance.GraphicsDevice.Viewport.Width / 2 + Application.Instance.GraphicsDevice.Viewport.Width) / SPEED_DISPLAY * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -194,6 +221,24 @@ namespace Spectrum.States
                 action.Label.Position = new Vector2(mOffsetX, action.Label.Position.Y);
         }
 
+        private bool IsKeyDown(Keys key)
+        {
+            if (mIgnoreKeys.ContainsKey(key) && mIgnoreKeys[key])
+                return false;
+
+            KeyboardState keyboardState = Keyboard.GetState();
+            return keyboardState.IsKeyDown(key);
+        }
+
+        private bool IsButtonDown(Buttons button)
+        {
+            if (mIgnoreButtons.ContainsKey(button) && mIgnoreButtons[button])
+                return false;
+
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            return gamePadState.IsButtonDown(button);
+        }
+
         public void UpdateSelection(GameTime gameTime)
         {
             if (mOffsetX != Application.Instance.GraphicsDevice.Viewport.Width / 2)
@@ -202,11 +247,11 @@ namespace Spectrum.States
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            if (keyboardState.IsKeyDown(Keys.Down) ^ keyboardState.IsKeyDown(Keys.Up) ||
-                gamePadState.IsButtonDown(Buttons.DPadDown) ^ gamePadState.IsButtonDown(Buttons.LeftThumbstickUp) ||
-                gamePadState.IsButtonDown(Buttons.LeftThumbstickDown) ^ gamePadState.IsButtonDown(Buttons.DPadUp))
+            if (this.IsKeyDown(Keys.Down) ^ this.IsKeyDown(Keys.Up) ||
+                this.IsButtonDown(Buttons.DPadDown) ^ this.IsButtonDown(Buttons.LeftThumbstickUp) ||
+                this.IsButtonDown(Buttons.LeftThumbstickDown) ^ this.IsButtonDown(Buttons.DPadUp))
             {
-                Keys key = keyboardState.IsKeyDown(Keys.Down) || gamePadState.IsButtonDown(Buttons.DPadDown) || gamePadState.IsButtonDown(Buttons.LeftThumbstickDown) ? Keys.Down : Keys.Up;
+                Keys key = this.IsKeyDown(Keys.Down) || this.IsButtonDown(Buttons.DPadDown) || this.IsButtonDown(Buttons.LeftThumbstickDown) ? Keys.Down : Keys.Up;
                 if (mCurrentKeyCode == Keys.None || gameTime.TotalGameTime.TotalSeconds - mCurrentKeyTime >= REPEAT_DELAY)
                 {
                     mCurrentKeyCode = key;
@@ -241,5 +286,7 @@ namespace Spectrum.States
         private Keys mCurrentKeyCode;
         private double mCurrentKeyTime;
         private int mSelection;
+        private Dictionary<Keys, bool> mIgnoreKeys;
+        private Dictionary<Buttons, bool> mIgnoreButtons;
     }
 }
