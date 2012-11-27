@@ -36,6 +36,7 @@ namespace Spectrum.States
             Player = new Ship();
             Player.Position = new Vector2(Viewport.Width / 2, Viewport.Height * 4/5);
             Player.Path = new User(Player, new Rectangle(0, 0, Viewport.Width, Viewport.Height));
+            Crosshair = new Crosshair();
             mBackground = new Background(2000, RNG);
             Core = new PowerCore(RNG);
             Core.Observer = this;
@@ -46,6 +47,7 @@ namespace Spectrum.States
             Application.Instance.Drawables.Add(mBackground);
             Application.Instance.Drawables.Add(Core);
             Application.Instance.Drawables.Add(Player);
+            Application.Instance.Drawables.Add(Crosshair);
             Application.Instance.Drawables.Add(ScoreKeeper);
 
             Lasers = new List<Laser>();
@@ -65,6 +67,7 @@ namespace Spectrum.States
             Application.Instance.Drawables.Remove(ScoreKeeper);
             Application.Instance.Drawables.Remove(Core);
             Application.Instance.Drawables.Remove(Player);
+            Application.Instance.Drawables.Remove(Crosshair);
 
             Lasers.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Remove(laser); });
             LasersToRemove.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Remove(laser); });
@@ -144,6 +147,8 @@ namespace Spectrum.States
 
             if (gamepadState.IsConnected)
             {
+                Crosshair.Position = new Vector2(-1, -1);
+
                 if (gamepadState.ThumbSticks.Right.LengthSquared() != 0)
                 {
                     direction = gamepadState.ThumbSticks.Right;
@@ -160,7 +165,13 @@ namespace Spectrum.States
             }
             else
             {
-                direction = new Vector2(mouseState.X, mouseState.Y) - Player.Position;
+                int mouseX = (int)MathHelper.Clamp(mouseState.X, 1, Viewport.Width-1);
+                int mouseY = (int)MathHelper.Clamp(mouseState.Y, 1, Viewport.Height-1);
+
+                Mouse.SetPosition(mouseX, mouseY);
+                Crosshair.Position = new Vector2(mouseX, mouseY);
+
+                direction = new Vector2(mouseX, mouseY) - Player.Position;
                 Player.PathDirection((float)Math.Atan2(direction.X, -direction.Y));
                 if (mouseState.LeftButton == ButtonState.Pressed)
                 {
@@ -411,6 +422,7 @@ namespace Spectrum.States
         private Background mBackground;
         private Viewport Viewport;
         private Ship Player;
+        private Crosshair Crosshair;
         private PowerCore Core;
         private List<Laser> Lasers, LasersToRemove;
         private List<Enemy> Enemies, EnemiesToRemove;

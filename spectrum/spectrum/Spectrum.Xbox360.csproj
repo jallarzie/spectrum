@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Background.cs" />
+    <Compile Include="Components\Crosshair.cs" />
     <Compile Include="Components\Enemy.cs" />
     <Compile Include="Components\EnemyTypes\Observer.cs" />
     <Compile Include="Components\EnemyTypes\Seeker.cs" />
