@@ -44,7 +44,7 @@ namespace Spectrum.Components
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) 
         {
-            spriteBatch.DrawString(SpriteFont, "Score", POSITION, Color.DarkGray, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
+            spriteBatch.DrawString(SpriteFont, "Score", POSITION, Color.DimGray, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
             spriteBatch.DrawString(SpriteFont, string.Format("{0:D8}", Value), POSITION + new Vector2(0, 18), Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
         }
     }
