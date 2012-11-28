@@ -62,7 +62,7 @@ namespace Spectrum.States
             mIgnoreButtons = new Dictionary<Buttons, bool>();
 
             KeyboardState keyboardState = Keyboard.GetState();
-            foreach (Keys key in new List<Keys> { Keys.Space, Keys.Enter, Keys.Up, Keys.Down })
+            foreach (Keys key in new List<Keys> { Keys.Space, Keys.Enter, Keys.Up, Keys.Down, Keys.W, Keys.S })
                 mIgnoreKeys[key] = keyboardState.IsKeyDown(key);
 
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -248,10 +248,12 @@ namespace Spectrum.States
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
             if (this.IsKeyDown(Keys.Down) ^ this.IsKeyDown(Keys.Up) ||
+                this.IsKeyDown(Keys.S) ^ this.IsKeyDown(Keys.W) ||
                 this.IsButtonDown(Buttons.DPadDown) ^ this.IsButtonDown(Buttons.LeftThumbstickUp) ||
                 this.IsButtonDown(Buttons.LeftThumbstickDown) ^ this.IsButtonDown(Buttons.DPadUp))
             {
-                Keys key = this.IsKeyDown(Keys.Down) || this.IsButtonDown(Buttons.DPadDown) || this.IsButtonDown(Buttons.LeftThumbstickDown) ? Keys.Down : Keys.Up;
+                Keys key = this.IsKeyDown(Keys.Down) || this.IsKeyDown(Keys.S) || 
+                    this.IsButtonDown(Buttons.DPadDown) || this.IsButtonDown(Buttons.LeftThumbstickDown) ? Keys.Down : Keys.Up;
                 if (mCurrentKeyCode == Keys.None || gameTime.TotalGameTime.TotalSeconds - mCurrentKeyTime >= REPEAT_DELAY)
                 {
                     mCurrentKeyCode = key;
