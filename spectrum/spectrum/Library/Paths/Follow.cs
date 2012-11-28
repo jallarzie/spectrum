@@ -6,7 +6,7 @@ using Spectrum.Library.Graphics;
 
 namespace Spectrum.Library.Paths
 {
-    class Follow : Linear
+    public class Follow : Linear
     {
         public Follow(CoordinateSystem entity, Entity2D target) : base(entity)
         {
@@ -20,6 +20,6 @@ namespace Spectrum.Library.Paths
             return base.Move(distance);
         }
 
-        protected Entity2D Target;
+        public Entity2D Target;
     }
 }

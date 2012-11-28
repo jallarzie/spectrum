@@ -11,7 +11,7 @@ namespace Spectrum.Components
     public abstract class Enemy : Sprite, PathAware
     {
         private static float layerModifier = 0.0f;
-        
+
         public Entity2D Target { get; protected set; }
         public float Speed { get; protected set; }
         public float FireRate { get; protected set; }
@@ -54,13 +54,22 @@ namespace Spectrum.Components
             Rotation = angle;
         }
 
+        public void ChangeTarget(Entity2D target)
+        {
+            if (target != Target)
+            {
+                Target = target;
+                Path.Target = target;
+            }
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
         {
             base.Draw(gameTime, targetSpriteBatch);
             HealthBar.Draw(gameTime, targetSpriteBatch);
         }
 
-        public Path Path;
+        public Follow Path;
         public HealthBar HealthBar;
 
         public abstract Laser Attack(float seconds);

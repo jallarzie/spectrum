@@ -81,8 +81,6 @@ namespace Spectrum
         public GraphicsDeviceManager GraphicsDeviceManager;
         private SpriteBatch SpriteBatch;
 
-        private double specialInputTime;
-
         public StateMachine StateMachine;
         public DisplayList Drawables;
     }

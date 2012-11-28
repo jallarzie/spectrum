@@ -30,16 +30,16 @@ namespace Spectrum.Components
         public int Value { get; set; }
         public int Level { get; private set; }
         private float Opacity;
-        private Entity2D Entity; // when close to this entity the opacity will lower
+        private List<Entity2D> Entities; // when close to this entity the opacity will lower
 
         private static SpriteFont SpriteFont;
 
-        public ScoreKeeper(int level, Entity2D entity) 
+        public ScoreKeeper(int level, List<Entity2D> entities) 
         {
             SpriteFont = Application.Instance.Content.Load<SpriteFont>("ScoreFont");
             Level = level;
             Opacity = 1;
-            Entity = entity;
+            Entities = entities;
         }
 
         /// <summary>
@@ -53,9 +53,15 @@ namespace Spectrum.Components
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) 
         {
-            float distance = Vector2.Distance(CENTER, Entity.Position);
-            if (distance < OPACITY_DISTANCE)
-                Opacity = distance / OPACITY_DISTANCE;
+            float leastDistance = 10000.0f;
+            foreach (Entity2D entity in Entities)
+            {
+                float distance = Vector2.Distance(CENTER, entity.Position);
+                if (distance < leastDistance)
+                    leastDistance = distance;
+            }
+            if (leastDistance < OPACITY_DISTANCE)
+                Opacity = leastDistance / OPACITY_DISTANCE;
             else
                 Opacity = 1f;
             spriteBatch.DrawString(SpriteFont, "level " + Level, POSITION, Color.DimGray * Opacity, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);

@@ -11,7 +11,7 @@ namespace Spectrum.States
                 SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
                 SoundPlayer.IncreaseMainGameSongVolume();
 
-                return new States.Game(gameState.Level + 1, gameState.Score);
+                return new States.Game(gameState.Level + 1, gameState.Score, gameState.NumberOfPlayers);
             });
         }
     }

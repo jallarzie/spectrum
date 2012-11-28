@@ -8,7 +8,7 @@ namespace Spectrum.Components
 {
     public class Ship : Sprite, PathAware
     {
-        public Ship() : base("ship")
+        public Ship(PlayerIndex playerIndex) : base("ship")
         {
             HealthBar = new HealthBar(this);
             CurrentHealthPoints = MaxHealthPoints = 200;
@@ -17,7 +17,10 @@ namespace Spectrum.Components
             Scale = 0.2f;
             Layer = Layers.Player;
             SetTint(Color.Black);
-            PlayerIndex = PlayerIndex.One;
+            PlayerIndex = playerIndex;
+            LaserFireRateCounter = 0.0f;
+            LaserCharge = 0.0f;
+            FeedbackTime = 0.0f;
         }
 
         public void PathPosition(Vector2 position)
@@ -47,8 +50,14 @@ namespace Spectrum.Components
             }
         }
 
+        public Explosion GetExplosion(double destroyedTime)
+        {
+            return new Explosion(this, destroyedTime);
+        }
+
         public Path Path;
         public HealthBar HealthBar;
+        public float LaserFireRateCounter, LaserCharge, FeedbackTime;
         public PlayerIndex PlayerIndex { get; protected set; }
     }
 }

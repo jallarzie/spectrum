@@ -13,7 +13,12 @@ namespace Spectrum.States
                 SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
                 SoundPlayer.IncreaseMainGameSongVolume();
 
-                return this.ReleasePreviousState();
+                int nbInputs = InputController.Instance.GetNumberOfAvailableInputs();
+
+                if (nbInputs <= 1)
+                    return this.ReleasePreviousState();
+
+                return new States.PlayersSelect((Game)(this.ReleasePreviousState()), nbInputs);
             });
 
             #if WINDOWS

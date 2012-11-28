@@ -46,6 +46,9 @@ namespace Spectrum.Components
 
         public ControlType GetControlType(PlayerIndex player)
         {
+            if (player != PlayerIndex.One)
+                return ControlType.GamePad;
+
             if (gamePadStates[(int)player].IsConnected)
                 return ControlType.GamePad;
 
@@ -129,6 +132,17 @@ namespace Spectrum.Components
         public bool HasCalledFullscreenToggle()
         {
             return (keyboardState.IsKeyDown(Keys.LeftAlt) || keyboardState.IsKeyDown(Keys.RightAlt)) && keyboardState.IsKeyDown(Keys.Enter);
+        }
+
+        public int GetNumberOfAvailableInputs()
+        {
+            for (int i = 0; i < MAX_PLAYERS; ++i)
+            {
+                if (!gamePadStates[i].IsConnected)
+                    return i;
+            }
+
+            return MAX_PLAYERS;
         }
     }
 }
