@@ -19,7 +19,7 @@ namespace Spectrum.Components
         
         public Enemy(string textureName, Color tint, Vector2 position, Entity2D target) : base(textureName)
         {
-            HealthBar = new HealthBar(this);
+            HealthBar = new HealthBar(this, "");
             Origin = new Vector2(Width / 2, Height / 2);
             SetTint(tint);
             Position = position;

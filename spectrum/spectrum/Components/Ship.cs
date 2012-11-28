@@ -8,9 +8,9 @@ namespace Spectrum.Components
 {
     public class Ship : Sprite, PathAware
     {
-        public Ship(PlayerIndex playerIndex) : base("ship")
+        public Ship(PlayerIndex playerIndex, string label) : base("ship")
         {
-            HealthBar = new HealthBar(this);
+            HealthBar = new HealthBar(this, label);
             CurrentHealthPoints = MaxHealthPoints = 200;
             Origin = new Vector2(Width / 2, Height / 2);
             BoundingArea = new Sphere(Position, 0.2f * (Height / 2), 0.2f * (Width / 2));

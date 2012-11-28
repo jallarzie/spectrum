@@ -18,7 +18,7 @@ namespace Spectrum.States
                 SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
                 SoundPlayer.IncreaseMainGameSongVolume();
 
-                return new States.Game();
+                return new States.Game(1, 0, gameState.NumberOfPlayers);
             });
 
             this.AddAction("main menu", delegate() {

@@ -18,8 +18,16 @@ namespace Spectrum.Components
         private static readonly Color HEALTH_BAR_COLOR_SLOW = Color.DarkBlue;
         private static readonly float FLASH_RATE = 4;
 
-        public HealthBar(Entity2D entity) : base("HealthBar") 
+        private static SpriteFont SpriteFont = null;
+            
+
+        public HealthBar(Entity2D entity, string label) : base("HealthBar") 
         {
+            this.label = label;
+
+            if(SpriteFont == null)
+                SpriteFont = Application.Instance.Content.Load<SpriteFont>("PlayerLabels");
+                
             Entity = entity;
             Origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
             Scale = 0.5f;
@@ -65,6 +73,13 @@ namespace Spectrum.Components
 
             //Draw the current health level based on the current Health
             targetSpriteBatch.Draw(Texture, Position, PositiveSpaceRectangle, currentColor, 0f, Origin, Scale, SpriteEffects.None, Layer - 0.01f);
+
+            if (label != "")
+            {
+                Vector2 labelPos = Position;
+                labelPos.X -= SpriteFont.MeasureString(label).X / 2;
+                targetSpriteBatch.DrawString(SpriteFont, label, labelPos, Color.White);
+            }
         }
 
         /// <summary>
@@ -95,6 +110,8 @@ namespace Spectrum.Components
         private float currentHealth;
         private float currentPoisonSlowFade;
         private Color currentColor;
+
+        private string label;
 
         private Rectangle NegativeSpaceRectangle;
         private Rectangle PositiveSpaceRectangle;

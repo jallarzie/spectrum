@@ -43,12 +43,17 @@ namespace Spectrum.States
                                                         new Vector2(Viewport.Width * 1 / 5, Viewport.Height / 2), 
                                                         new Vector2(Viewport.Width * 4 / 5, Viewport.Height / 2) };
 
+            string[] PlayerLabels = new string[4] { "P1", "P2", "P3", "P4" };
+
             Players = new List<Ship>();
             PlayersToRemove = new List<Ship>();
 
             for (int i = 0; i < NumberOfPlayers; ++i)
             {
-                Players.Add(new Ship((PlayerIndex)i));
+                if (NumberOfPlayers > 1)
+                    Players.Add(new Ship((PlayerIndex)i, PlayerLabels[i]));
+                else
+                    Players.Add(new Ship((PlayerIndex)i, ""));
                 Players[i].Position = StartPositions[i];
                 Players[i].Path = new User(Players[i], new Rectangle(0, 0, Viewport.Width, Viewport.Height));
             }
