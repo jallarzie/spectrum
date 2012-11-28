@@ -62,6 +62,8 @@ namespace Spectrum.States
             Explosions = new List<Explosion>();
 
             SoundPlayer.PlayMainGameSong();
+
+            Update(new GameTime());
         }
 
         public override void Destroy()
