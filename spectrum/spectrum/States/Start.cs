@@ -7,13 +7,13 @@ namespace Spectrum.States
     public class Start : States.Menu
     {
         public Start()
-            : base(null, "SPECTRUM", true)
+            : base(new States.Game(), "SPECTRUM", true)
         {
             this.AddAction("new game", delegate () {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();
                 SoundPlayer.IncreaseMainGameSoundVolume();
 
-                return new States.Game();
+                return this.ReleasePreviousState();
             });
 
             #if WINDOWS
