@@ -17,6 +17,7 @@ namespace Spectrum.Components
             Scale = 0.2f;
             Layer = Layers.Player;
             SetTint(Color.Black);
+            PlayerIndex = PlayerIndex.One;
         }
 
         public void PathPosition(Vector2 position)
@@ -48,5 +49,6 @@ namespace Spectrum.Components
 
         public Path Path;
         public HealthBar HealthBar;
+        public PlayerIndex PlayerIndex { get; protected set; }
     }
 }

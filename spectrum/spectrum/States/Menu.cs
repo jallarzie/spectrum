@@ -243,10 +243,7 @@ namespace Spectrum.States
         {
             if (mOffsetX != Application.Instance.GraphicsDevice.Viewport.Width / 2)
                 return;
-
-            KeyboardState keyboardState = Keyboard.GetState();
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-
+            
             if (this.IsKeyDown(Keys.Down) ^ this.IsKeyDown(Keys.Up) ||
                 this.IsButtonDown(Buttons.DPadDown) ^ this.IsButtonDown(Buttons.LeftThumbstickUp) ||
                 this.IsButtonDown(Buttons.LeftThumbstickDown) ^ this.IsButtonDown(Buttons.DPadUp))

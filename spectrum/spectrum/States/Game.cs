@@ -87,10 +87,7 @@ namespace Spectrum.States
 
         public override bool Transition()
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
-
-            if (keyboardState.IsKeyDown(Keys.Escape) || gamepadState.Buttons.Start == ButtonState.Pressed)
+            if (InputController.Instance.HasCalledMenu(PlayerIndex.One))
             {
                 GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
                 SoundPlayer.ReduceMainGameSongVolume();
@@ -144,40 +141,20 @@ namespace Spectrum.States
         private void ShootLaser(GameTime gameTime)
         {
             LaserFireRateCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            MouseState mouseState = Mouse.GetState();
-            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
-            Vector2 direction = Vector2.Zero;
 
-            if (gamepadState.IsConnected)
-            {
-                Crosshair.Position = new Vector2(-1, -1);
-
-                if (gamepadState.ThumbSticks.Right.LengthSquared() != 0)
-                {
-                    direction = gamepadState.ThumbSticks.Right;
-                    direction.Y *= -1;
-                    Player.PathDirection((float)Math.Atan2(direction.X, -direction.Y));
-                }
-                if (gamepadState.Triggers.Right != 0)
-                    LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
-                else
-                    LaserCharge = 0;
-            }
-            else
-            {
-                int mouseX = (int)MathHelper.Clamp(mouseState.X, 1, Viewport.Width-1);
-                int mouseY = (int)MathHelper.Clamp(mouseState.Y, 1, Viewport.Height-1);
-
-                Mouse.SetPosition(mouseX, mouseY);
-                Crosshair.Position = new Vector2(mouseX, mouseY);
-
-                direction = new Vector2(mouseX, mouseY) - Player.Position;
+            Vector2 direction = InputController.Instance.GetShootingDirection(Player);
+            if (direction != Vector2.Zero)
                 Player.PathDirection((float)Math.Atan2(direction.X, -direction.Y));
-                if (mouseState.LeftButton == ButtonState.Pressed)
-                    LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
-                else
-                    LaserCharge = 0;
-            }
+
+            if (InputController.Instance.GetControlType(Player.PlayerIndex) == ControlType.GamePad)
+                Crosshair.Position = new Vector2(-1, -1);
+            else
+                Crosshair.Position = Player.Position + direction;
+            
+            if (InputController.Instance.IsCharging(Player.PlayerIndex))
+                LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
+            else
+                LaserCharge = 0;
 
             LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
 

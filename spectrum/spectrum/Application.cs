@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Spectrum.Library.Graphics;
 using Spectrum.Library.States;
+using Spectrum.Components;
 
 namespace Spectrum
 {
@@ -56,24 +57,15 @@ namespace Spectrum
 
         protected override void Update(GameTime gameTime)
         {
+            InputController.Instance.Update();
             UpdateSpecialInputs(gameTime);
             StateMachine.Update(gameTime);
         }
 
         private void UpdateSpecialInputs(GameTime gameTime)
         {
-            KeyboardState keyboardState = Keyboard.GetState();
-
-            specialInputTime -= gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (specialInputTime <= 0)
-            {
-                if ((keyboardState.IsKeyDown(Keys.LeftAlt) || keyboardState.IsKeyDown(Keys.RightAlt)) && keyboardState.IsKeyDown(Keys.Enter))
-                {
-                    GraphicsDeviceManager.ToggleFullScreen();
-                    specialInputTime = SPECIAL_INPUT_DELAY;
-                }
-            }
+            if (InputController.Instance.HasCalledFullscreenToggle())
+                GraphicsDeviceManager.ToggleFullScreen();
         }
 
         protected override void Draw(GameTime gameTime)
