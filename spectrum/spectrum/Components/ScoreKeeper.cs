@@ -23,16 +23,23 @@ namespace Spectrum.Components
         /// </summary>
         private static readonly Vector2 POSITION = new Vector2(Application.Instance.GraphicsDevice.Viewport.Width * 0.1f,
                                                                Application.Instance.GraphicsDevice.Viewport.Height * 0.1f);
+        private static readonly Vector2 CENTER = new Vector2(POSITION.X + 56, POSITION.Y + 18);
+
+        private static readonly float OPACITY_DISTANCE = 300f;
 
         public int Value { get; set; }
         public int Level { get; private set; }
+        private float Opacity;
+        private Entity2D Entity; // when close to this entity the opacity will lower
 
         private static SpriteFont SpriteFont;
 
-        public ScoreKeeper(int level) 
+        public ScoreKeeper(int level, Entity2D entity) 
         {
             SpriteFont = Application.Instance.Content.Load<SpriteFont>("ScoreFont");
             Level = level;
+            Opacity = 1;
+            Entity = entity;
         }
 
         /// <summary>
@@ -46,8 +53,13 @@ namespace Spectrum.Components
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) 
         {
-            spriteBatch.DrawString(SpriteFont, "level " + Level, POSITION, Color.DimGray, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
-            spriteBatch.DrawString(SpriteFont, string.Format("{0:D8}", Value), POSITION + new Vector2(0, 18), Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
+            float distance = Vector2.Distance(CENTER, Entity.Position);
+            if (distance < OPACITY_DISTANCE)
+                Opacity = distance / OPACITY_DISTANCE;
+            else
+                Opacity = 1f;
+            spriteBatch.DrawString(SpriteFont, "level " + Level, POSITION, Color.DimGray * Opacity, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
+            spriteBatch.DrawString(SpriteFont, string.Format("{0:D8}", Value), POSITION + new Vector2(0, 18), Color.White * Opacity, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, Layers.Hud);
         }
     }
 }
