@@ -92,9 +92,9 @@ namespace Spectrum.States
 
             if (keyboardState.IsKeyDown(Keys.Escape) || gamepadState.Buttons.Start == ButtonState.Pressed)
             {
-                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);               
+                GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
                 SoundPlayer.ReduceMainGameSongVolume();
-                SoundPlayer.PlayPauseTriggeredSound();
+                SoundPlayer.PlayEffect(SoundEffectType.PauseTriggered);
 
                 return Application.Instance.StateMachine.SetState(new States.Pause(this));
             }
@@ -190,7 +190,7 @@ namespace Spectrum.States
                 Application.Instance.Drawables.Add(laser);
                 LaserFireRateCounter = 0f;
 
-                SoundPlayer.PlayPlayerShootsSound();
+                SoundPlayer.PlayEffect(SoundEffectType.PlayerShoots);
             }
         }
 
@@ -341,7 +341,7 @@ namespace Spectrum.States
                 distance = Player.Position - powerup.Position;
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
-                    SoundPlayer.PlayPlayerPowersUpSound();
+                    SoundPlayer.PlayEffect(SoundEffectType.PlayerPowersUp);
                     ScoreKeeper.AddPoints(50 * Level);
                     Player.AbsorbTint(powerup.Tint);
                     Player.CurrentHealthPoints += 50;

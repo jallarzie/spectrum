@@ -7,16 +7,16 @@ namespace Spectrum.States
         public Lost(States.Game gameState)
             : base(gameState, "DEFEAT", false)
         {
-            this.AddAction("restart", delegate () {
-                SoundPlayer.PlayMenuItemSelectionClickedSound();
-                SoundPlayer.IncreaseMainGameSoundVolume();
+            this.AddAction("restart", delegate() {
+                SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
+                SoundPlayer.IncreaseMainGameSongVolume();
 
                 return new States.Game();
             });
 
             this.AddAction("back to start", delegate() {
-                SoundPlayer.PlayMenuItemSelectionClickedSound();
-                SoundPlayer.IncreaseMainGameSoundVolume();
+                SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
+                SoundPlayer.IncreaseMainGameSongVolume();
 
                 return new States.Start();
             });

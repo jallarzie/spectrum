@@ -112,10 +112,8 @@ namespace Spectrum.Library.Graphics
             Color oldTint = Tint;
             SetTint(combined);
 
-            if (oldTint != Tint) 
-            {
-                SoundPlayer.PlayPlayerLooseColorSound();
-            }
+            if (oldTint != Tint)
+                SoundPlayer.PlayEffect(SoundEffectType.PlayerLoseColor);
         }
 
         protected Texture2D Texture;

@@ -9,9 +9,9 @@ namespace Spectrum.States
         public Start()
             : base(new States.Game(), "SPECTRUM", true)
         {
-            this.AddAction("start", delegate () {
-                SoundPlayer.PlayMenuItemSelectionClickedSound();
-                SoundPlayer.IncreaseMainGameSoundVolume();
+            this.AddAction("start", delegate() {
+                SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
+                SoundPlayer.IncreaseMainGameSongVolume();
 
                 return this.ReleasePreviousState();
             });
@@ -27,10 +27,9 @@ namespace Spectrum.States
                 });
             #endif
 
-            this.AddAction("exit", delegate()
-            {
-                SoundPlayer.PlayMenuItemSelectionClickedSound();
-                SoundPlayer.IncreaseMainGameSoundVolume();
+            this.AddAction("exit", delegate() {
+                SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionChange); // click sound gets cut off
+                SoundPlayer.IncreaseMainGameSongVolume();
 
                 return new States.Exit();
             });
