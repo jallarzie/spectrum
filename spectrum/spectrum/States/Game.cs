@@ -159,12 +159,9 @@ namespace Spectrum.States
                     Player.PathDirection((float)Math.Atan2(direction.X, -direction.Y));
                 }
                 if (gamepadState.Triggers.Right != 0)
-                {
-                    //direction = Vector2.Zero;
-                    //LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
-                    //LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
-                    LaserCharge = gamepadState.Triggers.Right;
-                }
+                    LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
+                else
+                    LaserCharge = 0;
             }
             else
             {
@@ -177,12 +174,12 @@ namespace Spectrum.States
                 direction = new Vector2(mouseX, mouseY) - Player.Position;
                 Player.PathDirection((float)Math.Atan2(direction.X, -direction.Y));
                 if (mouseState.LeftButton == ButtonState.Pressed)
-                {
                     LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
-                    LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
-                    direction = Vector2.Zero;
-                }
+                else
+                    LaserCharge = 0;
             }
+
+            LaserCharge = MathHelper.Clamp(LaserCharge, 0f, 1f);
 
             // more laser charge -> slower fire rate
             if (direction.LengthSquared() != 0 && LaserFireRateCounter >= (1 + LaserCharge * 3) / FIRE_RATE)
@@ -192,7 +189,6 @@ namespace Spectrum.States
                 Lasers.Add(laser);
                 Application.Instance.Drawables.Add(laser);
                 LaserFireRateCounter = 0f;
-                LaserCharge = 0f;
 
                 SoundPlayer.PlayPlayerShootsSound();
             }
