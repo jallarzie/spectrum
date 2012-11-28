@@ -8,22 +8,22 @@ namespace Spectrum.States
             : base(gameState, "PAUSED", true)
         {
             this.AddAction("continue", delegate () {
-                SoundPlayer.PlayMenuItemSelectionClickedSound();
-                SoundPlayer.IncreaseMainGameSoundVolume();
+                SoundPlayer.PlayEffect(SoundEffectType.PauseUntriggered);
+                SoundPlayer.IncreaseMainGameSongVolume();
 
                 return this.ReleasePreviousState();
             });
 
-            this.AddAction("restart", delegate () {
-                SoundPlayer.PlayMenuItemSelectionClickedSound();
-                SoundPlayer.IncreaseMainGameSoundVolume();
+            this.AddAction("restart", delegate() {
+                SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
+                SoundPlayer.IncreaseMainGameSongVolume();
 
                 return new States.Game();
             });
 
-            this.AddAction("main menu", delegate () {
-                SoundPlayer.PlayMenuItemSelectionClickedSound();
-                SoundPlayer.IncreaseMainGameSoundVolume();
+            this.AddAction("main menu", delegate() {
+                SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
+                SoundPlayer.IncreaseMainGameSongVolume();
 
                 return new States.Start();
             });

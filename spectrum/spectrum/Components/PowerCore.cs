@@ -107,12 +107,12 @@ namespace Spectrum.Components
                     (Forcefield.Tint.G & laserColor.G) == Forcefield.Tint.G &&
                     (Forcefield.Tint.B & laserColor.B) == Forcefield.Tint.B)
                 {
-                    SoundPlayer.PlayForceFieldHitSound();
+                    SoundPlayer.PlayEffect(SoundEffectType.ForceFieldHit);
                     Forcefield.Health -= damage;
 
                     if (Forcefield.Health <= 0)
                     {
-                        SoundPlayer.PlayForceFieldDisappearSound();
+                        SoundPlayer.PlayEffect(SoundEffectType.ForceFieldDisappear);
                         Forcefield = null;
                     }
                 }
@@ -120,7 +120,7 @@ namespace Spectrum.Components
             else
             {
                 Health -= damage;
-                SoundPlayer.PlayPowerCoreHitSound();
+                SoundPlayer.PlayEffect(SoundEffectType.PowerCoreHit);
                 if (Observer != null)
                 {
                     Observer.OnPowerCoreHealthReduced(damage);

@@ -257,7 +257,7 @@ namespace Spectrum.States
                     mCurrentKeyCode = key;
                     mCurrentKeyTime = gameTime.TotalGameTime.TotalSeconds;
 
-                    SoundPlayer.PlayMenuItemSelectionChangeSound();
+                    SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionChange);
 
                     switch (key)
                     {
