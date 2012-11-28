@@ -12,9 +12,11 @@ namespace Spectrum.Components
     {
         private static readonly Vector2 DISTANCE_FROM_SHIP = new Vector2(0, 25);
 
-        private static readonly Color NEGATIVE_SPACE_COLOR = new Color(90, 90, 90);
-        private static readonly Color HEALTH_BAR_COLOR_FULL = Color.DarkGreen;
-        private static readonly Color HEALTH_BAR_COLOR_LOW = Color.DarkRed;
+        private static readonly Color NEGATIVE_SPACE_COLOR = Color.DimGray;
+        private static readonly Color HEALTH_BAR_COLOR_NORMAL = Color.DarkRed;
+        private static readonly Color HEALTH_BAR_COLOR_POISON = Color.DarkGreen;
+        private static readonly Color HEALTH_BAR_COLOR_SLOW = Color.DarkBlue;
+        private static readonly float FLASH_RATE = 4;
 
         public HealthBar(Entity2D entity) : base("HealthBar") 
         {
@@ -25,6 +27,8 @@ namespace Spectrum.Components
 
             Position = Entity.Position + DISTANCE_FROM_SHIP;
             CurrentHealth = Entity.GetHealthRatio();
+
+            currentColor = HEALTH_BAR_COLOR_NORMAL;
         }
 
         public void Update(GameTime gameTime) 
@@ -38,9 +42,29 @@ namespace Spectrum.Components
             // Draw the negative space for the health bar
             targetSpriteBatch.Draw(Texture, Position, NegativeSpaceRectangle, NEGATIVE_SPACE_COLOR, 0f, Origin, Scale, SpriteEffects.None, Layer);
 
+            // Set color depending on Entity's status effects
+            if (Entity.IsPoisoned && Entity.IsSlowed)
+            {
+                currentPoisonSlowFade += (float)gameTime.ElapsedGameTime.TotalSeconds * FLASH_RATE;
+                currentColor = Color.Lerp(HEALTH_BAR_COLOR_POISON, HEALTH_BAR_COLOR_SLOW, (float)(Math.Cos(currentPoisonSlowFade) + 1) / 2);
+            }
+            else if (Entity.IsPoisoned)
+            {
+                currentColor = HEALTH_BAR_COLOR_POISON;
+                currentPoisonSlowFade = 0f;
+            }
+            else if (Entity.IsSlowed)
+            {
+                currentColor = HEALTH_BAR_COLOR_SLOW;
+                currentPoisonSlowFade = 1f;
+            }
+            else
+            {
+                currentColor = HEALTH_BAR_COLOR_NORMAL;
+            }
+
             //Draw the current health level based on the current Health
-            targetSpriteBatch.Draw(Texture, Position, PositiveSpaceRectangle, Color.Lerp(HEALTH_BAR_COLOR_LOW, HEALTH_BAR_COLOR_FULL, CurrentHealth), 
-                0f, Origin, Scale, SpriteEffects.None, Layer - 0.01f);
+            targetSpriteBatch.Draw(Texture, Position, PositiveSpaceRectangle, currentColor, 0f, Origin, Scale, SpriteEffects.None, Layer - 0.01f);
         }
 
         /// <summary>
@@ -69,6 +93,8 @@ namespace Spectrum.Components
         }
 
         private float currentHealth;
+        private float currentPoisonSlowFade;
+        private Color currentColor;
 
         private Rectangle NegativeSpaceRectangle;
         private Rectangle PositiveSpaceRectangle;
