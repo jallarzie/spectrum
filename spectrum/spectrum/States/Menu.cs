@@ -204,7 +204,7 @@ namespace Spectrum.States
             Dictionary<Buttons, bool> newIgnoredButtons = new Dictionary<Buttons, bool>();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             foreach (KeyValuePair<Buttons, bool> status in mIgnoreButtons)
-                newIgnoredButtons[status.Key] = mIgnoreButtons[status.Key] && gamePadState.IsButtonUp(status.Key);
+                newIgnoredButtons[status.Key] = mIgnoreButtons[status.Key] && gamePadState.IsButtonDown(status.Key);
             mIgnoreButtons = newIgnoredButtons;
         }
 
