@@ -42,7 +42,7 @@ namespace Spectrum.States
             mBackground = new Background(2000, RNG);
             Core = new PowerCore(level, RNG);
             Core.Observer = this;
-            ScoreKeeper = new ScoreKeeper(level);
+            ScoreKeeper = new ScoreKeeper(level, Player);
             Score = score;
             feedbackTime = 0f;
             EnemySpawnCounter = EnemyWaveSpawnTime;
