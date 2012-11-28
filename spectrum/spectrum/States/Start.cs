@@ -9,7 +9,7 @@ namespace Spectrum.States
         public Start()
             : base(new States.Game(), "SPECTRUM", true)
         {
-            this.AddAction("new game", delegate () {
+            this.AddAction("start", delegate () {
                 SoundPlayer.PlayMenuItemSelectionClickedSound();
                 SoundPlayer.IncreaseMainGameSoundVolume();
 
