@@ -138,7 +138,7 @@ namespace Spectrum.States
 
         public void OnPowerCoreHealthReduced(int Damage)
         {
-            ScoreKeeper.AddPoints(Damage * ScoreKeeper.POWERCORE_HIT_SCORE_VALUE);
+            ScoreKeeper.AddPoints(Damage * ScoreKeeper.POWERCORE_HIT_SCORE_VALUE * Level);
         }
 
         private void ShootLaser(GameTime gameTime)
@@ -328,7 +328,7 @@ namespace Spectrum.States
                 }
                 if (!enemy.IsAlive())
                 {
-                    ScoreKeeper.AddPoints(enemy.GetScoreValue());
+                    ScoreKeeper.AddPoints(enemy.GetScoreValue() * Level);
                     EnemiesToRemove.Add(enemy);
 
                     Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);
@@ -342,7 +342,7 @@ namespace Spectrum.States
                 if (distance.Length() <= COLLISION_DISTANCE)
                 {
                     SoundPlayer.PlayPlayerPowersUpSound();
-                    ScoreKeeper.AddPoints(50);
+                    ScoreKeeper.AddPoints(50 * Level);
                     Player.AbsorbTint(powerup.Tint);
                     Player.CurrentHealthPoints += 50;
                     if (Player.CurrentHealthPoints > Player.MaxHealthPoints)
