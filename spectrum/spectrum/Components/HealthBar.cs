@@ -84,7 +84,7 @@ namespace Spectrum.Components
 
             if (label != "")
             {
-                targetSpriteBatch.DrawString(SpriteFont, label, labelPosition, Color.White);
+                targetSpriteBatch.DrawString(SpriteFont, label, labelPosition, Color.White, Rotation, Vector2.Zero, 1.0f, SpriteEffects.None, Layer);
             }
 
             //Draw the current health level based on the current Health

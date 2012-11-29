@@ -15,7 +15,7 @@ namespace Spectrum.Components
             Origin = new Vector2(Width / 2, Height / 2);
             BoundingArea = new Sphere(Position, 0.2f * (Height / 2), 0.2f * (Width / 2));
             Scale = 0.2f;
-            Layer = Layers.Player;
+            Layer = Layers.Player + 0.001f * (float)playerIndex;
             SetTint(Color.Black);
             PlayerIndex = playerIndex;
             LaserFireRateCounter = 0.0f;
