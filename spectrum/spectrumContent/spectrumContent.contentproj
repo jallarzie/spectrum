@@ -220,14 +220,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ship2.png">
-      <Name>ship2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_ColorKeyColor>0, 0, 0, 255</ProcessorParameters_ColorKeyColor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="PlayerLabels.spritefont">
       <Name>PlayerLabels</Name>
       <Importer>FontDescriptionImporter</Importer>
