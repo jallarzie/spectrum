@@ -11,12 +11,14 @@ namespace Spectrum.States
         {
             this.AddAction("start", delegate() {
                 SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
-                SoundPlayer.IncreaseMainGameSongVolume();
 
                 int nbInputs = InputController.Instance.GetNumberOfAvailableInputs();
 
                 if (nbInputs <= 1)
+                {
+                    SoundPlayer.IncreaseMainGameSongVolume();
                     return this.ReleasePreviousState();
+                }
 
                 return new States.PlayersSelect((Game)(this.ReleasePreviousState()), nbInputs);
             });
@@ -24,7 +26,6 @@ namespace Spectrum.States
             #if WINDOWS
                 this.AddAction("switch fullscreen", delegate () {
                     SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
-                    SoundPlayer.IncreaseMainGameSongVolume();
 
                     Application.Instance.GraphicsDeviceManager.ToggleFullScreen();
 
@@ -34,7 +35,6 @@ namespace Spectrum.States
 
             this.AddAction("exit", delegate() {
                 SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionChange); // click sound gets cut off
-                SoundPlayer.IncreaseMainGameSongVolume();
 
                 return new States.Exit();
             });
