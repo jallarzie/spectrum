@@ -43,6 +43,17 @@ namespace Spectrum.Components
         {
             Position = Entity.Position + DISTANCE_FROM_SHIP;
             CurrentHealth = Entity.GetHealthRatio();
+
+            if (label != "")
+            {
+                Vector2 labelSize = SpriteFont.MeasureString(label);
+                Position = new Vector2(Position.X - labelSize.X / 2, Position.Y);
+
+                labelPosition = Position;
+                labelPosition.X += Origin.X * Scale;
+                labelPosition.X += labelSize.X / 2;
+                labelPosition.Y -= labelSize.Y / 2;
+            }
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
@@ -71,15 +82,13 @@ namespace Spectrum.Components
                 currentColor = HEALTH_BAR_COLOR_NORMAL;
             }
 
-            //Draw the current health level based on the current Health
-            targetSpriteBatch.Draw(Texture, Position, PositiveSpaceRectangle, currentColor, 0f, Origin, Scale, SpriteEffects.None, Layer - 0.01f);
-
             if (label != "")
             {
-                Vector2 labelPos = Position;
-                labelPos.X -= SpriteFont.MeasureString(label).X / 2;
-                targetSpriteBatch.DrawString(SpriteFont, label, labelPos, Color.White);
+                targetSpriteBatch.DrawString(SpriteFont, label, labelPosition, Color.White);
             }
+
+            //Draw the current health level based on the current Health
+            targetSpriteBatch.Draw(Texture, Position, PositiveSpaceRectangle, currentColor, 0f, Origin, Scale, SpriteEffects.None, Layer - 0.01f);
         }
 
         /// <summary>
@@ -112,6 +121,7 @@ namespace Spectrum.Components
         private Color currentColor;
 
         private string label;
+        Vector2 labelPosition;
 
         private Rectangle NegativeSpaceRectangle;
         private Rectangle PositiveSpaceRectangle;
