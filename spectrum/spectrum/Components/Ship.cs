@@ -55,9 +55,41 @@ namespace Spectrum.Components
             return new Explosion(this, destroyedTime);
         }
 
+        public void Respawn()
+        {
+            CurrentHealthPoints = MaxHealthPoints;
+            IsPoisoned = false;
+            IsSlowed = false;
+            invincibilityTime = MAX_INVINCIBILITY_TIME;
+        }
+
+        public void UpdateRespawnInvincibility(GameTime gameTime)
+        {
+            if (IsInvincible())
+            {
+                invincibilityTime -= (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                Opacity = 1.0f - invincibilityTime % BLINK_INTERVAL / (float)BLINK_INTERVAL;
+            }
+            else
+            {
+                Opacity = 1.0f;
+            }
+        }
+
+        public bool IsInvincible()
+        {
+            return invincibilityTime > 0.0f;
+        }
+
         public Path Path;
         public HealthBar HealthBar;
         public float LaserFireRateCounter, LaserCharge, FeedbackTime;
         public PlayerIndex PlayerIndex { get; protected set; }
+
+        private int invincibilityTime;
+
+        private const int BLINK_INTERVAL = 300;
+        private const int MAX_INVINCIBILITY_TIME = 1500;
     }
 }

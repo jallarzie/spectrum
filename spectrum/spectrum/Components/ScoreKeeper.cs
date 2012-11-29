@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 
 namespace Spectrum.Components
 {
+    public delegate void OnThresholdReached();
+
     /// <summary>
     /// Class that keeps track of the current game's Score
     /// </summary>
@@ -29,16 +31,19 @@ namespace Spectrum.Components
 
         public int Value { get; set; }
         public int Level { get; private set; }
+        public event OnThresholdReached OnThresholdReached;
+        private int Threshold;
         private float Opacity;
         private List<Entity2D> Entities; // when close to this entity the opacity will lower
 
         private static SpriteFont SpriteFont;
 
-        public ScoreKeeper(int level, List<Entity2D> entities) 
+        public ScoreKeeper(int level, List<Entity2D> entities, int threshold) 
         {
             SpriteFont = Application.Instance.Content.Load<SpriteFont>("ScoreFont");
             Level = level;
             Opacity = 1;
+            Threshold = threshold;
             Entities = entities;
         }
 
@@ -48,7 +53,10 @@ namespace Spectrum.Components
         /// <param name="numOfPoints"></param>
         public void AddPoints(int numOfPoints) 
         {
+            int oldValue = Value;
             Value += numOfPoints;
+            if (OnThresholdReached != null && oldValue / Threshold < Value / Threshold)
+                OnThresholdReached();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) 

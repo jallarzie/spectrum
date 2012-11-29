@@ -20,6 +20,7 @@ namespace Spectrum.States
         public const float LASER_MAX_CHARGE_TIME = 2f; // sec
         public const float COLLISION_DISTANCE = 30f; // pixels
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
+        public const int   PLAYER_RESPAWN_THRESHOLD = 2500; // A dead player respawns every time this amount of points is exceeded, modified by level
 
         public Game()
             : this(1, 0, 1)
@@ -37,15 +38,17 @@ namespace Spectrum.States
             RNG = new Random();
             Viewport = Application.Instance.GraphicsDevice.Viewport;
 
-            Vector2[] StartPositions = new Vector2[4] { new Vector2(Viewport.Width / 2, Viewport.Height * 4 / 5), 
+            StartPositions = new Vector2[4] { new Vector2(Viewport.Width / 2, Viewport.Height * 4 / 5), 
                                                         new Vector2(Viewport.Width / 2, Viewport.Height * 1 / 5), 
                                                         new Vector2(Viewport.Width * 1 / 5, Viewport.Height / 2), 
                                                         new Vector2(Viewport.Width * 4 / 5, Viewport.Height / 2) };
 
-            string[] PlayerLabels = new string[4] { "P1", "P2", "P3", "P4" };
+            PlayerLabels = new string[4] { "P1", "P2", "P3", "P4" };
 
             Players = new List<Ship>();
             PlayersToRemove = new List<Ship>();
+            DeadPlayers = new List<Ship>();
+            PlayersToRevive = new List<Ship>();
 
             for (int i = 0; i < NumberOfPlayers; ++i)
             {
@@ -64,7 +67,8 @@ namespace Spectrum.States
             Core.Observer = this;
             List<Entity2D> scoreKeeperEntities = new List<Entity2D>();
             Players.ForEach(player => scoreKeeperEntities.Add(player));
-            ScoreKeeper = new ScoreKeeper(level, scoreKeeperEntities);
+            ScoreKeeper = new ScoreKeeper(level, scoreKeeperEntities, PLAYER_RESPAWN_THRESHOLD * Level);
+            ScoreKeeper.OnThresholdReached += RespawnPlayer;
             Score = score;
             EnemySpawnCounter = EnemyWaveSpawnTime;
 
@@ -114,7 +118,7 @@ namespace Spectrum.States
         {
             if (InputController.Instance.HasCalledMenu(PlayerIndex.One))
             {
-                Players.ForEach(player => GamePad.SetVibration(player.PlayerIndex, 0.0f, 0.0f));
+                InputController.Instance.TurnOffVibration();
                 SoundPlayer.ReduceMainGameSongVolume();
                 SoundPlayer.PlayEffect(SoundEffectType.PauseTriggered);
 
@@ -123,13 +127,13 @@ namespace Spectrum.States
 
             if (Players.Count == 0)
             {
-                Players.ForEach(player => GamePad.SetVibration(player.PlayerIndex, 0.0f, 0.0f));
+                InputController.Instance.TurnOffVibration();
                 return Application.Instance.StateMachine.SetState(new States.Lost(this));
             }
 
             if (Core.Health <= 0)
             {
-                Players.ForEach(player => GamePad.SetVibration(player.PlayerIndex, 0.0f, 0.0f));
+                InputController.Instance.TurnOffVibration();
                 return Application.Instance.StateMachine.SetState(new States.Won(this));
             }
 
@@ -171,10 +175,13 @@ namespace Spectrum.States
                 if (direction != Vector2.Zero)
                     player.PathDirection((float)Math.Atan2(direction.X, -direction.Y));
 
-                if (InputController.Instance.GetControlType(player.PlayerIndex) == ControlType.GamePad)
-                    Crosshair.Position = new Vector2(-1, -1);
-                else
-                    Crosshair.Position = player.Position + direction;
+                if (player.PlayerIndex == PlayerIndex.One)
+                {
+                    if (InputController.Instance.GetControlType(player.PlayerIndex) == ControlType.GamePad)
+                        Crosshair.Position = new Vector2(-1, -1);
+                    else
+                        Crosshair.Position = player.Position + direction;
+                }
 
                 if (InputController.Instance.IsCharging(player.PlayerIndex))
                     player.LaserCharge += (float)(gameTime.ElapsedGameTime.TotalSeconds / LASER_MAX_CHARGE_TIME);
@@ -264,9 +271,10 @@ namespace Spectrum.States
         {
             foreach (Ship player in Players)
             {
-                 player.Path.Move((float)(SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds * (player.IsSlowed ? Entity2D.SLOW_SPEED_MULTIPLIER : 1f)));
-                 player.UpdateStatusEffects(gameTime);
-                 player.HealthBar.Update(gameTime);
+                player.UpdateRespawnInvincibility(gameTime);
+                player.Path.Move((float)(SPEED_PLAYER * gameTime.ElapsedGameTime.TotalSeconds * (player.IsSlowed ? Entity2D.SLOW_SPEED_MULTIPLIER : 1f)));
+                player.UpdateStatusEffects(gameTime);
+                player.HealthBar.Update(gameTime);
 
                 if (player.CurrentHealthPoints <= 0)
                 {
@@ -279,14 +287,22 @@ namespace Spectrum.States
             foreach (Ship player in PlayersToRemove)
             {
                 GamePad.SetVibration(player.PlayerIndex, 0.0f, 0.0f);
+                Players.Remove(player);
                 foreach (Enemy enemy in Enemies)
                 {
                     if (enemy.Target == player)
                         enemy.ChangeTarget(Players[RNG.Next(Players.Count)]);
                 }
-                Players.Remove(player);
+                DeadPlayers.Add(player);
                 Application.Instance.Drawables.Remove(player);
             }
+            PlayersToRemove.Clear();
+            foreach (Ship player in PlayersToRevive)
+            {
+                Players.Add(player);
+                Application.Instance.Drawables.Add(player);
+            }
+            PlayersToRevive.Clear();
         }
 
         private void Collisions(GameTime gameTime)
@@ -324,22 +340,28 @@ namespace Spectrum.States
                     }
                     foreach (Ship player in Players)
                     {
-                        distance = player.Position - laser.Position;
-                        if (distance.Length() <= COLLISION_DISTANCE)
-                            LasersToRemove.Add(laser);
+                        if (!player.IsInvincible())
+                        {
+                            distance = player.Position - laser.Position;
+                            if (distance.Length() <= COLLISION_DISTANCE)
+                                LasersToRemove.Add(laser);
+                        }
                     }
                 }
                 else if (laser.Alignment == LaserAlignment.Enemy)
                 {
                     foreach (Ship player in Players)
                     {
-                        distance = player.Position - laser.Position;
-                        if (distance.Length() <= COLLISION_DISTANCE)
+                        if (!player.IsInvincible())
                         {
-                            player.ProcessHit(laser);
-                            GamePad.SetVibration(player.PlayerIndex, 0.5f, 0.5f);
-                            player.FeedbackTime = DAMAGE_FEEDBACK_TIME;
-                            LasersToRemove.Add(laser);
+                            distance = player.Position - laser.Position;
+                            if (distance.Length() <= COLLISION_DISTANCE)
+                            {
+                                player.ProcessHit(laser);
+                                GamePad.SetVibration(player.PlayerIndex, 0.5f, 0.5f);
+                                player.FeedbackTime = DAMAGE_FEEDBACK_TIME;
+                                LasersToRemove.Add(laser);
+                            }
                         }
                     }
                 }
@@ -355,46 +377,59 @@ namespace Spectrum.States
                     float recoilDistance = Core.CalculateCurrentRadius() * (Core.HasForceField() ? 1.35f : 1.15f) - Vector2.Distance(player.Position, Core.Position);
                     player.Path.Recoil(Core.Position, recoilDistance);
                 }
+            }
 
-                foreach (Enemy enemy in Enemies)
+            foreach (Enemy enemy in Enemies)
+            {
+                foreach (Ship player in Players)
                 {
-                    distance = enemy.Position - player.Position;
-                    if (distance.Length() <= COLLISION_DISTANCE)
+                    if (!player.IsInvincible())
                     {
-                        Color oldTint = player.Tint;
-                        player.LoseTint(enemy.Tint);
-                        if (oldTint == player.Tint)
+                        distance = enemy.Position - player.Position;
+                        if (distance.Length() <= COLLISION_DISTANCE)
                         {
-                            player.CurrentHealthPoints -= enemy.CurrentHealthPoints;
-                            if (player.CurrentHealthPoints < 0) player.CurrentHealthPoints = 0;
-                            enemy.CurrentHealthPoints = 0;
+                            Color oldTint = player.Tint;
+                            player.LoseTint(enemy.Tint);
+                            if (oldTint == player.Tint)
+                            {
+                                player.CurrentHealthPoints -= enemy.CurrentHealthPoints;
+                                if (player.CurrentHealthPoints < 0) player.CurrentHealthPoints = 0;
+                                enemy.CurrentHealthPoints = 0;
+                            }
+                            GamePad.SetVibration(player.PlayerIndex, 0.5f, 0.5f);
+                            player.FeedbackTime = DAMAGE_FEEDBACK_TIME;
                         }
-                        GamePad.SetVibration(player.PlayerIndex, 0.5f, 0.5f);
-                        player.FeedbackTime = DAMAGE_FEEDBACK_TIME;
-                    }
-                    if (!enemy.IsAlive())
-                    {
-                        ScoreKeeper.AddPoints(enemy.GetScoreValue() * Level);
-                        EnemiesToRemove.Add(enemy);
-
-                        Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);
-                        Explosions.Add(explosion);
-                        Application.Instance.Drawables.Add(explosion);
                     }
                 }
-
-                foreach (Powerup powerup in Powerups)
+                if (!enemy.IsAlive())
                 {
-                    distance = player.Position - powerup.Position;
-                    if (distance.Length() <= COLLISION_DISTANCE)
+                    ScoreKeeper.AddPoints(enemy.GetScoreValue() * Level);
+                    EnemiesToRemove.Add(enemy);
+
+                    Explosion explosion = enemy.GetExplosion(gameTime.TotalGameTime.TotalMilliseconds);
+                    Explosions.Add(explosion);
+                    Application.Instance.Drawables.Add(explosion);
+                }
+            }
+
+            foreach (Powerup powerup in Powerups)
+            {
+                foreach (Ship player in Players)
+                {
+                    if (!player.IsInvincible())
                     {
-                        SoundPlayer.PlayEffect(SoundEffectType.PlayerPowersUp);
-                        ScoreKeeper.AddPoints(50 * Level);
-                        player.AbsorbTint(powerup.Tint);
-                        player.CurrentHealthPoints += 50;
-                        if (player.CurrentHealthPoints > player.MaxHealthPoints)
-                            player.CurrentHealthPoints = player.MaxHealthPoints;
-                        PowerupsToRemove.Add(powerup);
+                        distance = player.Position - powerup.Position;
+                        if (distance.Length() <= COLLISION_DISTANCE)
+                        {
+                            SoundPlayer.PlayEffect(SoundEffectType.PlayerPowersUp);
+                            ScoreKeeper.AddPoints(50 * Level);
+                            player.AbsorbTint(powerup.Tint);
+                            player.CurrentHealthPoints += 50;
+                            if (player.CurrentHealthPoints > player.MaxHealthPoints)
+                                player.CurrentHealthPoints = player.MaxHealthPoints;
+                            PowerupsToRemove.Add(powerup);
+                            break;
+                        }
                     }
                 }
             }
@@ -464,6 +499,18 @@ namespace Spectrum.States
             }
         }
 
+        private void RespawnPlayer()
+        {
+            if (DeadPlayers.Count > 0)
+            {
+                Ship respawnedPlayer = DeadPlayers[0];
+                DeadPlayers.Remove(respawnedPlayer);
+                PlayersToRevive.Add(respawnedPlayer);
+                respawnedPlayer.Respawn();
+                respawnedPlayer.Position = StartPositions[(int)respawnedPlayer.PlayerIndex];
+            }
+        }
+
         private void HandleForceFeedback(GameTime gameTime)
         {
             foreach (Ship player in Players)
@@ -486,7 +533,7 @@ namespace Spectrum.States
         private Random RNG;
         private Background mBackground;
         private Viewport Viewport;
-        private List<Ship> Players, PlayersToRemove;
+        private List<Ship> Players, PlayersToRemove, DeadPlayers, PlayersToRevive;
         private Crosshair Crosshair;
         private PowerCore Core;
         private List<Laser> Lasers, LasersToRemove;
@@ -496,6 +543,8 @@ namespace Spectrum.States
         private ScoreKeeper ScoreKeeper;
         private float EnemySpawnCounter, EnemyWaveSpawnTime;
         private int EnemyWaveSize;
+        private Vector2[] StartPositions;
+        private string[] PlayerLabels;
 
         public int Score
         {

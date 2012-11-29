@@ -144,5 +144,13 @@ namespace Spectrum.Components
 
             return MAX_PLAYERS;
         }
+
+        public void TurnOffVibration()
+        {
+            GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
+            GamePad.SetVibration(PlayerIndex.Two, 0.0f, 0.0f);
+            GamePad.SetVibration(PlayerIndex.Three, 0.0f, 0.0f);
+            GamePad.SetVibration(PlayerIndex.Four, 0.0f, 0.0f);
+        }
     }
 }
