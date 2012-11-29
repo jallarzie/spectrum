@@ -47,11 +47,11 @@ namespace Spectrum.Components
             if (label != "")
             {
                 Vector2 labelSize = SpriteFont.MeasureString(label);
-                Position = new Vector2(Position.X - labelSize.X / 2, Position.Y);
+                Position = new Vector2(Position.X + labelSize.X / 2, Position.Y);
 
                 labelPosition = Position;
-                labelPosition.X += Origin.X * Scale;
-                labelPosition.X += labelSize.X / 2;
+                labelPosition.X -= Origin.X * Scale;
+                labelPosition.X -= labelSize.X * 5 / 4;
                 labelPosition.Y -= labelSize.Y / 2;
             }
         }
