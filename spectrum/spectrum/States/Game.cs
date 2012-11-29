@@ -323,6 +323,12 @@ namespace Spectrum.States
                             LasersToRemove.Add(laser);
                         }
                     }
+                    foreach (Ship player in Players)
+                    {
+                        distance = player.Position - laser.Position;
+                        if (distance.Length() <= COLLISION_DISTANCE)
+                            LasersToRemove.Add(laser);
+                    }
                 }
                 else if (laser.Alignment == LaserAlignment.Enemy)
                 {
