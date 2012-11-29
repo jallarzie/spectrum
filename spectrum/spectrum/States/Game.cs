@@ -290,7 +290,7 @@ namespace Spectrum.States
                 Players.Remove(player);
                 foreach (Enemy enemy in Enemies)
                 {
-                    if (enemy.Target == player)
+                    if (enemy.Target == player && Players.Count > 0)
                         enemy.ChangeTarget(Players[RNG.Next(Players.Count)]);
                 }
                 DeadPlayers.Add(player);
@@ -508,6 +508,7 @@ namespace Spectrum.States
                 PlayersToRevive.Add(respawnedPlayer);
                 respawnedPlayer.Respawn();
                 respawnedPlayer.Position = StartPositions[(int)respawnedPlayer.PlayerIndex];
+                respawnedPlayer.Path = new User(respawnedPlayer, new Rectangle(0, 0, Viewport.Width, Viewport.Height));
             }
         }
 
