@@ -56,6 +56,7 @@ namespace Spectrum.States
                     Players.Add(new Ship((PlayerIndex)i, ""));
                 Players[i].Position = StartPositions[i];
                 Players[i].Path = new User(Players[i], new Rectangle(0, 0, Viewport.Width, Viewport.Height));
+                Players[i].HealthBar.Update(new GameTime());
             }
 
             Crosshair = new Crosshair();
@@ -85,7 +86,7 @@ namespace Spectrum.States
 
             SoundPlayer.PlayMainGameSong();
 
-            Update(new GameTime());
+            //Update(new GameTime());
         }
 
         public override void Destroy()

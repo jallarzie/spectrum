@@ -13,6 +13,7 @@ namespace Spectrum.Components
         {
             Layer = Layers.Hud;
             Origin = new Vector2(7, 7);
+            Position = new Vector2(-100, -100);
         }
 
     }
