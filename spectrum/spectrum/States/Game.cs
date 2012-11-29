@@ -19,7 +19,6 @@ namespace Spectrum.States
         public const float FIRE_RATE = 7f; // shots/sec
         public const float LASER_MAX_CHARGE_TIME = 2f; // sec
         public const float COLLISION_DISTANCE = 30f; // pixels
-        public const float RECOIL_DISTANCE = 30f;
         public const float DAMAGE_FEEDBACK_TIME = 0.25f; // numbers of seconds to vibrate the controller when hurt
 
         public Game()
@@ -351,9 +350,10 @@ namespace Spectrum.States
                 if (Core.BoundingArea.CollidesWith(player.BoundingArea))
                 {
                     //Player.LoseTint(Core.Tint);
-                    GamePad.SetVibration(player.PlayerIndex, 0.5f, 0.5f);
-                    player.FeedbackTime = DAMAGE_FEEDBACK_TIME;
-                    player.Path.Recoil(Core.Position, RECOIL_DISTANCE);
+                    //GamePad.SetVibration(player.PlayerIndex, 0.5f, 0.5f);
+                    //player.FeedbackTime = DAMAGE_FEEDBACK_TIME;
+                    float recoilDistance = Core.CalculateCurrentRadius() * (Core.HasForceField() ? 1.35f : 1.15f) - Vector2.Distance(player.Position, Core.Position);
+                    player.Path.Recoil(Core.Position, recoilDistance);
                 }
 
                 foreach (Enemy enemy in Enemies)

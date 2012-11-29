@@ -190,6 +190,11 @@ namespace Spectrum.Components
             Forcefield.Health = 100;
         }
 
+        public bool HasForceField()
+        {
+            return Forcefield != null;
+        }
+
         /// <summary>
         /// This object's observer
         /// </summary>
