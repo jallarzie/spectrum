@@ -14,7 +14,7 @@ namespace Spectrum.Components
             CurrentHealthPoints = MaxHealthPoints = 200;
             Origin = new Vector2(Width / 2, Height / 2);
             BoundingArea = new Sphere(Position, 0.2f * (Height / 2), 0.2f * (Width / 2));
-            Scale = 0.2f;
+            Scale = 0.4f;
             Layer = Layers.Player + 0.001f * (float)playerIndex;
             SetTint(Color.Black);
             PlayerIndex = playerIndex;

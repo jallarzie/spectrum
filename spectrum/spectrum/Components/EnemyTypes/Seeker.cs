@@ -15,7 +15,7 @@ namespace Spectrum.Components.EnemyTypes
         {
             CurrentHealthPoints = MaxHealthPoints = 30;
             Path = new Flock(this, flockmates, core, target, 0, 0);
-            Scale = 0.2f;
+            Scale = 0.5f;
             Speed = 250f;
             FireRate = 0f;
         }
