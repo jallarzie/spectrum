@@ -37,4 +37,4 @@ This game is using the Microsoft XNA 4.0 Game Engine.
 
 **Background Music**
 
-	"Retro Evolved 2 Megamix: 46860 Choices", Chris Chudley, Bizarre Creations.
+	Retro Evolved 2 Megamix: 46860 Choices, Chris Chudley, Bizarre Creations.
