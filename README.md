@@ -35,6 +35,8 @@ This game is using the Microsoft XNA 4.0 Game Engine.
 
 - Power Core : Remastered Tyrian Graphics, Daniel Cook (http://www.lostgarden.com/2007/04/free-game-graphics-tyrian-ships-and.html)
 
+- Power Up : Ville Seppanen (http://opengameart.org/content/gem-jewel-diamond-glass)
+
 **Background Music**
 
 	Retro Evolved 2 Megamix: 46860 Choices, Chris Chudley, Bizarre Creations.
