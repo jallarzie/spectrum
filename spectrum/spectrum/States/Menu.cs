@@ -46,6 +46,17 @@ namespace Spectrum.States
             mSelection = 0;
 
             mCurrentKeyCode = Keys.None;
+
+            mBackground = new Library.Graphics.Flat(new Vector2(Application.Instance.GraphicsDevice.Viewport.Width, Application.Instance.GraphicsDevice.Viewport.Height), Color.Black, null);
+            mBackground.Layer = Layers.Menu;
+
+            mIgnoreKeys = new Dictionary<Keys, bool>();
+            mIgnoreButtons = new Dictionary<Buttons, bool>();
+
+            mBackground.Opacity = .75f;
+
+            mHeader = new Library.Graphics.String("fonts/menus/headers", mHeaderText);
+            mHeader.Layer = Layers.MenuText;
         }
 
         public void AddAction(string name, ActionTarget target)
@@ -55,11 +66,8 @@ namespace Spectrum.States
 
         public override void Initialize()
         {
-            mBackground = new Library.Graphics.Flat(new Vector2(Application.Instance.GraphicsDevice.Viewport.Width, Application.Instance.GraphicsDevice.Viewport.Height), Color.Black, null);
-            mBackground.Layer = Layers.Menu;
-
-            mIgnoreKeys = new Dictionary<Keys, bool>();
-            mIgnoreButtons = new Dictionary<Buttons, bool>();
+            Application.Instance.Drawables.Add(mBackground);
+            Application.Instance.Drawables.Add(mHeader);
 
             KeyboardState keyboardState = Keyboard.GetState();
             foreach (Keys key in new List<Keys> { Keys.Space, Keys.Enter, Keys.Up, Keys.Down, Keys.W, Keys.S })
@@ -68,13 +76,6 @@ namespace Spectrum.States
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             foreach (Buttons button in new List<Buttons> { Buttons.A, Buttons.DPadUp, Buttons.LeftThumbstickUp, Buttons.DPadDown, Buttons.LeftThumbstickDown })
                 mIgnoreButtons[button] = gamePadState.IsButtonDown(button);
-
-            mBackground.Opacity = .75f;
-            Application.Instance.Drawables.Add(mBackground);
-
-            mHeader = new Library.Graphics.String("fonts/menus/headers", mHeaderText);
-            mHeader.Layer = Layers.MenuText;
-            Application.Instance.Drawables.Add(mHeader);
 
             foreach (Action action in mActions)
             {
@@ -276,7 +277,7 @@ namespace Spectrum.States
             }
         }
 
-        private Library.States.State mPreviousState;
+        protected Library.States.State mPreviousState;
         private Library.Graphics.Flat mBackground;
         private string mHeaderText;
         private Library.Graphics.String mHeader;

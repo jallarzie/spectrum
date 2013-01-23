@@ -72,13 +72,6 @@ namespace Spectrum.States
             Score = score;
             EnemySpawnCounter = EnemyWaveSpawnTime;
 
-            Application.Instance.Drawables.Add(mBackground);
-            Application.Instance.Drawables.Add(Core);
-            foreach (Ship player in Players)
-                Application.Instance.Drawables.Add(player);
-            Application.Instance.Drawables.Add(Crosshair);
-            Application.Instance.Drawables.Add(ScoreKeeper);
-
             Lasers = new List<Laser>();
             LasersToRemove = new List<Laser>();
             Enemies = new List<Enemy>();
@@ -90,6 +83,27 @@ namespace Spectrum.States
             SoundPlayer.PlayMainGameSong();
 
             //Update(new GameTime());
+        }
+
+        public override void Initialize()
+        {
+            Application.Instance.Drawables.Add(mBackground);
+            Application.Instance.Drawables.Add(Core);
+            foreach (Ship player in Players)
+                Application.Instance.Drawables.Add(player);
+            Application.Instance.Drawables.Add(Crosshair);
+            Application.Instance.Drawables.Add(ScoreKeeper);
+
+            Lasers.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Add(laser); });
+            LasersToRemove.ForEach(delegate(Laser laser) { Application.Instance.Drawables.Add(laser); });
+
+            Enemies.ForEach(delegate(Enemy enemy) { Application.Instance.Drawables.Add(enemy); });
+            EnemiesToRemove.ForEach(delegate(Enemy enemy) { Application.Instance.Drawables.Add(enemy); });
+
+            Powerups.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Add(powerup); });
+            PowerupsToRemove.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Add(powerup); });
+
+            Explosions.ForEach(explosion => Application.Instance.Drawables.Add(explosion));
         }
 
         public override void Destroy()
@@ -111,7 +125,6 @@ namespace Spectrum.States
             PowerupsToRemove.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Remove(powerup); });
 
             Explosions.ForEach(explosion => Application.Instance.Drawables.Remove(explosion));
-            Explosions.Clear();
         }
 
         public override bool Transition()

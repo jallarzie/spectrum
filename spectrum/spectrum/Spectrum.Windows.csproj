@@ -157,6 +157,7 @@
     <Compile Include="States\Pause.cs" />
     <Compile Include="States\Start.cs" />
     <Compile Include="States\Won.cs" />
+    <Compile Include="Tutorial.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

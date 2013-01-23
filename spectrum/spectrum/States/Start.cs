@@ -33,11 +33,21 @@ namespace Spectrum.States
                 });
             #endif
 
+            this.AddAction("help", delegate() {
+                return new States.Tutorial(this);
+            });
+
             this.AddAction("exit", delegate() {
                 SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionChange); // click sound gets cut off
 
                 return new States.Exit();
             });
+        }
+
+        public override void Initialize()
+        {
+            mPreviousState.Initialize();
+            base.Initialize();
         }
     }
 }

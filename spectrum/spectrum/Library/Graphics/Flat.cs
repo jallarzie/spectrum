@@ -79,7 +79,7 @@ namespace Spectrum.Library.Graphics
 
             set
             {
-                Size = new Vector2(_Size.Y, value);
+                Size = new Vector2(_Size.X, value);
             }
         }
     }
