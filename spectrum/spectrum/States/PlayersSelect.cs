@@ -4,14 +4,13 @@ namespace Spectrum.States
 {
     public class PlayersSelect : States.Menu
     {
-        public PlayersSelect(Game gameState, int nbInputs)
-            : base(gameState, "NUMBER OF PLAYERS", true)
+        public PlayersSelect(Library.States.State state, int nbInputs)
+            : base(state, "NUMBER OF PLAYERS", true)
         {
             for (int i = 1; i <= nbInputs; ++i)
             {
                 int nbPlayer = i;
-                this.AddAction(nbPlayer + (nbPlayer > 1 ? " players" : " player"), delegate()
-                {
+                this.AddAction(nbPlayer + (nbPlayer > 1 ? " players" : " player"), delegate() {
                     SoundPlayer.PlayEffect(SoundEffectType.PauseUntriggered);
                     SoundPlayer.IncreaseMainGameSongVolume();
 
@@ -23,7 +22,7 @@ namespace Spectrum.States
                 SoundPlayer.PlayEffect(SoundEffectType.MenuItemSelectionClicked);
                 SoundPlayer.IncreaseMainGameSongVolume();
 
-                return new States.Start();
+                return this.ReleasePreviousState();
             });
         }
     }

@@ -39,9 +39,9 @@ namespace Spectrum.States
             Viewport = Application.Instance.GraphicsDevice.Viewport;
 
             StartPositions = new Vector2[4] { new Vector2(Viewport.Width / 2, Viewport.Height * 4 / 5), 
-                                                        new Vector2(Viewport.Width / 2, Viewport.Height * 1 / 5), 
-                                                        new Vector2(Viewport.Width * 1 / 5, Viewport.Height / 2), 
-                                                        new Vector2(Viewport.Width * 4 / 5, Viewport.Height / 2) };
+                new Vector2(Viewport.Width / 2, Viewport.Height * 1 / 5), 
+                new Vector2(Viewport.Width * 1 / 5, Viewport.Height / 2), 
+                new Vector2(Viewport.Width * 4 / 5, Viewport.Height / 2) };
 
             PlayerLabels = new string[4] { "P1", "P2", "P3", "P4" };
 
@@ -108,6 +108,7 @@ namespace Spectrum.States
 
         public override void Destroy()
         {
+            System.Console.WriteLine("coucou");
             Application.Instance.Drawables.Remove(mBackground);
             Application.Instance.Drawables.Remove(ScoreKeeper);
             Application.Instance.Drawables.Remove(Core);

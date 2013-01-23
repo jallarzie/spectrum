@@ -14,13 +14,12 @@ namespace Spectrum.States
 
                 int nbInputs = InputController.Instance.GetNumberOfAvailableInputs();
 
-                if (nbInputs <= 1)
-                {
+                if (nbInputs <= 1) {
                     SoundPlayer.IncreaseMainGameSongVolume();
-                    return this.ReleasePreviousState();
+                    return new States.Game();
                 }
 
-                return new States.PlayersSelect((Game)(this.ReleasePreviousState()), nbInputs);
+                return new States.PlayersSelect(this, nbInputs);
             });
 
             #if WINDOWS
