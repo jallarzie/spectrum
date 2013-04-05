@@ -102,6 +102,7 @@
     <Compile Include="Library\Paths\User.cs" />
     <Compile Include="Library\States\State.cs" />
     <Compile Include="Library\States\StateMachine.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="States\Lost.cs" />
     <Compile Include="States\Exit.cs" />
     <Compile Include="States\Game.cs" />

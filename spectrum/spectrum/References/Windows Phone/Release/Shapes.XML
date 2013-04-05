@@ -1,0 +1,2692 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Shapes.Phone</name>
+    </assembly>
+    <members>
+        <member name="T:Shapes.Misc.Appearance.BrushMaskExclusion">
+            <summary>
+            Excludes excludes the outer or inner side of a shape from the Brush
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.Appearance.BrushMask">
+            <summary>
+            Derivations of the BrushMask class can modify the appearance and form of a brush line
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.BrushMaskExclusion.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Shapes.Misc.Appearance.BrushMaskExclusion"/> class.
+            </summary>
+            <param name="isOutsideExcluded">if true, the brush is only visible inside of the shape. false does the opposite</param>
+        </member>
+        <member name="T:Shapes.Geometry.Triangle">
+            <summary>
+            a triangle shape
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.Shape">
+            <summary>
+            a geometry which can be filled
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.Drawing">
+            <summary>
+            a geometry which can not be filled (1-Dimensional)
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.ITransformable2D">
+            <summary>
+            Interface which provides direct access to Position, Origin, Scale and Rotation
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.ITransformable2D.Position">
+            <summary>
+            The Position
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.ITransformable2D.Origin">
+            <summary>
+            The Origin
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.ITransformable2D.Scale">
+            <summary>
+            The Scale
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.ITransformable2D.Rotation">
+            <summary>
+            The Rotation
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="F:Shapes.Geometry.Drawing._BorderLength">
+            <summary>
+            The length of the outline
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.#ctor">
+            <summary>
+            creates a drawing
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetDistanceToEdge(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            a test to check for the distance of a point to the nearest edge
+            </summary>
+            <param name="point">the point to check</param>
+            <returns>the distance to the nearest edge</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetDistanceToEdge(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            a test to check for the distance of a point to the nearest edge
+            </summary>
+            <param name="point">the point to check</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+            <returns>the distance to the nearest edge</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetNearestPointOnEdge(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            returns the nearest point on the border of the geometry
+            </summary>
+            <param name="point">the reference point</param>
+            <returns>the nearest point to the reference point</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetNearestPointOnEdge(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            returns the nearest point on the border of the geometry
+            </summary>
+            <param name="point">the reference point</param>
+            <param name="isLocalCoordinate">if true, the given point is handled in local space (will not be transformed). 
+            otherwise it is handled as parent space (global space, if it isn't attatched to another transform).</param>
+            <returns>the nearest point to the reference point</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetPositionFromEdgePath(System.Single)">
+            <summary>
+            Returns a position of the outline of the geometry. t is the distance from the beginning to the position.
+            </summary>
+            <param name="t">a value between 0 and 1</param>
+            <returns>the position at the position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetPositionFromEdgePath(System.Single,System.Boolean)">
+            <summary>
+            Returns a position of the outline of the geometry. t is the distance from the beginning to the position.
+            </summary>
+            <param name="t">a value between 0 and 1</param>
+            <param name="isLocalCoordinate">if true, the given point is handled in local space (will not be transformed). 
+            otherwise it is handled as parent space (global space, if it isn't attatched to another transform).</param>
+            <returns>the position at the position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetEdgePathValueFromPoint(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the distance from the beginning to the given point on the edge.
+            Points which are not part of the outline may cause unexpected results.
+            </summary>
+            <param name="point">the point on the outline of the geometry</param>
+            <returns>a value between 0 and 1</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetEdgePathValueFromPoint(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Returns the distance from the beginning to the given point on the edge.
+            Points which are not part of the outline may cause unexpected results.
+            </summary>
+            <param name="point">the point on the outline of the geometry</param>
+            <param name="isLocalCoordinate">if true, the given point is handled in local space (will not be transformed). 
+            otherwise it is handled as parent space (global space, if it isn't attatched to another transform).</param>
+            <returns>a value between 0 and 1</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetTangent(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            gets a direction Vector which touches the given position witout crossing the outline at that position
+            </summary>
+            <param name="position">the position on the edge. should be part of the outline.</param>
+            <returns>tangent vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetTangent(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            gets a direction Vector which touches the given position witout crossing the outline at that position
+            </summary>
+            <param name="position">the position on the edge. should be part of the outline.</param>
+            <param name="isLocalCoordinate">if true, the given point is handled in local space (will not be transformed). 
+            otherwise it is handled as parent space (global space, if it isn't attatched to another transform).</param>
+            <returns>tangent vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetNormal(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            gets a direction Vector which crosses the outline at the given position with 90°
+            </summary>
+            <param name="position">the position on the edge. should be part of the outline.</param>
+            <returns>normal vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.GetNormal(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            gets a direction Vector which crosses the outline at the given position with 90°
+            </summary>
+            <param name="position">the position on the edge. should be part of the outline.</param>
+            <param name="isLocalCoordinate">if true, the given point is handled in local space (will not be transformed). 
+            otherwise it is handled as parent space (global space, if it isn't attatched to another transform).</param>
+            <returns>normal vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.CallOnChange">
+            <summary>
+            Call this to fire the OnChange event
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.Dispose">
+            <summary>
+            Releases all references inside of the class.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.ToLineStrip">
+            <summary>
+            converts the geometry to a LineStrip. If the Geometry is a Shape, the LineStrip is getting closed
+            </summary>
+            <returns>a line strip object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.ToLineStrip(System.UInt32)">
+            <summary>
+            converts the geometry to a LineStrip. If the Geometry is a Shape, the LineStrip is getting closed
+            </summary>
+            <param name="vertexCount">the amount of vertices</param>
+            <returns>a line strip object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.Clone(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Clones the geometry and sets its position
+            </summary>
+            <param name="position">the position of the cloned object</param>
+            <returns></returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawing.Clone">
+            <summary>
+            Clones the geometry
+            </summary>
+            <returns>a clone with the same type as the geometry</returns>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.Transform">
+            <summary>
+            The transformation and bounding information of the object
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.Position">
+            <summary>
+            The position of the origin in screen space coordinates
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.Origin">
+            <summary>
+            The torsion-point of the bounding in pixels (Vector2.Zero is the left upper corner)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.Scale">
+            <summary>
+            The scaling of the object
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.Rotation">
+            <summary>
+            The rotation of the object
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.Center">
+            <summary>
+            the Center Position of the bounding rectangle around the geometry
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.Width">
+            <summary>
+            the (not transformed) width of the bounding rectangle
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.AbsoluteWidth">
+            <summary>
+            The absolute width of the bounding rectangle (transfomation calculations included)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.Height">
+            <summary>
+            the (not transformed) height of the bounding rectangle
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.AbsoluteHeight">
+            <summary>
+            The absolute height of the bounding rectangle (transfomation calculations included)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawing.BorderLength">
+            <summary>
+            The length of the outline
+            </summary>
+        </member>
+        <member name="E:Shapes.Geometry.Drawing.OnChangeGeometry">
+            <summary>
+            Event is called when the geometry has changed some parameters.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Shape.#ctor">
+            <summary>
+            Base Constructor for Shape
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Shape.IsPointInside(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            a test to check wether a point is inside the Shape
+            </summary>
+            <param name="point">the point to check</param>
+            <returns>true if the point is inside</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Shape.IsPointInside(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            a test to check wether a point is inside the Shape
+            </summary>
+            <param name="point">the point to check</param>
+            <param name="isLocalCoordinate">if true, the given point is handled in local space (will not be transformed). 
+            otherwise it is handled as parent space (global space, if it isn't attatched to another transform).</param>
+            <returns>true if the point is inside</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Shape.IsPointInside(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            a test to check wether a point is inside the Shape
+            </summary>
+            <param name="point">the point to check</param>
+            <returns>true if the point is inside</returns>
+        </member>
+        <member name="T:Shapes.Geometry.ILinedShape">
+            <summary>
+            Interface derives from ILinedGeometry. It is for solid geometry which is defined by lines
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.ILinedGeometry">
+            <summary>
+            Interface providing a Line Enumerator and a transformation
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.ILinedGeometry.GetLines">
+            <summary>
+            Iterates through all Lines of the object
+            </summary>
+            <returns>every line the object contains</returns>
+        </member>
+        <member name="P:Shapes.Geometry.ILinedGeometry.StartPoint">
+            <summary>
+            The global position of the first lines start point
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.ILinedGeometry.Transform">
+            <summary>
+            The Transformation of the geometry
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.ILinedShape.IsPointInside(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Checks wether a given point is inside the shape or not
+            </summary>
+            <param name="point">the point to check in global space</param>
+            <returns>true, if the point is inside the shape</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Triangle.#ctor(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Creates a triangle shape
+            </summary>
+            <param name="corner1">the first corner</param>
+            <param name="corner2">the second corner</param>
+            <param name="corner3">the third corner</param>
+        </member>
+        <member name="M:Shapes.Geometry.Triangle.ChangePoints(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Reinitializes the triangle with new points
+            </summary>
+            <param name="corner1">the first corner</param>
+            <param name="corner2">the second corner</param>
+            <param name="corner3">the third corner</param>
+        </member>
+        <member name="M:Shapes.Geometry.Triangle.GetDistanceToEdge(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            a test to check for the distance of a point to the nearest edge
+            </summary>
+            <param name="point">the point to check</param>
+            <returns>the distance to the nearest edge</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Triangle.Clone">
+            <summary>
+            Clones the Triangle.
+            </summary>
+            <returns>an object with the type Triangle</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Triangle.Dispose">
+            <summary>
+            Releases all references inside of the class.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Triangle.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Triangle.GetLines">
+            <summary>
+            Iterates through all Lines of the object
+            </summary>
+            <returns>every line the object contains</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Triangle.ToLineStrip">
+            <summary>
+            converts the geometry to a LineStrip.
+            </summary>
+            <returns>a line strip object</returns>
+        </member>
+        <member name="P:Shapes.Geometry.Triangle.StartPoint">
+            <summary>
+            The global position of the first lines start point
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Triangle.LineCount">
+            <summary>
+            The amount of Lines describing the triangle (3)
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.LineList">
+            <summary>
+            A LineList is a container for Lines which are not connected
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.LineList.GetLines">
+            <summary>
+            Iterates through all Lines of the LineList
+            </summary>
+            <returns>every line the LineList contains</returns>
+        </member>
+        <member name="M:Shapes.Geometry.LineList.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.LineList.Clone">
+            <summary>
+            Clones the LineList.
+            </summary>
+            <returns>an object with the type LineList</returns>
+        </member>
+        <member name="P:Shapes.Geometry.LineList.Lines">
+            <summary>
+            All Lines stored in this LineList
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.LineList.StartPoint">
+            <summary>
+            The global position of the first lines start point
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.LineList.LineCount">
+            <summary>
+            The amount of Lines in this LineList
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.SpriteShape">
+            <summary>
+            A Shape created from a texture
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.#ctor(System.String,Shapes.Geometry.IColorCondition)">
+            <summary>
+            Creates a new SpriteShape
+            </summary>
+            <param name="textureAssetName">the name of the Texture</param>
+            <param name="condition">pass a 'AlphaThreshold' or 'ColorMap' object here</param>
+            <remarks>The asset name is used instead of the texture itself to be able to easily save and load the shape from xml data</remarks>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.#ctor(System.String,System.Nullable{Microsoft.Xna.Framework.Rectangle},Shapes.Geometry.IColorCondition)">
+            <summary>
+            Creates a new SpriteShape
+            </summary>
+            <param name="textureAssetName">the name of the Texture</param>
+            <param name="sourceRect">a rectangle which section of the texture is used for the shape (pass 'null' for the entire texture)</param>
+            <param name="condition">pass a 'AlphaThreshold' or 'ColorMap' object here</param>
+            <remarks>The asset name is used instead of the texture itself to be able to easily save and load the shape from xml data</remarks>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.GetDistanceToEdge(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            a test to check for the distance of a point to the nearest edge
+            </summary>
+            <param name="point">the point to check</param>
+            <returns>the distance to the nearest edge</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.Clone">
+            <summary>
+            Clones the SpriteShape.
+            </summary>
+            <returns>an object with the type SpriteShape</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.GetTangent(Microsoft.Xna.Framework.Vector2,System.Int32[])">
+            <summary>
+            gets a direction Vector which touches the given position witout crossing the outline at that position
+            </summary>
+            <param name="position">the position on the edge. should be part of the outline.</param>
+            <param name="steps">the distances from the position along the outline which is used to compute the tangent. by default it is {1, 3}</param>
+            <returns>tangent vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.GetTangent(Microsoft.Xna.Framework.Vector2,System.Boolean,System.Int32[])">
+            <summary>
+            gets a direction Vector which touches the given position witout crossing the outline at that position
+            </summary>
+            <param name="position">the position on the edge. should be part of the outline.</param>
+            <param name="isLocalCoordinate">if true, the given point is handled in local space (will not be transformed). 
+            otherwise it is handled as parent space (global space, if it isn't attatched to another transform).</param>
+            <param name="steps">the distances from the position along the outline which is used to compute the tangent. by default it is {1, 3}</param>
+            <returns>tangent vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.GetNormal(Microsoft.Xna.Framework.Vector2,System.Int32[])">
+            <summary>
+            gets a direction Vector which crosses the outline at the given position with 90°
+            </summary>
+            <param name="position">the position on the edge. should be part of the outline.</param>
+            <param name="steps">the distances from the position along the outline which is used to compute the normal. by default it is {1, 3}</param>
+            <returns>normal vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.GetNormal(Microsoft.Xna.Framework.Vector2,System.Boolean,System.Int32[])">
+            <summary>
+            gets a direction Vector which crosses the outline at the given position with 90°
+            </summary>
+            <param name="position">the position on the edge. should be part of the outline.</param>
+            <param name="isLocalCoordinate">if true, the given point is handled in local space (will not be transformed). 
+            otherwise it is handled as parent space (global space, if it isn't attatched to another transform).</param>
+            <param name="steps">the distances from the position along the outline which is used to compute the normal. by default it is {1, 3}</param>
+            <returns>normal vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.Dispose">
+            <summary>
+            Releases all references inside of the class.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.SpriteShape.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="P:Shapes.Geometry.SpriteShape.Texture">
+            <summary>
+            The texture which is used to create the shape
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.SpriteShape.SourceRect">
+            <summary>
+            The SourceRectangle of the Texture
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.SpriteShape.TextureAssetName">
+            <summary>
+            The asset name of the texture. Set it to change the texture.
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.GeometryTemplates">
+            <summary>
+            a static class which can be used to create special shapes and drawings
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.GeometryTemplates.CreateStar(System.Int32,System.Single,System.Single,System.Single)">
+            <summary>
+            Creates a star-LineStrip
+            </summary>
+            <param name="rayCount">the number of cusps</param>
+            <param name="innerRadius">the radius of the concave cusps</param>
+            <param name="outerRadius">the radius of the convex cusps</param>
+            <param name="rotation">the rotation in radians (0 = east)</param>
+            <returns>a star LineStrip</returns>
+        </member>
+        <member name="M:Shapes.Misc.GeometryTemplates.CreateNGon(System.Int32,System.Single,System.Single)">
+            <summary>
+            Creates a convex LineStrip with n edges with the same length describing a circle
+            </summary>
+            <param name="cornerCount">the number of corners / edges</param>
+            <param name="radius">the distance from center of each corner</param>
+            <param name="rotation">the rotation in radians (0 = east)</param>
+            <returns>an N-Gon LineStrip</returns>
+        </member>
+        <member name="M:Shapes.Misc.GeometryTemplates.CreateNGramm(System.Int32,System.Single,System.Single)">
+            <summary>
+            Creates a star LineStrip where one edge connects two cusps (like a pentagramm, heptagramm, ...)
+            </summary>
+            <param name="cornerCount">the number of cusps (must be odd)</param>
+            <param name="radius">the distance from center of each corner</param>
+            <param name="rotation">the rotation in radians (0 = east)</param>
+            <returns>an N-Gramm LineStrip</returns>
+        </member>
+        <member name="M:Shapes.Misc.GeometryTemplates.CreateArrow(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single)">
+            <summary>
+            Creates an arrow LineStrip
+            </summary>
+            <param name="startPoint">the position of the arrow's back</param>
+            <param name="endPoint">the position to where the arrow is pointing</param>
+            <param name="barThickness">the thickness of the bar behind the spike</param>
+            <param name="spikeLength">the length of the spike</param>
+            <param name="spikeWidth">the width at the back of the spike</param>
+            <returns>an arrow LineStrip</returns>
+        </member>
+        <member name="M:Shapes.Misc.GeometryTemplates.CreateKochSnowflake(System.Single,System.Int32,System.Single)">
+            <summary>
+            Creates a Koch Snowflake fractal LineStrip
+            </summary>
+            <param name="radius">the distance from center of the first 6 corners</param>
+            <param name="iterations">the number of iterations (the more, the slower. 4 is enough in most cases)</param>
+            <param name="rotation">the rotation in radians (0 = east)</param>
+            <returns>a Koch Snowflake fractal polygon</returns>
+        </member>
+        <member name="M:Shapes.Misc.GeometryTemplates.CreateRoundedRect(System.Single,System.Single,System.Single)">
+            <summary>
+            Creates a rectangle with rounded corners.
+            </summary>
+            <param name="width">the width of the rectangle</param>
+            <param name="height">the height of the rectangle</param>
+            <param name="radius">the radius of one corner-quater-circle</param>
+            <returns>a ShapeComposition</returns>
+        </member>
+        <member name="M:Shapes.Misc.GeometryTemplates.CreateSmiley(System.Single)">
+            <summary>
+            Creates a Smiley-ShapeComposition =)
+            </summary>
+            <param name="radius">the Radius of the Smiley</param>
+            <returns>=)</returns>
+        </member>
+        <member name="M:Shapes.Misc.GeometryTemplates.CreateYinYang(System.Single,System.Single,System.Single)">
+            <summary>
+            Creates a Yin and Yang ShapeComposition
+            </summary>
+            <param name="radius">the radius of the yin and yang circle</param>
+            <param name="innerPointRadius">the radius of the points inside yin or yang</param>
+            <param name="outlineThickness">the thickness of the ring around the symbol</param>
+            <returns>a Yin and Yang ShapeComposition</returns>
+        </member>
+        <member name="T:Shapes.Misc.Appearance.Brush">
+            <summary>
+            A Brush is used to Draw Borders of Drawings or Shapes.
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Brush.CreateFallOffBrush(System.Single,System.Single)">
+            <summary>
+            Creates a new brush and adds a FallOff to it.
+            </summary>
+            <param name="radius">The radius of the brush tip.</param>
+            <param name="fallOff">The FallOff defines, what distance at the outline of the brush tip is used to fade out into full transparency.</param>
+            <returns>the created brush</returns>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Brush.CreateFallOffBrush(System.Single,System.Single,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Creates a new brush and adds a FallOff to it.
+            </summary>
+            <param name="radius">The radius of the brush tip.</param>
+            <param name="fallOff">The FallOff defines, what distance at the outline of the brush tip is used to fade out into full transparency.</param>
+            <param name="color">the color of the brush</param>
+            <returns>the created brush</returns>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Brush.#ctor(System.Single)">
+            <summary>
+            Creates a new Brush to draw ShapeBorders with
+            </summary>
+            <param name="radius">the radius in pixels of the brush tip</param>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Brush.#ctor(System.Single,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Creates a new Brush to draw ShapeBorders with
+            </summary>
+            <param name="radius">the radius in pixels of the brush tip</param>
+            <param name="color">the color of the brush</param>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Brush.AddMask(Shapes.Misc.Appearance.BrushMask)">
+            <summary>
+            Adds a mask. A mask inherits BrushMask. It is possible to use more than one mask.
+            </summary>
+            <param name="mask">The mask to add.</param>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Brush.GetTextureOffset">
+            <summary>
+            Gets the offset for textures generated with this brush. Use (MyShape.Position - MyBrush.GetTextureOffset) to place the texture correct.
+            </summary>
+            <returns>the offset vector (positive values)</returns>
+        </member>
+        <member name="P:Shapes.Misc.Appearance.Brush.StandardBrush">
+            <summary>
+            A Brush which is used, when no Brush is defined for drawing
+            </summary>
+        </member>
+        <member name="P:Shapes.Misc.Appearance.Brush.Radius">
+            <summary>
+            The radius of the brush tip
+            </summary>
+        </member>
+        <member name="P:Shapes.Misc.Appearance.Brush.Diameter">
+            <summary>
+            The diameter is the whole size of the brush tip. It is 2 * radius.
+            </summary>
+        </member>
+        <member name="P:Shapes.Misc.Appearance.Brush.Color">
+            <summary>
+            The Color of the Brush
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.Transformation2D">
+            <summary>
+            Represents a 2D-Transformation with Bounding-Rectangle information
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.#ctor">
+            <summary>
+            Creates a new BoundingRectangle with default values
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.#ctor(Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+            <summary>
+            Creates a new Bounding Rectangle
+            </summary>
+            <param name="position">the Position of the left upper corner of the rectangle</param>
+            <param name="width">the width of the rectangle</param>
+            <param name="height">the height of the rectangle</param>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.#ctor(Microsoft.Xna.Framework.Vector2,System.Single,System.Single,Microsoft.Xna.Framework.Vector2,Shapes.Geometry.Angle,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Creates a new Bounding Rectangle
+            </summary>
+            <param name="position">the Position of the left upper corner of the rectangle</param>
+            <param name="width">the width of the rectangle</param>
+            <param name="height">the height of the rectangle</param>
+            <param name="origin">the position of the origin</param>
+            <param name="rotation">the rotation</param>
+            <param name="scale">the scale factor</param>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.Intersects(Shapes.Geometry.Transformation2D)">
+            <summary>
+            Determines wether a specified bounding rectangle ( = Transformation2D) intersects with this Transformation2D
+            </summary>
+            <param name="rect">the Rectangle to check</param>
+            <returns>true if the rectangles intersecting or containing the other</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.Contains(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Checks wether a point is inside or at an edge of the rectangle
+            </summary>
+            <param name="point">the point to check</param>
+            <returns>true if the point is inside</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.TransformLocalToGlobal(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Transforms the given point from local transformation coordinates to screen space coordinates
+            </summary>
+            <param name="position">the local position</param>
+            <returns>the global position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.TransformGlobalToLocal(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Transforms the given point from screen space coordinates to local transformation coordinates
+            </summary>
+            <param name="position">the global position</param>
+            <returns>the local position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.GetBoundingRectangle">
+            <summary>
+            Gets the bounding rectangle of the transformation which covers the whole transformed object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.GetRectangleWithoutTransformation">
+            <summary>
+            Gets the rectangle of the object without position, scale or rotation 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.SetDimension(System.Single,System.Single)">
+            <summary>
+            Sets the Width and Height. Use this method only if you really know what you are doing! 
+            </summary>
+            <param name="width">the new width of the not-transformed bounding</param>
+            <param name="height">the new height of the not-transformed bounding</param>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.ToString">
+            <summary>
+            returns the values of the transformation as a string
+            </summary>
+            <returns>the values of the rectangle as a string</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.Clone">
+            <summary>
+            Clones the Transformation2D
+            </summary>
+            <returns>a new object of the type Transformation2D</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Transformation2D.CopyFrom(Shapes.Geometry.Transformation2D)">
+            <summary>
+            fills the Transformation data with values from another Transformation2D instance
+            </summary>
+            <param name="other">the object to copy the values from</param>
+        </member>
+        <member name="E:Shapes.Geometry.Transformation2D.OnChange">
+            <summary>
+            Event is called when the transformation is changed
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Width">
+            <summary>
+            Get the width of the Bounding-Area (without transformation)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Height">
+            <summary>
+            Get the height of the Bounding-Area (without transformation)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.AbsoluteWidth">
+            <summary>
+            The absolute width of the Bounding-Area
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.AbsoluteHeight">
+            <summary>
+            The absolute height of the Bounding-Area
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Position">
+            <summary>
+            The position of the Origin in global coordinates
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Origin">
+            <summary>
+            The torsion-point of the bounding in pixels (Vector2.Zero is the left upper corner)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Rotation">
+            <summary>
+            The orientation of the bounding in radians
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Scale">
+            <summary>
+            the scale of the bounding (Vector2.One is original size)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Center">
+            <summary>
+            The position of the Center of the Rectangle
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Up">
+            <summary>
+            Get the vertical position of the most upper corner
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Down">
+            <summary>
+            Get the vertical position of the most lower corner
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Left">
+            <summary>
+            Get the horizontal position of the corner on the most left
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Transformation2D.Right">
+            <summary>
+            Get the horizontal position of the corner on the most right
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.CollisionEventArgs">
+            <summary>
+            The EventArgs of a collision holding the active and passive geometry
+            </summary>
+        </member>
+        <member name="P:Shapes.Misc.CollisionEventArgs.ActiveGeometry">
+            <summary>
+            the active geometry, which has caused the detection test
+            </summary>
+        </member>
+        <member name="P:Shapes.Misc.CollisionEventArgs.PassiveGeometry">
+            <summary>
+            the passive geometry which collides with the active one
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.CollisionDetector2D">
+            <summary>
+            A manager class to test collisions between 2D geometry
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.#ctor">
+            <summary>
+            creates a new CollisionDetector2d
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.#ctor(System.Single)">
+            <summary>
+            creates a new CollisionDetector2d
+            </summary>
+            <param name="accuracy">The accuracy of the collision tests. Use 1.0 for a per-pixel test (the higher the less accurate)</param>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.Add(Shapes.Geometry.Drawing,System.Boolean,System.Boolean)">
+            <summary>
+            introduces a shape to the collision detector
+            </summary>
+            <param name="geometry">a drawing or shape to add</param>
+            <param name="isActive">true, if the geometry should do active tests if it collides with something passive</param>
+            <param name="isPassive">true, if the geometry is a collidable object in the level</param>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.Remove(Shapes.Geometry.Drawing)">
+            <summary>
+            Removes a geometry from the collision detector
+            </summary>
+            <param name="geometry">the drawing or shape to remove</param>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.ChangeMode(Shapes.Geometry.Drawing,System.Boolean,System.Boolean)">
+            <summary>
+            Changes the active- or passiveness of a geometry
+            </summary>
+            <param name="geometry">the drawing or shape to change</param>
+            <param name="isActive">true, if the geometry should do active tests if it collides with something passive</param>
+            <param name="isPassive">true, if the geometry is a collidable object in the level</param>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.SetupGeometry(Shapes.Geometry.Drawing,System.Boolean,System.Boolean)">
+            <summary>
+            Adds the geometry to the active or passive geometry list
+            </summary>
+            <param name="geometry">the drawing or shape</param>
+            <param name="isActive">true, if the geometry should do active tests if it collides with something passive</param>
+            <param name="isPassive">true, if the geometry is a collidable object in the level</param>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.Update">
+            <summary>
+            Update checks wether any active geometry collides with any passive geometry
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.CheckCollision">
+            <summary>
+            Checks wether any active geometry collides with any passive geometry.
+            Calls the CollisionDetected callback when something collides.
+            </summary>
+            <returns>returns true when anything collides with anything else.</returns>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.Delete">
+            <summary>
+            Releases all geometry references
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.DrawingDrawingIntersecting(Shapes.Geometry.Drawing,Shapes.Geometry.Drawing)">
+            <summary>
+            Does a test if a drawing collides with another drawing
+            </summary>
+            <param name="drawingA">one of the drawings to test</param>
+            <param name="drawingB">the other drawing to test</param>
+            <returns>true, if they collide</returns>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.DrawingDrawingIntersecting(Shapes.Geometry.Drawing,Shapes.Geometry.Drawing,System.Single)">
+            <summary>
+            Does a test if a drawing collides with another drawing
+            </summary>
+            <param name="drawingA">one of the drawings to test</param>
+            <param name="drawingB">the other drawing to test</param>
+            <param name="accuracy">The accuracy of the test. Use 1.0 for a per-pixel test (the higher the value the less accurate)</param>
+            <returns>true, if they collide</returns>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.DrawingShapeIntersecting(Shapes.Geometry.Drawing,Shapes.Geometry.Shape)">
+            <summary>
+            Does a test if a drawing collides with a shape
+            </summary>
+            <param name="drawing">the drawing to test</param>
+            <param name="shape">the shape to test</param>
+            <returns>true, if they collide</returns>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.DrawingShapeIntersecting(Shapes.Geometry.Drawing,Shapes.Geometry.Shape,System.Single)">
+            <summary>
+            Does a test if a drawing collides with a shape
+            </summary>
+            <param name="drawing">the drawing to test</param>
+            <param name="shape">the shape to test</param>
+            <param name="accuracy">The accuracy of the test. Use 1.0 for a per-pixel test (the higher the value the less accurate)</param>
+            <returns>true, if they collide</returns>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.ShapeShapeIntersecting(Shapes.Geometry.Shape,Shapes.Geometry.Shape)">
+            <summary>
+            Does a test if a shape collides with another shape
+            </summary>
+            <param name="shapeA">one of the shapes to test</param>
+            <param name="shapeB">the other shape to test</param>
+            <returns>true, if they collide</returns>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.ShapeShapeIntersecting(Shapes.Geometry.Shape,Shapes.Geometry.Shape,System.Single)">
+            <summary>
+            Does a test if a shape collides with another shape
+            </summary>
+            <param name="shapeA">one of the shapes to test</param>
+            <param name="shapeB">the other shape to test</param>
+            <param name="accuracy">The accuracy of the test. Use 1.0f for a per-pixel test (the higher the value the less accurate)</param>
+            <returns>true, if they collide</returns>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.CircleCircleIntersection(Shapes.Geometry.Ellipse,Shapes.Geometry.Ellipse)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.CircleLineIntersection(Shapes.Geometry.Ellipse,Shapes.Geometry.Line)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.CircleLinedGeometryIntersection(Shapes.Geometry.Ellipse,Shapes.Geometry.ILinedGeometry)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.CircleLinedShapeIntersection(Shapes.Geometry.Ellipse,Shapes.Geometry.ILinedShape)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.RectRectIntersection(Shapes.Geometry.Rect,Shapes.Geometry.Rect)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.RectCircleIntersection(Shapes.Geometry.Rect,Shapes.Geometry.Ellipse)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.RectLinedShapeIntersection(Shapes.Geometry.Rect,Shapes.Geometry.ILinedShape)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.RectLinedGeometryIntersection(Shapes.Geometry.Rect,Shapes.Geometry.ILinedGeometry)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.RectLineIntersection(Shapes.Geometry.Rect,Shapes.Geometry.Line)">
+            <summary>
+            Checks wether a Rectangle intersects with a Line by using the Liang-Barsky line clipping algorithm  
+            </summary>
+            <param name="rect"></param>
+            <param name="line"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.LineLineIntersection(Shapes.Geometry.Line,Shapes.Geometry.Line)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.LinedGeometryLineIntersection(Shapes.Geometry.ILinedGeometry,Shapes.Geometry.Line)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.LineGeometryLinedGeometryIntersection(Shapes.Geometry.ILinedGeometry,Shapes.Geometry.ILinedGeometry)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.LinedShapeLineIntersection(Shapes.Geometry.ILinedShape,Shapes.Geometry.Line)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.LinedShapeLinedGeometryIntersection(Shapes.Geometry.ILinedShape,Shapes.Geometry.ILinedGeometry)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.CollisionDetector2D.LinedShapeLinedShapeIntersection(Shapes.Geometry.ILinedShape,Shapes.Geometry.ILinedShape)">
+            <summary>
+            Checks wether the two objects are intersecting, touching or one is inside of the other
+            </summary>
+        </member>
+        <member name="E:Shapes.Misc.CollisionDetector2D.CollisionDetected">
+            <summary>
+            This event is called when a collision has been detected. 
+            If there are more than one different passive objects colliding at the same time with the same active object, 
+            only the first detected collision will call this event
+            </summary>
+        </member>
+        <member name="P:Shapes.Misc.CollisionDetector2D.Accuracy">
+            <summary>
+            The accuracy of the collision tests. Use 1.0 for a per-pixel test (the higher the less accurate)
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.SplinePoly">
+            <summary>
+            this Shape describes a filled curve using the quadratic B-Sline algorithm
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoly.#ctor(Shapes.Geometry.Spline)">
+            <summary>
+             Creates a new quadratic B-Spline Polygon
+            </summary>
+            <param name="spline">the description of the curve (note: some points may change it's position a little to avoid some errors) </param>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoly.Clone">
+            <summary>
+            Clones the Spline
+            </summary>
+            <returns>
+            a clone of the type QuadBSplinePoly
+            </returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoly.Dispose">
+            <summary>
+            Releases all references inside of the class.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoly.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="P:Shapes.Geometry.SplinePoly.Spline">
+            <summary>
+            The description of the curve
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.Dot">
+            <summary>
+            a dot drawing
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Dot.#ctor(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            creates a dot drawing
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Dot.Clone">
+            <summary>
+            Clones the Dot.
+            </summary>
+            <returns>an object with the type Dot</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Dot.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="T:Shapes.Misc.Appearance.FillTexture">
+            <summary>
+            A Fill Object whith a texture
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.Appearance.Fill">
+            <summary>
+            Base class for Fill objects.
+            Any Fill object can be passed to the TextureGenerator to give your shapes a better look
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Fill.#ctor(System.Single,System.Single)">
+            <summary>
+            Base Constructor for Fill
+            </summary>
+            <param name="width">the width of the bounds</param>
+            <param name="height">the height of the bounds</param>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Fill.GetColorAt(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Gets the color at the given point
+            </summary>
+            <param name="position">the position in the local space of the holding shape</param>
+            <returns>the color at the given point</returns>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.Fill.GetColorAt(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            Mehtod to evaluate the color at the given position
+            </summary>
+            <param name="position">the position in local space of the fill</param>
+            <returns>the color at the given point</returns>
+        </member>
+        <member name="P:Shapes.Misc.Appearance.Fill.Transform">
+            <summary>
+            The transformation of the fill (like texture-coordinates)
+            </summary>
+        </member>
+        <member name="P:Shapes.Misc.Appearance.Fill.FillOption">
+            <summary>
+            The option which indicates the behaviour outside of the Transforms bounds
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.FillTexture.#ctor(System.String)">
+            <summary>
+            Creates a new FillTexture
+            </summary>
+            <param name="textureAssetName">the asset name of the texture to use</param>
+            <remarks>The asset name is used instead of the texture itself to be able to easily save and load the shape from xml data</remarks>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.FillTexture.GetColorAt(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            Mehtod to evaluate the color at the given position
+            </summary>
+            <param name="position">the position in local space of the fill</param>
+            <returns>the color at the given point</returns>
+        </member>
+        <member name="T:Shapes.Misc.Appearance.FillOption">
+            <summary>
+            Indicates what should happen if the position to fill is outside the fill's bounds
+            </summary>
+        </member>
+        <member name="F:Shapes.Misc.Appearance.FillOption.Transparent">
+            <summary>displays everything outside of the bounds transparent</summary>
+        </member>
+        <member name="F:Shapes.Misc.Appearance.FillOption.Repeat">
+            <summary>the fill will be repeated outside of the bounds</summary>
+        </member>
+        <member name="T:Shapes.Geometry.Drawings.SplineSegment">
+            <summary>
+            A spline part consisting of three points describing a curve.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Drawings.SplineSegment.#ctor(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Creates a new SplineSegment instance
+            </summary>
+            <param name="startPosition">the position of the start point</param>
+            <param name="handlerPosition">the position of the handler point which is never crossed</param>
+            <param name="endPosition">the position of the end point</param>
+        </member>
+        <member name="M:Shapes.Geometry.Drawings.SplineSegment.#ctor(Shapes.Geometry.SplinePoint,Shapes.Geometry.SplinePoint,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Creates a new SplineSegment instance
+            </summary>
+            <param name="startPoint">the position of the start point</param>
+            <param name="handlerPoint">the position of the handler point which is never crossed</param>
+            <param name="endPoint">the position of the end point</param>
+        </member>
+        <member name="M:Shapes.Geometry.Drawings.SplineSegment.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawings.SplineSegment.GetTangent(System.Single)">
+            <summary>
+            gets a direction Vector which touches the given position witout crossing the outline at that position.
+            </summary>
+            <param name="t">the edge-path-value where the point of interest lies.</param>
+            <returns>the tangent direction</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawings.SplineSegment.GetNormal(System.Single)">
+            <summary>
+            gets a direction Vector which crosses the outline at the given position with 90°
+            </summary>
+            <param name="t">the edge-path-value where the point of interest lies.</param>
+            <returns>the normal direction</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Drawings.SplineSegment.Clone">
+            <summary>
+            Clones the SplineSegment
+            </summary>
+            <returns>a clone this SplineSegment</returns>
+        </member>
+        <member name="P:Shapes.Geometry.Drawings.SplineSegment.StartPoint">
+            <summary>
+            The Point which defines the start of the segment.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawings.SplineSegment.EndPoint">
+            <summary>
+            The Point which defines the end og the segment.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawings.SplineSegment.HandlerPoint">
+            <summary>
+            The Point which defines the handler which the curve does not cross.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawings.SplineSegment.StartPosition">
+            <summary>
+            The Position of the Start of the segment (can be different to StartPoint, if it is also a handler).
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawings.SplineSegment.EndPosition">
+            <summary>
+            The Position of the End of the segment (can be different to EndPoint, if it is also a handler).
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawings.SplineSegment.LineStripAproximation">
+            <summary>
+            A LineStrip which is an aproximation to the segment. It is needed to evaluate some things like the BorderLength (not accurate!).
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Drawings.SplineSegment.AproximationVertexCount">
+            <summary>
+            The number of vertices used to generate the LineStripAproximation. If a new value is set here, a new LineStrip is created.
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.Serialization.TryParseDelegate`1">
+            <summary>
+            Delegate for a common TryParse method
+            </summary>
+            <typeparam name="T">the type to parse</typeparam>
+            <param name="input">the string to parse</param>
+            <param name="result">the value which the input-string contained</param>
+            <returns>true, if the parsing process was successful, otherwise false</returns>
+        </member>
+        <member name="T:Shapes.Misc.Serialization.ParseHelper">
+            <summary>
+            A helper class with some custom parse methods
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.TryParse(System.String,Microsoft.Xna.Framework.Vector3@)">
+            <summary>
+            Tries to parse a Vector3
+            </summary>
+            <param name="input">the string to parse</param>
+            <param name="result">the value which the input-string contained</param>
+            <returns>true, if the parsing process was successful, otherwise false</returns>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.UnParse(Microsoft.Xna.Framework.Vector3)">
+            <summary>
+            writes all relevant values to a string which can be parsed by ParseHelper.TryParse()
+            </summary>
+            <param name="self">the container of the extension</param>
+            <returns>the string which contains the values</returns>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.TryParse(System.String,Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            Tries to parse a Vector2
+            </summary>
+            <param name="input">the string to parse</param>
+            <param name="result">the value which the input-string contained</param>
+            <returns>true, if the parsing process was successful, otherwise false</returns>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.UnParse(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            writes all relevant values to a string which can be parsed by ParseHelper.TryParse()
+            </summary>
+            <param name="self">the container of the extension</param>
+            <returns>the string which contains the values</returns>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.ParseRectangle(System.String)">
+            <summary>
+            Parses a Rectangle
+            </summary>
+            <param name="input">the string to parse</param>
+            <returns>the value which the input-string contained</returns>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.TryParse(System.String,Microsoft.Xna.Framework.Rectangle@)">
+            <summary>
+            Tries to parse a Rectangle
+            </summary>
+            <param name="input">the string to parse</param>
+            <param name="result">the value which the input-string contained</param>
+            <returns>true, if the parsing process was successful, otherwise false</returns>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.UnParse(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            writes all relevant values to a string which can be parsed by ParseHelper.TryParse()
+            </summary>
+            <param name="self">the container of the extension</param>
+            <returns>the string which contains the values</returns>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.TryParse(System.String,Microsoft.Xna.Framework.Color@)">
+            <summary>
+            Tries to parse a Color
+            </summary>
+            <param name="input">the string to parse</param>
+            <param name="result">the value which the input-string contained</param>
+            <returns>true, if the parsing process was successful, otherwise false</returns>
+        </member>
+        <member name="M:Shapes.Misc.Serialization.ParseHelper.UnParse(Microsoft.Xna.Framework.Color)">
+            <summary>
+            writes all relevant values to a string which can be parsed by ParseHelper.TryParse()
+            </summary>
+            <param name="self">the container of the extension</param>
+            <returns>the string which contains the values</returns>
+        </member>
+        <member name="T:Shapes.Geometry.Angle">
+            <summary>
+            The Angle Struct represents an Angle based on a radian value.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.CreateFromDegree(System.Single)">
+            <summary>
+            Creates an <see cref="T:Shapes.Geometry.Angle"/> from degree.
+            </summary>
+            <param name="degree">The degree.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.CreateFromVector(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Creates an <see cref="T:Shapes.Geometry.Angle"/> from a direction vector.
+            </summary>
+            <param name="direction">The direction.</param>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.#ctor(System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Shapes.Geometry.Angle"/> struct.
+            </summary>
+            <param name="radians">The radians.</param>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.GetDirectionVector">
+            <summary>
+            Gets the direction vector, which is a normalized vector pointing to the direction of this angle.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.SetDirectionVector(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Sets the Angle by using a direction vector.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.RotateVector(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Rotates the given Vector around the zero point
+            </summary>
+            <param name="vector">the vector to rotate</param>
+            <returns>the rotated vector</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.op_Addition(Shapes.Geometry.Angle,Shapes.Geometry.Angle)">
+            <summary>
+            Implements the operator + for two angles.
+            </summary>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.op_Addition(Shapes.Geometry.Angle,System.Single)">
+            <summary>
+            Implements the operator + for an angle and a float which represents radians.
+            </summary>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.op_Subtraction(Shapes.Geometry.Angle,Shapes.Geometry.Angle)">
+            <summary>
+            Implements the operator - for two angles.
+            </summary>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.op_Subtraction(Shapes.Geometry.Angle,System.Single)">
+            <summary>
+            Implements the operator - for an angle and a float which represents radians.
+            </summary>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.op_Multiply(Shapes.Geometry.Angle,System.Single)">
+            <summary>
+            Implements the operator *.
+            </summary>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.op_Division(Shapes.Geometry.Angle,System.Single)">
+            <summary>
+            Implements the operator /.
+            </summary>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.op_Explicit(Shapes.Geometry.Angle)~System.Single">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Shapes.Geometry.Angle"/> to <see cref="T:System.Single"/>.
+            </summary>
+            <param name="a">the angle.</param>
+            <returns>The Radians of a.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Angle.op_Implicit(System.Single)~Shapes.Geometry.Angle">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Single"/> to <see cref="T:Shapes.Geometry.Angle"/>.
+            </summary>
+            <param name="b">The value in radians.</param>
+            <returns>The angle with b as radians.</returns>
+        </member>
+        <member name="P:Shapes.Geometry.Angle.Radians">
+            <summary>
+            Gets or sets the radians, which is a value between -PI and +PI.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Angle.ClockwiseRadians">
+            <summary>
+            Gets or sets the clockwise (inverted) radians. Spritebatch.Draw() for example needs this value.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Angle.Degree">
+            <summary>
+            Gets or sets the degree.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Angle.ClockwiseDegree">
+            <summary>
+            Gets or sets the clockwise (inverted) degree.
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.TextureGenerator">
+            <summary>
+            A class to create textures (the class is partial so you may extend it)
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.#ctor(Microsoft.Xna.Framework.Graphics.GraphicsDevice)">
+            <summary>
+            creates a new TextureGenerator object.
+            </summary>
+            <param name="device">the GraphicsDevice of the game</param>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryFilled(Shapes.Geometry.Shape)">
+            <summary>
+            Fills the Shape with a Color and returns it as a Texture2D
+            </summary>
+            <param name="geometry">the shape to draw</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryFilled(Shapes.Geometry.Shape,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Fills the Shape with a Color and returns it as a Texture2D
+            </summary>
+            <param name="geometry">the shape to draw</param>
+            <param name="color">the fill color</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryFilled(Shapes.Geometry.Shape,Shapes.Misc.Appearance.Fill)">
+            <summary>
+            Fills the Shape with a Color and returns it as a Texture2D
+            </summary>
+            <param name="geometry">the shape to draw</param>
+            <param name="fill">the fill</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryBorder(Shapes.Geometry.Drawing)">
+            <summary>
+            Creates the border along the edges of the Shape with a Brush and returns it as a Texture2D
+            </summary>
+            <param name="geometry">the drawing or shape to draw</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryBorder(Shapes.Geometry.Drawing,Shapes.Misc.Appearance.Brush)">
+            <summary>
+            Creates the border along the edges of the Shape with a Brush and returns it as a Texture2D
+            </summary>
+            <param name="geometry">the drawing or shape to draw</param>
+            <param name="brush">the brush for the border</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryFilledWithBorder(Shapes.Geometry.Shape,Microsoft.Xna.Framework.Color)">
+            <summary>
+            Creates a filled Texture and a Border of the Shape and combinds both to a single Texture
+            </summary>
+            <param name="geometry">the shape to draw</param>
+            <param name="fillColor">the fill color</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryFilledWithBorder(Shapes.Geometry.Shape,Shapes.Misc.Appearance.Fill)">
+            <summary>
+            Creates a filled Texture and a Border of the Shape and combinds both to a single Texture
+            </summary>
+            <param name="geometry">the shape to draw</param>
+            <param name="fill">the fill</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryFilledWithBorder(Shapes.Geometry.Shape,Microsoft.Xna.Framework.Color,Shapes.Misc.Appearance.Brush)">
+            <summary>
+            Creates a filled Texture and a Border of the Shape and combinds both to a single Texture
+            </summary>
+            <param name="geometry">the shape to draw</param>
+            <param name="fillColor">the fill color</param>
+            <param name="brush">the brush for the border</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.GeometryFilledWithBorder(Shapes.Geometry.Shape,Shapes.Misc.Appearance.Fill,Shapes.Misc.Appearance.Brush)">
+            <summary>
+            Creates a filled Texture and a Border of the Shape and combinds both to a single Texture
+            </summary>
+            <param name="geometry">the shape to draw</param>
+            <param name="fill">the fill</param>
+            <param name="brush">the brush for the border</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="M:Shapes.Misc.TextureGenerator.CombineTwoTexturesByPixel(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Point)">
+            <summary>
+            Combines two Textures in a slow CPU algorithm. It is better than a drawtarget because there are no alpha channel bugs.
+            </summary>
+            <param name="below">the first below</param>
+            <param name="belowPosition">the position of the first texture</param>
+            <param name="above">the second texture</param>
+            <param name="abovePosition">the position of the second texture</param>
+            <returns>the generated texture</returns>
+        </member>
+        <member name="P:Shapes.Misc.TextureGenerator.GraphicsDevice">
+            <summary>
+            The graphics device which is used for the textures
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.IColorCondition">
+            <summary>
+            The interface for helper objects to define a SpriteShape
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.IColorCondition.CheckColorCondition(Microsoft.Xna.Framework.Color@)">
+            <summary>
+            Method is called from the SpriteShape class to check if a pixel is part of the shape or not
+            </summary>
+            <param name="color">the color of the pixel to check</param>
+            <returns>true, if the pixel is part of the SpriteShape</returns>
+        </member>
+        <member name="M:Shapes.Geometry.IColorCondition.GetTypeName">
+            <summary>
+            This method is needed for Serialization to have a pregnant identifier
+            </summary>
+            <returns>the name for serialization</returns>
+        </member>
+        <member name="T:Shapes.Geometry.AlphaThreshold">
+            <summary>
+            An Object To define a SpriteShape by the textures pixel transparency
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.AlphaThreshold.TypeName">
+            <summary>
+            The Identifier of the Object used for Serialization
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.AlphaThreshold.#ctor(System.Byte)">
+            <summary>
+            Creates a new AlphaThreshold object
+            </summary>
+            <param name="alphaThreshold">the threshold value indicating from which value on the pixels are part of the shape</param>
+        </member>
+        <member name="M:Shapes.Geometry.AlphaThreshold.#ctor(System.Byte,System.Boolean)">
+            <summary>
+            Creates a new AlphaThreshold object
+            </summary>
+            <param name="alphaThreshold">the threshold value indicating from which value on the pixels are part of the shape</param>
+            <param name="isInverted">if true, the opposite pixels are (not) part of the shape</param>
+        </member>
+        <member name="M:Shapes.Geometry.AlphaThreshold.CheckColorCondition(Microsoft.Xna.Framework.Color@)">
+            <summary>
+            Method is called from the SpriteShape class to check if a pixel is part of the shape or not
+            </summary>
+            <param name="color">the color of the pixel to check</param>
+            <returns>true, if the pixel is part of the SpriteShape</returns>
+        </member>
+        <member name="M:Shapes.Geometry.AlphaThreshold.GetTypeName">
+            <summary>
+            This method is needed for Serialization to have a pregnant identifier
+            </summary>
+            <returns>the name for serialization</returns>
+        </member>
+        <member name="T:Shapes.Geometry.ColorMap">
+            <summary>
+            An Object to define a SpriteShape by a color
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.ColorMap.TypeName">
+            <summary>
+            The Identifier of the Object used for Serialization
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.ColorMap.#ctor(Microsoft.Xna.Framework.Color)">
+            <summary>
+            Creates a new ColorMap object
+            </summary>
+            <param name="color">the exact color of the pixels which are part of the shape</param>
+        </member>
+        <member name="M:Shapes.Geometry.ColorMap.#ctor(Microsoft.Xna.Framework.Color,System.Boolean)">
+            <summary>
+            Creates a new ColorMap object
+            </summary>
+            <param name="color">the exact color of the pixels which are part of the shape</param>
+            <param name="isInverted">if true, the opposite pixels are (not) part of the shape</param>
+        </member>
+        <member name="M:Shapes.Geometry.ColorMap.CheckColorCondition(Microsoft.Xna.Framework.Color@)">
+            <summary>
+            Method is called from the SpriteShape class to check if a pixel is part of the shape or not
+            </summary>
+            <param name="color">the color of the pixel to check</param>
+            <returns>true, if the pixel is part of the SpriteShape</returns>
+        </member>
+        <member name="M:Shapes.Geometry.ColorMap.GetTypeName">
+            <summary>
+            This method is needed for Serialization to have a pregnant identifier
+            </summary>
+            <returns>the name for serialization</returns>
+        </member>
+        <member name="T:Shapes.Geometry.ShapeComposeFunction">
+            <summary>
+            this enum describes how a shape in a ShapeComposition is combined with the shapes below
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.ShapeComposeFunction.Add">
+            <summary>
+            Adds a shape to the shapes below
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.ShapeComposeFunction.Subtract">
+            <summary>
+            Subtracts (cut out) the shape from the shapes below
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.ShapeComposeFunction.Invert">
+            <summary>
+            Inverts everything below (where a shape was, there is nothing, where nothing was is a shape)
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.ShapeComposeFunction.Mask">
+            <summary>
+            Masks the shapes below (everything outside this shape will not beeing processed)
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.ShapeComposition">
+            <summary>
+            a shape defined by a collection of other shapes
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.ShapeComposition.#ctor(Shapes.Geometry.Shape)">
+            <summary>
+            Creates a new ShapeComposition
+            </summary>
+            <param name="basicShape">the first Shape of the Composition</param>
+        </member>
+        <member name="M:Shapes.Geometry.ShapeComposition.Add(Shapes.Geometry.Shape,Shapes.Geometry.ShapeComposeFunction)">
+            <summary>
+            Adds a new shape to the composition.
+            </summary>
+            <param name="shape">the Shape to add</param>
+            <param name="function">how the shape is composed. The function has an influence to all sapes added before.</param>
+        </member>
+        <member name="M:Shapes.Geometry.ShapeComposition.Clone">
+            <summary>
+            Clones the ShapeComposition.
+            </summary>
+            <returns>an object with the type ShapeComposition</returns>
+        </member>
+        <member name="M:Shapes.Geometry.ShapeComposition.Dispose">
+            <summary>
+            Releases all references inside of the class.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.ShapeComposition.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="T:Shapes.Geometry.GeometryType">
+            <summary>
+            An Enumeration mapping to the different kinds of geometry the shapes library supports
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Unknown">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Dot">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Line">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.LineStrip">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.SplineSegment">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Spline">
+            <summary></summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.LineList">
+            <summary></summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Circle">
+            <summary>
+            a Circle is an ellipse with two radia of the same length
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Ellipse">
+            <summary>
+            an Ellipse can be a Circle
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Rect">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Triangle">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.Polygon">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.SplinePoly">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.SpriteShape">
+            <summary> </summary>
+        </member>
+        <member name="F:Shapes.Geometry.GeometryType.ShapeComposition">
+            <summary> </summary>
+        </member>
+        <member name="M:Shapes.Geometry.GeometryTypeExtensions.IsDrawing(Shapes.Geometry.GeometryType)">
+            <summary>
+            returns true, if the value stands for a Drawing
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.GeometryTypeExtensions.IsShape(Shapes.Geometry.GeometryType)">
+            <summary>
+            returns true, if the value stands for a Shape
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.Appearance.BrushMaskStrangeEffect">
+            <summary>
+            A Mask for a brush which initially should become a dashd line.
+            Surprisingly it became something different which looks nice with some kind of Shapes.
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.BrushMaskStrangeEffect.#ctor(System.Single,System.Single,System.Single[])">
+            <summary>
+            Creates a new Strange effect
+            </summary>
+            <param name="step1">a step defining the thickness of a visible part</param>
+            <param name="step2">a step defining the thickness of an invisible part</param>
+            <param name="furtherSteps">(optional) append as many further steps as you want</param>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.BrushMaskStrangeEffect.AddStep(System.Single)">
+            <summary>
+            Adds another step which is invisible if the step before was visible or the other way around
+            </summary>
+            <param name="step">the thickness</param>
+        </member>
+        <member name="T:Shapes.Geometry.Spline">
+            <summary>
+            Description of a curve using the quadratic B-Spline algorithm.
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.PointList`1">
+            <summary>
+            A PointList is an abstract class to manage connected points.
+            LineStrip and BSpline inherits it
+            </summary>
+            <typeparam name="T">The type of the points</typeparam>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.#ctor(`0[])">
+            <summary>
+            Creates a new instance of PointList
+            </summary>
+            <param name="points">the ordered List of corners</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.Close">
+            <summary>
+            Closes the PointList
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetLocalPositionOfPoint(`0)">
+            <summary>
+            converts the given position to local coordinates
+            </summary>
+            <param name="globalPosition">the global position</param>
+            <returns>the local position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetLocalPoint(System.Int32)">
+            <summary>
+            Gets the local position of the point with the given index
+            </summary>
+            <param name="index">the index of the point to retrieve</param>
+            <returns>the point at the given index in local space</returns>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetGlobalPositionOfPoint(`0)">
+            <summary>
+            converts the given position to global coordinates
+            </summary>
+            <param name="localPosition">the local position</param>
+            <returns>the local position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetVectorOfPoint(`0)">
+            <summary>
+            Returns the given point as a Vector2
+            </summary>
+            <param name="point">the point</param>
+            <returns>the vector of the point</returns>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.FitBounding">
+            <summary>
+            fits the bounding
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.ToLocalCoordinates(`0@)">
+            <summary>
+            converts the given position to local coordinates
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.ToGlobalCoordinates(`0@)">
+            <summary>
+            converts the given position to global coordinates
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.RemovePoint(`0)">
+            <summary>
+            Removes the specified point
+            </summary>
+            <param name="point">the point (in global space) to remove</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.RemovePoint(`0,System.Boolean)">
+            <summary>
+            Removes the specified point
+            </summary>
+            <param name="point">the point to remove</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.RemovePoint(System.Int32)">
+            <summary>
+            Removes the point with the specified index
+            </summary>
+            <param name="index">the index of the point to remove</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPoint(`0,Shapes.Geometry.Line)">
+            <summary>
+            Inserts a point by splitting the given line
+            </summary>
+            <param name="newPoint">the point to insert</param>
+            <param name="line">the line to split</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPointBefore(`0,`0)">
+            <summary>
+            Inserts a point (global space) before another point
+            </summary>
+            <param name="referencedPoint">the point after the new point</param>
+            <param name="newPoint">the point to insert</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPointBefore(`0,`0,System.Boolean)">
+            <summary>
+            Inserts a point before another point
+            </summary>
+            <param name="referencedPoint">the point after the new point</param>
+            <param name="newPoint">the point to insert</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPointBefore(System.Int32,`0)">
+            <summary>
+            Inserts a point (global space) before the point with the given index (the new point will get this index)
+            </summary>
+            <param name="index">the index where to insert</param>
+            <param name="newPoint">the point to insert</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPointBefore(System.Int32,`0,System.Boolean)">
+            <summary>
+            Inserts a point before the point with the given index (the new point will get this index)
+            </summary>
+            <param name="index">the index where to insert</param>
+            <param name="newPoint">the point to insert</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPointAfter(`0,`0)">
+            <summary>
+            Inserts a point (global space) after another point
+            </summary>
+            <param name="referencedPoint">the point before the new point</param>
+            <param name="newPoint">the point to insert</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPointAfter(`0,`0,System.Boolean)">
+            <summary>
+            Inserts a point after another point
+            </summary>
+            <param name="referencedPoint">the point before the new point</param>
+            <param name="newPoint">the point to insert</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPointAfter(System.Int32,`0)">
+            <summary>
+            Inserts a point (global space) after the point with the given index
+            </summary>
+            <param name="index">the index of the point before</param>
+            <param name="newPoint">the point to insert</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.InsertPointAfter(System.Int32,`0,System.Boolean)">
+            <summary>
+            Inserts a point after the point with the given index
+            </summary>
+            <param name="index">the index of the point before</param>
+            <param name="newPoint">the point to insert</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.EditPoint(`0,`0)">
+            <summary>
+            Edit a point (global space)
+            </summary>
+            <param name="previousPoint">the position of the point before editing</param>
+            <param name="newPoint">the position of the point after editing</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.EditPoint(`0,`0,System.Boolean)">
+            <summary>
+            Edit a point
+            </summary>
+            <param name="previousPoint">the position of the point before editing</param>
+            <param name="newPoint">the position of the point after editing</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.EditPoint(System.Int32,`0)">
+            <summary>
+            Edit a point (global space)
+            </summary>
+            <param name="index">the index of the point to edit</param>
+            <param name="newPoint">the position of the point after editing</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.EditPoint(System.Int32,`0,System.Boolean)">
+            <summary>
+            Edit a point
+            </summary>
+            <param name="index">the index of the point to edit</param>
+            <param name="newPoint">the position of the point after editing</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetIndexOfPoint(`0)">
+            <summary>
+            Returns the Index of the given point
+            </summary>
+            <param name="point">the point to look after it's index</param>
+            <returns>the index of the point</returns>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetNearestCorner(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the nearest point of the PointList (doesn't matter what kind of point)
+            </summary>
+            <param name="position">the position (global space) from where the nearest point shall be catched</param>
+            <returns>the nearest point of the list</returns>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetNearestCorner(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Returns the nearest point of the PointList (doesn't matter what kind of point)
+            </summary>
+            <param name="position">the position from where the nearest point shall be catched</param>
+            <returns>the nearest point of the list</returns>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetNearestLine(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the nearest line connected between to of the points (doesn't matter what kind of point)
+            </summary>
+            <param name="position">the position from where the nearest line shall be catched </param>
+            <returns>the nearest line</returns>
+        </member>
+        <member name="M:Shapes.Geometry.PointList`1.GetNearestLine(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Returns the nearest line connected between to of the points (doesn't matter what kind of point)
+            </summary>
+            <param name="position">the position from where the nearest line shall be catched </param>
+            <returns>the nearest line</returns>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="P:Shapes.Geometry.PointList`1.Lines">
+            <summary>
+            The connection of all points with straight Lines.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.PointList`1.IsClosed">
+            <summary>
+            It is closed when Close() has been called or a shape (e.g. Polygon) has been created from it
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.#ctor(System.Collections.Generic.List{Shapes.Geometry.SplinePoint})">
+            <summary>
+            creates a new quadratic B-Spline curve
+            </summary>
+            <param name="points">the ordered spline points describing the curve</param>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.#ctor(Shapes.Geometry.SplinePoint[])">
+            <summary>
+            creates a new quadratic B-Spline curve
+            </summary>
+            <param name="points">the ordered spline points describing the curve</param>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.Close">
+            <summary>
+            connects the end of the spline with the beginning
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.GetLocalPositionOfPoint(Shapes.Geometry.SplinePoint)">
+            <summary>
+            converts the given position to local coordinates
+            </summary>
+            <param name="globalPosition">the global position</param>
+            <returns>the local position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.GetGlobalPositionOfPoint(Shapes.Geometry.SplinePoint)">
+            <summary>
+            converts the given postion to global coordinates
+            </summary>
+            <param name="localPosition">the local position</param>
+            <returns>the global position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.ToLocalCoordinates(Shapes.Geometry.SplinePoint@)">
+            <summary>
+            converts the given position to local coordinates
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.ToGlobalCoordinates(Shapes.Geometry.SplinePoint@)">
+            <summary>
+            converts the given position to global coordinates
+            </summary>
+            <param name="outPoint"></param>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.GetVectorOfPoint(Shapes.Geometry.SplinePoint)">
+            <summary>
+            Returns the given point as a Vector2
+            </summary>
+            <param name="point">the point</param>
+            <returns>the vector of the point</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.FitBounding">
+            <summary>
+            fits the bounding
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.Clone">
+            <summary>
+            Clones the Spline
+            </summary>
+            <returns>An object of the type QuadBSpline</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Spline.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="T:Shapes.Geometry.SplinePoint">
+            <summary>
+            A SplinePoint is a structure to define a point of a B-Spline
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.SplinePoint.Position">
+            <summary>
+            The Position of the Point
+            </summary>
+        </member>
+        <member name="F:Shapes.Geometry.SplinePoint.IsHandler">
+            <summary>
+            Defines if the Point is a handler to control the curve (true) or if it is a fixed point inside the spline (false)
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.#ctor(Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Creates a new SplinePoint
+            </summary>
+            <param name="position">the position</param>
+            <param name="isHandler">handler point (true) or fixed point (false)</param>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.#ctor(System.Single,System.Single,System.Boolean)">
+            <summary>
+            Creates a new SplinePoint
+            </summary>
+            <param name="x">the X-coordinate of the point</param>
+            <param name="y">the Y-coordinate of the point</param>
+            <param name="isCorner">corner point (true) or handler point (false)</param>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.Equals(Shapes.Geometry.SplinePoint)">
+            <summary>
+            checks wether this point is equal to another point
+            </summary>
+            <param name="other">the point to compare with</param>
+            <returns>true, if the points are the same</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.Equals(System.Object)">
+            <summary>
+            checks wether this point is equal to another object
+            </summary>
+            <param name="obj">the other object</param>
+            <returns>true, if obj is a SplinePoint with the same values</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Equality(Shapes.Geometry.SplinePoint,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator ==.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Inequality(Shapes.Geometry.SplinePoint,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator !=.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_UnaryNegation(Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator -.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Addition(Shapes.Geometry.SplinePoint,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator +.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Addition(Shapes.Geometry.SplinePoint,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Implements the operator +.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Addition(Microsoft.Xna.Framework.Vector2,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator +.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Subtraction(Shapes.Geometry.SplinePoint,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator -.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Subtraction(Shapes.Geometry.SplinePoint,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Implements the operator -.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Subtraction(Microsoft.Xna.Framework.Vector2,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator -.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Multiply(Shapes.Geometry.SplinePoint,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator *.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Multiply(Shapes.Geometry.SplinePoint,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Implements the operator *.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Multiply(Microsoft.Xna.Framework.Vector2,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator *.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="value2">The value2.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Multiply(Shapes.Geometry.SplinePoint,System.Single)">
+            <summary>
+            Implements the operator *.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="scaleFactor">The scale factor.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Multiply(System.Single,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator *.
+            </summary>
+            <param name="scaleFactor">The scale factor.</param>
+            <param name="value1">The value1.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Division(Shapes.Geometry.SplinePoint,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator /.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="divisor">The divisor.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Division(Shapes.Geometry.SplinePoint,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Implements the operator /.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="divisor">The divisor.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Division(Microsoft.Xna.Framework.Vector2,Shapes.Geometry.SplinePoint)">
+            <summary>
+            Implements the operator /.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="divisor">The divisor.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="M:Shapes.Geometry.SplinePoint.op_Division(Shapes.Geometry.SplinePoint,System.Single)">
+            <summary>
+            Implements the operator /.
+            </summary>
+            <param name="value1">The value1.</param>
+            <param name="divisor">The divisor.</param>
+            <returns>The result of the operator.</returns>
+        </member>
+        <member name="T:Shapes.Misc.Appearance.BrushMaskFallOff">
+            <summary>
+            A FallOff which makes a brush tip smooth
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.BrushMaskFallOff.#ctor(System.Single)">
+            <summary>
+            creates a new FallOff mask
+            </summary>
+            <param name="fallOff">The FallOff defines, what distance at the outline of the brush tip is used to fade out into full transparency.</param>
+        </member>
+        <member name="P:Shapes.Misc.Appearance.BrushMaskFallOff.FallOff">
+            <summary>
+            The FallOff defines, what distance at the outline of the brush tip is used to fade out into full transparency.
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.Rect">
+            <summary>
+            A rectangular shape
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Rect.#ctor(System.Single,System.Single)">
+            <summary>
+            creates a rectangle shape
+            </summary>
+            <param name="width">the width of the rectangle</param>
+            <param name="height">the height of the rectangle</param>
+        </member>
+        <member name="M:Shapes.Geometry.Rect.#ctor(Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+            <summary>
+            creates a rectangle shape
+            </summary>
+            <param name="position">the left upper corner of the Rect</param>
+            <param name="width">the width of the rectangle</param>
+            <param name="height">the height of the rectangle</param>
+        </member>
+        <member name="M:Shapes.Geometry.Rect.ChangeDimension(System.Single,System.Single)">
+            <summary>
+            Changes the width and height of the Rect-Shape
+            </summary>
+            <param name="width">the new width of the Rect</param>
+            <param name="height">the new height of the Rect</param>
+        </member>
+        <member name="M:Shapes.Geometry.Rect.Clone">
+            <summary>
+            Clones the Rect.
+            </summary>
+            <returns>an object with the type Rect</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Rect.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Rect.ToLineStrip">
+            <summary>
+            converts the geometry to a LineStrip.
+            </summary>
+            <returns>a line strip object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Rect.GetLines">
+            <summary>
+            Creates Border lines to iterate through
+            </summary>
+            <returns>every line of the border of the Rect</returns>
+        </member>
+        <member name="P:Shapes.Geometry.Rect.StartPoint">
+            <summary>
+            Member of ILinedShape. the startpoint of the first line.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Rect.LineCount">
+            <summary>
+            Member of ILinedShape. The amount of Lines the Rect has (4).
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.Ellipse">
+            <summary>
+            an ellipsoid shape
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Ellipse.#ctor(System.Single,System.Single)">
+            <summary>
+            creates an ellipse shape
+            </summary>
+            <param name="horizontalRadius">the horizontal radius of the ellipse</param>
+            <param name="verticalRadius">the vertical radius of the ellipse</param>
+        </member>
+        <member name="M:Shapes.Geometry.Ellipse.#ctor(Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+            <summary>
+            creates an ellipse shape
+            </summary>
+            <param name="horizontalRadius">the horizontal radius of the ellipse</param>
+            <param name="verticalRadius">the vertical radius of the ellipse</param>
+            <param name="center">the position of the center of the ellipse</param>
+        </member>
+        <member name="M:Shapes.Geometry.Ellipse.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Ellipse.ChangeRadius(System.Single,System.Single)">
+            <summary>
+            Changes the radius of the ellipse
+            </summary>
+            <param name="horizontalRadius">the horizontal radius of the ellipse</param>
+            <param name="verticalRadius">the vertical radius of the ellipse</param>
+        </member>
+        <member name="M:Shapes.Geometry.Ellipse.Clone">
+            <summary>
+            Clones the Ellipse.
+            </summary>
+            <returns>an object with the type Ellipse</returns>
+        </member>
+        <member name="P:Shapes.Geometry.Ellipse.MajorRadius">
+            <summary>
+            The value of the bigger radius (can be horizontal or vertical radius)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Ellipse.MinorRadius">
+            <summary>
+            the value of the smaller radius (can be horizontal or vertical radius)
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Ellipse.HorizontalRadius">
+            <summary>
+            the horizontal radius value
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Ellipse.VerticalRadius">
+            <summary>
+            the vertical radius value
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.Line">
+            <summary>
+            a line drawing
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Line.#ctor(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            creates a line drawing
+            </summary>
+            <param name="startPoint">the start position</param>
+            <param name="endPoint">the end position</param>
+        </member>
+        <member name="M:Shapes.Geometry.Line.GetDistanceToEdge(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            a test to check for the distance of a point to the nearest edge
+            </summary>
+            <param name="point">the point to check</param>
+            <returns>the distance to the nearest edge</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Line.SetPoints(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Resets the start and end point of the line in global coordinates
+            </summary>
+            <param name="start">the new start point</param>
+            <param name="end">the new end point</param>
+        </member>
+        <member name="M:Shapes.Geometry.Line.SetPoints(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Resets the start and end point of the line
+            </summary>
+            <param name="start">the new start point</param>
+            <param name="end">the new end point</param>
+            <param name="isLocalCoordinate">true, if the passed coordinates are in local space</param>
+        </member>
+        <member name="M:Shapes.Geometry.Line.Clone">
+            <summary>
+            Clones the Line.
+            </summary>
+            <returns>an object with the type Line</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Line.ToString">
+            <summary>
+            returns a string identifying the line
+            </summary>
+            <returns>a string identifying the line</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Line.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Line.ToLineStrip">
+            <summary>
+            converts the geometry to a LineStrip.
+            </summary>
+            <returns>a line strip object</returns>
+        </member>
+        <member name="P:Shapes.Geometry.Line.StartPoint">
+            <summary>
+            One end of the Line.
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Line.EndPoint">
+            <summary>
+            One end of the Line.
+            </summary>
+        </member>
+        <member name="T:Shapes.TooFewPointsException">
+            <summary>
+            Exception is thrown when a polygon or B-Spline has less than 3 points
+            </summary>
+        </member>
+        <member name="M:Shapes.TooFewPointsException.#ctor(System.String)">
+            <summary>
+            Creates a new TooFewPointException
+            </summary>
+            <param name="message">the message of the exception</param>
+        </member>
+        <member name="T:Shapes.ShapeTexturePoolNotInitializedException">
+            <summary>
+            Exception is thrown when a SpriteShape or FillTexture is created but the ShapeTexturePool hasn't been initialized before
+            </summary>
+        </member>
+        <member name="M:Shapes.ShapeTexturePoolNotInitializedException.#ctor">
+            <summary>
+            Creates a new ShapeTexturePoolNotInitializedException
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.ShapeTexturePool">
+            <summary>
+            this pool holds the texture data for SpriteShapes and FillTextures to save memory if several SpriteShapes / FillTextures are using the same Texture
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.ShapeTexturePool.Initialize(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Initializes the Pool to be able to Load Textures
+            </summary>
+            <param name="content">the content manager of the game</param>
+        </member>
+        <member name="M:Shapes.Misc.ShapeTexturePool.Clear">
+            <summary>
+            Clears all texture data
+            </summary>
+        </member>
+        <member name="P:Shapes.Misc.ShapeTexturePool.IsInitialized">
+            <summary>
+            Indicates wether ShapeTexturePool.Initialize() has already been called
+            </summary>
+        </member>
+        <member name="T:Shapes.Misc.Appearance.FillColor">
+            <summary>
+            A Fill Object which only provides one color
+            </summary>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.FillColor.#ctor(Microsoft.Xna.Framework.Color)">
+            <summary>
+            Creates a new FillColor
+            </summary>
+            <param name="color">the fill color</param>
+        </member>
+        <member name="M:Shapes.Misc.Appearance.FillColor.GetColorAt(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            Mehtod to evaluate the color at the given position
+            </summary>
+            <param name="position">the position in local space of the fill</param>
+            <returns>the color at the given point</returns>
+        </member>
+        <member name="P:Shapes.Misc.Appearance.FillColor.Color">
+            <summary>
+            The Fill Color
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.Polygon">
+            <summary>
+            a polygon shape
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Polygon.#ctor(Shapes.Geometry.LineStrip)">
+            <summary>
+            creates a polygon shape
+            </summary>
+            <param name="lines">the LineStrip which defines the polygon. 
+            Note: the linestrip is changed by the polygon. 
+            Changing the LineStrip later may cause unexpected results.</param>
+        </member>
+        <member name="M:Shapes.Geometry.Polygon.Clone">
+            <summary>
+            Clones the Polygon.
+            </summary>
+            <returns>an object with the type Polygon</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Polygon.Dispose">
+            <summary>
+            Releases all references inside of the class.
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.Polygon.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Polygon.GetLines">
+            <summary>
+            Iterates through all Lines of the object
+            </summary>
+            <returns>every line the object contains</returns>
+        </member>
+        <member name="M:Shapes.Geometry.Polygon.ToLineStrip">
+            <summary>
+            Clones the LineStrip of the Polygon
+            </summary>
+            <returns>a line strip object</returns>
+        </member>
+        <member name="P:Shapes.Geometry.Polygon.LineStrip">
+            <summary>
+            The LineStrip which defines the polygon
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Polygon.StartPoint">
+            <summary>
+            The global position of the first lines start point
+            </summary>
+        </member>
+        <member name="P:Shapes.Geometry.Polygon.LineCount">
+            <summary>
+            The amount of Lines describig the polygon
+            </summary>
+        </member>
+        <member name="T:Shapes.Geometry.LineStrip">
+            <summary>
+            The LineStrip class is a collection of connected lines
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.#ctor(System.Collections.Generic.List{Microsoft.Xna.Framework.Vector2})">
+            <summary>
+            Creates a new instance of LineStrip
+            </summary>
+            <param name="corners">the ordered List of corners of the LineStrip</param>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.#ctor(Microsoft.Xna.Framework.Vector2[])">
+            <summary>
+            Creates a new instance of LineStrip
+            </summary>
+            <param name="corners">the ordered List of corners of the LineStrip</param>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.Close">
+            <summary>
+            connects the end of the LineStrip with the beginning
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.FitBounding">
+            <summary>
+            Fits the bounding
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.GetLocalPositionOfPoint(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            converts the given position to local coordinates
+            </summary>
+            <param name="globalPosition">the global position</param>
+            <returns>the local position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.GetGlobalPositionOfPoint(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            converts the given postion to global coordinates
+            </summary>
+            <param name="localPosition">the local position</param>
+            <returns>the global position</returns>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.GetVectorOfPoint(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Returns the point as a vector (only relevant for SplinePoints)
+            </summary>
+            <param name="point">the return point</param>
+            <returns>the given point</returns>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.ToLocalCoordinates(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            converts the given position to local coordinates
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.ToGlobalCoordinates(Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            converts the given postion to global coordinates
+            </summary>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.Clone">
+            <summary>
+            Clones the LineStrip
+            </summary>
+            <returns>An object of the type LineStrip</returns>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.GetGeometryType">
+            <summary>
+            Gets the enumeration type which is mapped to this kind of object
+            </summary>
+            <returns>the geometry typee of this object</returns>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.GetLines">
+            <summary>
+            Iterates through all Lines of the object
+            </summary>
+            <returns>every line the object contains</returns>
+        </member>
+        <member name="M:Shapes.Geometry.LineStrip.ToLineStrip">
+            <summary>
+            same as Colne() in this case.
+            </summary>
+            <returns>a line strip object</returns>
+        </member>
+        <member name="P:Shapes.Geometry.LineStrip.StartPoint">
+            <summary>
+            The global position of the first lines start point
+            </summary>
+        </member>
+    </members>
+</doc>

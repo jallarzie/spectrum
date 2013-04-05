@@ -7,7 +7,7 @@ using Spectrum.Components;
 
 namespace Spectrum
 {
-    class Application : Microsoft.Xna.Framework.Game
+    public class Application : Microsoft.Xna.Framework.Game
     {
         private const double SPECIAL_INPUT_DELAY = 500; //time between acknowledgement of special inputs in miliseconds
 
@@ -17,22 +17,13 @@ namespace Spectrum
         {
             get
             {
+                if (sInstance == null) 
+                {
+                    sInstance = new Application();
+                }
                 return sInstance;
             }
         }
-
-        #if WINDOWS || XBOX
-            static void Main(string[] args)
-            {
-                if (sInstance != null)
-                    return;
-
-                using (sInstance = new Application())
-                {
-                    sInstance.Run();
-                }
-            }
-        #endif
 
         public Application()
         {
@@ -41,6 +32,10 @@ namespace Spectrum
             GraphicsDeviceManager.PreferredBackBufferHeight = 720;
             
             Content.RootDirectory = "Content";
+
+#if WINDOWS_PHONE
+            sInstance = this;
+#endif
         }
 
         protected override void Initialize()
