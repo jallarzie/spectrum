@@ -34,6 +34,7 @@ namespace Spectrum
             Content.RootDirectory = "Content";
 
 #if WINDOWS_PHONE
+            GraphicsDeviceManager.IsFullScreen = true;
             sInstance = this;
 #endif
         }
