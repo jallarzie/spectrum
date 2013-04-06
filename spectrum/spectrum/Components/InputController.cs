@@ -34,7 +34,9 @@ namespace Spectrum.Components
         private GamePadState[] gamePadStates;
 
 #if WINDOWS_PHONE
+        private TouchCollection TouchLocationState;
         private PhoneThumbsticController LeftAreaPhoneInputListener;
+        private PhoneThumbsticController RightAreaPhoneInputListener;       
 #endif
 
         private InputController()
@@ -50,6 +52,12 @@ namespace Spectrum.Components
                 Application.Instance.GraphicsDevice.Viewport.Width / 2,
                 Application.Instance.GraphicsDevice.Viewport.Height)
             );
+            RightAreaPhoneInputListener = new PhoneThumbsticController(new Rectangle(
+                Application.Instance.GraphicsDevice.Viewport.Width / 2,
+                0,
+                Application.Instance.GraphicsDevice.Viewport.Width / 2,
+                Application.Instance.GraphicsDevice.Viewport.Height)
+            );
 #endif
 
         }
@@ -58,7 +66,9 @@ namespace Spectrum.Components
         {
 
 #if WINDOWS_PHONE
-            LeftAreaPhoneInputListener.Update();
+            TouchLocationState = TouchPanel.GetState();
+            RightAreaPhoneInputListener.Update(TouchLocationState);
+            LeftAreaPhoneInputListener.Update(TouchLocationState);
 #else
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
@@ -84,6 +94,9 @@ namespace Spectrum.Components
 
         public Vector2 GetShootingDirection(Ship player)
         {
+#if WINDOWS_PHONE
+            return RightAreaPhoneInputListener.GetMovingDirection();
+#else
             Vector2 direction = Vector2.Zero;
 
             if (GetControlType(player.PlayerIndex) == ControlType.Keyboard)
@@ -102,6 +115,10 @@ namespace Spectrum.Components
             }
 
             return direction;
+#endif
+
+
+
         }
 
         public Vector2 GetMovingDirection(PlayerIndex player)

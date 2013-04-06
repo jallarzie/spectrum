@@ -37,10 +37,9 @@ namespace Spectrum.Components
             LastMovedLocation = null;
         }
 
-        public void Update() 
+        public void Update(TouchCollection touchLocationState) 
         {
-            TouchCollection touchLocations = TouchPanel.GetState();
-            foreach(TouchLocation touchLocation in touchLocations)
+            foreach (TouchLocation touchLocation in touchLocationState)
             {
                 switch (touchLocation.State)
                 {
