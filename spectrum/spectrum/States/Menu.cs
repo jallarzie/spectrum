@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System;
 using Spectrum.Components;
 
+#if WINDOWS_PHONE
+    using Microsoft.Xna.Framework.Input.Touch;
+#endif
+
 namespace Spectrum.States
 {
     public class Menu : Library.States.State
@@ -16,6 +20,15 @@ namespace Spectrum.States
                 Text = text;
                 Target = target;
                 Label = label;
+            }
+
+            public Rectangle getLabelRectangle() 
+            {
+                return new Rectangle(
+                    (int)(Label.Position.X-Label.Width/2), 
+                    (int)(Label.Position.Y-Label.Height/2),
+                    (int)Label.Width, 
+                    (int)Label.Height);
             }
 
             public string Text;
@@ -95,15 +108,41 @@ namespace Spectrum.States
 
         public override bool Transition()
         {
+#if WINDOWS_PHONE
+            TouchCollection touchCollection = TouchPanel.GetState();
+            foreach (TouchLocation touchLocation in touchCollection) 
+            {
+                foreach (Action menuAction in mActions) 
+                {
+                    Rectangle touchedArea = new Rectangle(
+                        (int)touchLocation.Position.X, 
+                        (int)touchLocation.Position.Y, 
+                        1, 
+                        1
+                    );
+                    if(menuAction.getLabelRectangle().Intersects(touchedArea))
+                    {
+                        return Application.Instance.StateMachine.ChangeState(menuAction.Target());
+                    }
+                }
+            }
+
+            return false;
+#else
             KeyboardState keyboardState = Keyboard.GetState();
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-            if (mOffsetX == Application.Instance.GraphicsDevice.Viewport.Width / 2 
+            if (mOffsetX == Application.Instance.GraphicsDevice.Viewport.Width / 2
                 && (this.IsKeyDown(Keys.Enter) || this.IsKeyDown(Keys.Space) || this.IsButtonDown(Buttons.A))
                 && mSelection != -1)
+            {
                 return Application.Instance.StateMachine.ChangeState(mActions[mSelection].Target());
-
-            return false;
+            }            
+            else
+            {
+                return false;
+            }
+#endif
         }
 
         public override void Update(GameTime gameTime)

@@ -5,9 +5,13 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
+#if WINDOWS_PHONE
+using Microsoft.Xna.Framework.Input.Touch;
+#endif
+
 namespace Spectrum.Components
 {
-    public enum ControlType { Keyboard, GamePad }
+    public enum ControlType { Keyboard, GamePad, TouchScreen }
 
     public class InputController
     {
@@ -51,8 +55,11 @@ namespace Spectrum.Components
 
             if (gamePadStates[(int)player].IsConnected)
                 return ControlType.GamePad;
-
+#if WINDOWS_PHONE
+            return ControlType.TouchScreen;
+#else
             return ControlType.Keyboard;
+#endif
         }
 
         public Vector2 GetShootingDirection(Ship player)
