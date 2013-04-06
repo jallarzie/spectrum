@@ -5,12 +5,18 @@ In a lost corner in the infinite expanse of outer space, a threat powerful enoug
 
 This game mixes a traditional shoot ‘em up genre with color-combining gameplay. Kill enemies and absorb their powerups to acquire new colors and competences. Then use those colors to take down the target core.
 
-This game is using the Microsoft XNA 4.0 Game Engine.
+This game is built using the Microsoft XNA 4.0 Game Engine.
 
 
-## Installation Instructions ##
+## Build Instructions ##
 
-- Unzip the package
+- You must first have the following applications/components installed on your development machine to build the game from source code :
+	- Windows 7 OS (Warning: you won't be able to build the phone version of the game on a windows 8 machine.)
+	- Visual Studio 2010 SP1
+	- XNA Game Studio 4.0 Refresh
+	- Windows Phone SDK 7.1
+	- Windows Phone SDK 7.1.1 Update
+
 - Copy the file spectrum/spectrumContent/fonts/Minecraftia.ttf to the C:\Windows\Fonts directory
 - Open the spectrum.sln file with Visual Studio
 - Go to Debug -> Start Without Debugging
