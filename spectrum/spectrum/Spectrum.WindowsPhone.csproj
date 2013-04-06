@@ -82,6 +82,7 @@
     <Compile Include="Components\Forcefield.cs" />
     <Compile Include="Components\HealthBar.cs" />
     <Compile Include="Components\InputController.cs" />
+    <Compile Include="Components\PhoneThumbsticController.cs" />
     <Compile Include="Components\PowerCore.cs" />
     <Compile Include="Components\Laser.cs" />
     <Compile Include="Components\Powerup.cs" />

@@ -33,19 +33,39 @@ namespace Spectrum.Components
         private MouseState mouseState;
         private GamePadState[] gamePadStates;
 
+#if WINDOWS_PHONE
+        private PhoneThumbsticController LeftAreaPhoneInputListener;
+#endif
+
         private InputController()
         {
             gamePadStates = new GamePadState[MAX_PLAYERS];
             for (int i = 0; i < MAX_PLAYERS; ++i)
                 gamePadStates[i] = GamePad.GetState((PlayerIndex)i, GamePadDeadZone.Circular);
+
+#if WINDOWS_PHONE
+            LeftAreaPhoneInputListener = new PhoneThumbsticController(new Rectangle(
+                0,
+                0,
+                Application.Instance.GraphicsDevice.Viewport.Width / 2,
+                Application.Instance.GraphicsDevice.Viewport.Height)
+            );
+#endif
+
         }
 
         public void Update()
         {
+
+#if WINDOWS_PHONE
+            LeftAreaPhoneInputListener.Update();
+#else
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
             for (int i = 0; i < MAX_PLAYERS; ++i)
                 gamePadStates[i] = GamePad.GetState((PlayerIndex)i, GamePadDeadZone.Circular);
+#endif
+
         }
 
         public ControlType GetControlType(PlayerIndex player)
@@ -86,9 +106,13 @@ namespace Spectrum.Components
 
         public Vector2 GetMovingDirection(PlayerIndex player)
         {
-            Vector2 direction = Vector2.Zero;
+           
 
-            if (GetControlType(player) == ControlType.Keyboard)
+#if WINDOWS_PHONE
+            return LeftAreaPhoneInputListener.GetMovingDirection();
+#else
+             Vector2 direction = Vector2.Zero;
+                        if (GetControlType(player) == ControlType.Keyboard)
             {
                 if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.Q))
                     direction.X -= 1;
@@ -121,6 +145,9 @@ namespace Spectrum.Components
             }
 
             return direction;
+#endif
+
+
         }
 
         public bool IsCharging(PlayerIndex player)
