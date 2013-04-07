@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-
-#if WINDOWS_PHONE
 using Microsoft.Xna.Framework.Input.Touch;
-#endif
+
 
 namespace Spectrum.Components
 {
@@ -33,11 +31,9 @@ namespace Spectrum.Components
         private MouseState mouseState;
         private GamePadState[] gamePadStates;
 
-#if WINDOWS_PHONE
         private TouchCollection TouchLocationState;
-        private PhoneThumbsticController LeftAreaPhoneInputListener;
-        private PhoneThumbsticController RightAreaPhoneInputListener;       
-#endif
+        public PhoneThumbsticController LeftAreaPhoneInputListener {get; private set;}
+        public PhoneThumbsticController RightAreaPhoneInputListener { get; private set; }       
 
         private InputController()
         {
@@ -45,7 +41,6 @@ namespace Spectrum.Components
             for (int i = 0; i < MAX_PLAYERS; ++i)
                 gamePadStates[i] = GamePad.GetState((PlayerIndex)i, GamePadDeadZone.Circular);
 
-#if WINDOWS_PHONE
             LeftAreaPhoneInputListener = new PhoneThumbsticController(new Rectangle(
                 0,
                 0,
@@ -58,23 +53,18 @@ namespace Spectrum.Components
                 Application.Instance.GraphicsDevice.Viewport.Width / 2,
                 Application.Instance.GraphicsDevice.Viewport.Height)
             );
-#endif
-
         }
 
         public void Update()
         {
-
-#if WINDOWS_PHONE
             TouchLocationState = TouchPanel.GetState();
             RightAreaPhoneInputListener.Update(TouchLocationState);
             LeftAreaPhoneInputListener.Update(TouchLocationState);
-#else
+
             keyboardState = Keyboard.GetState();
             mouseState = Mouse.GetState();
             for (int i = 0; i < MAX_PLAYERS; ++i)
                 gamePadStates[i] = GamePad.GetState((PlayerIndex)i, GamePadDeadZone.Circular);
-#endif
 
         }
 

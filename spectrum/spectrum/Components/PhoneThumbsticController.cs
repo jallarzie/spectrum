@@ -1,5 +1,3 @@
-
-#if WINDOWS_PHONE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +25,7 @@ namespace Spectrum.Components
         /// The Position of the last TouchLocation that had
         /// a Moved TouchLocationState.
         /// </summary>
-        private Vector2? LastMovedLocation;
+        public Vector2? LastMovedLocation { get; private set; }
 
         public PhoneThumbsticController(Rectangle listeningArea) 
         {
@@ -90,4 +88,3 @@ namespace Spectrum.Components
         }
     }
 }
-#endif

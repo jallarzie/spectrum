@@ -72,6 +72,7 @@
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -126,6 +127,8 @@
     <Compile Include="Components\Powerup.cs" />
     <Compile Include="Components\ScoreKeeper.cs" />
     <Compile Include="Components\SoundPlayer.cs" />
+    <Compile Include="Components\ThumbStickInnerCircleSprite.cs" />
+    <Compile Include="Components\ThumbStickSprite.cs" />
     <Compile Include="Layers.cs" />
     <Compile Include="Library\Collisions\Box.cs" />
     <Compile Include="Library\Collisions\Sphere.cs" />

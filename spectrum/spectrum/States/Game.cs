@@ -82,7 +82,7 @@ namespace Spectrum.States
 
             SoundPlayer.PlayMainGameSong();
 
-            //Update(new GameTime());
+            ThumbStick = new ThumbStickSprite(Vector2.Zero);
         }
 
         public override void Initialize()
@@ -108,7 +108,6 @@ namespace Spectrum.States
 
         public override void Destroy()
         {
-            System.Console.WriteLine("coucou");
             Application.Instance.Drawables.Remove(mBackground);
             Application.Instance.Drawables.Remove(ScoreKeeper);
             Application.Instance.Drawables.Remove(Core);
@@ -126,6 +125,9 @@ namespace Spectrum.States
             PowerupsToRemove.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Remove(powerup); });
 
             Explosions.ForEach(explosion => Application.Instance.Drawables.Remove(explosion));
+
+            Application.Instance.Drawables.Remove(ThumbStick);
+            Application.Instance.Drawables.Remove(ThumbStick.ThumbStickInnerCircleSprite);
         }
 
         public override bool Transition()
@@ -167,6 +169,7 @@ namespace Spectrum.States
             EnemyAttacks(gameTime);
             Core.Update(gameTime);
             Explosions.ForEach(explosion => explosion.Update(gameTime));
+            UpdateThumbSticks(gameTime);
         }
 
         public void OnPowerCoreHealthReachedZero()
@@ -317,6 +320,27 @@ namespace Spectrum.States
                 Application.Instance.Drawables.Add(player);
             }
             PlayersToRevive.Clear();
+        }
+
+        private void UpdateThumbSticks(GameTime gameTime) 
+        {
+            if (InputController.Instance.LeftAreaPhoneInputListener.LastMovedLocation != null)
+            {
+                ThumbStick.Update(InputController.Instance.LeftAreaPhoneInputListener);
+
+                if (!LeftThumbStickAdded) 
+                {
+                    Application.Instance.Drawables.Add(ThumbStick);
+                    Application.Instance.Drawables.Add(ThumbStick.ThumbStickInnerCircleSprite);
+                    LeftThumbStickAdded = true;
+                }
+            }
+            else if (LeftThumbStickAdded)
+            {
+                Application.Instance.Drawables.Remove(ThumbStick);
+                Application.Instance.Drawables.Remove(ThumbStick.ThumbStickInnerCircleSprite);
+                LeftThumbStickAdded = false;
+            }
         }
 
         private void Collisions(GameTime gameTime)
@@ -547,6 +571,8 @@ namespace Spectrum.States
         public int NumberOfPlayers { get; protected set; }
         private Random RNG;
         private Background mBackground;
+        private ThumbStickSprite ThumbStick;
+        private Boolean LeftThumbStickAdded;
         private Viewport Viewport;
         private List<Ship> Players, PlayersToRemove, DeadPlayers, PlayersToRevive;
         private Crosshair Crosshair;
