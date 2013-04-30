@@ -19,23 +19,28 @@ namespace Spectrum.Components
             ThumbStickInnerCircleSprite = new ThumbStickInnerCircleSprite(position);
         }
 
-        public void Update(PhoneThumbsticController thumbStickController)
+        public void Update(PhoneThumbsticController thumbStickController, Boolean isShipMoving)
         {
-            Vector2 LastMovedPosition = (Vector2)thumbStickController.LastMovedLocation;
-
-            Position = (Vector2)thumbStickController.LastPressedLocation - new Vector2(CIRCLE_RADIUS, CIRCLE_RADIUS);
             Vector2 centerPosition = new Vector2(GetRectangle().Center.X, GetRectangle().Center.Y);
 
-            Vector2 DistanceFromLastMovedPosition = LastMovedPosition - centerPosition;
-
-            if (DistanceFromLastMovedPosition.Length() <= CIRCLE_RADIUS)
+            if (!isShipMoving) 
             {
-                ThumbStickInnerCircleSprite.Position = LastMovedPosition - new Vector2(ThumbStickInnerCircleSprite.CIRCLE_RADIUS, ThumbStickInnerCircleSprite.CIRCLE_RADIUS);
+                ThumbStickInnerCircleSprite.Position = centerPosition - new Vector2(ThumbStickInnerCircleSprite.CIRCLE_RADIUS, ThumbStickInnerCircleSprite.CIRCLE_RADIUS);
             }
-            else 
+            else if (thumbStickController.LastMovedLocation != null)
             {
-                DistanceFromLastMovedPosition.Normalize();
-                ThumbStickInnerCircleSprite.Position = centerPosition + CIRCLE_RADIUS * DistanceFromLastMovedPosition - new Vector2(ThumbStickInnerCircleSprite.CIRCLE_RADIUS, ThumbStickInnerCircleSprite.CIRCLE_RADIUS);
+                Vector2 LastMovedPosition = (Vector2)thumbStickController.LastMovedLocation;
+                Vector2 DistanceFromLastMovedPosition = LastMovedPosition - centerPosition;
+
+                if (DistanceFromLastMovedPosition.Length() <= CIRCLE_RADIUS)
+                {
+                    ThumbStickInnerCircleSprite.Position = LastMovedPosition - new Vector2(ThumbStickInnerCircleSprite.CIRCLE_RADIUS, ThumbStickInnerCircleSprite.CIRCLE_RADIUS);
+                }
+                else
+                {
+                    DistanceFromLastMovedPosition.Normalize();
+                    ThumbStickInnerCircleSprite.Position = centerPosition + CIRCLE_RADIUS * DistanceFromLastMovedPosition - new Vector2(ThumbStickInnerCircleSprite.CIRCLE_RADIUS, ThumbStickInnerCircleSprite.CIRCLE_RADIUS);
+                }
             }
         }
 

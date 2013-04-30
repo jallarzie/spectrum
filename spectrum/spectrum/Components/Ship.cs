@@ -36,6 +36,8 @@ namespace Spectrum.Components
 
         public override void Draw(GameTime gameTime, SpriteBatch targetSpriteBatch)
         {
+            LastPosition = Position;
+
             base.Draw(gameTime, targetSpriteBatch);
             HealthBar.Draw(gameTime, targetSpriteBatch);
         }
@@ -82,6 +84,11 @@ namespace Spectrum.Components
             return invincibilityTime > 0.0f;
         }
 
+        public bool IsMoving() 
+        {
+            return (this.LastPosition - this.Position).Length() != 0;
+        }
+
         public Path Path;
         public HealthBar HealthBar;
         public float LaserFireRateCounter, LaserCharge, FeedbackTime;
@@ -91,5 +98,6 @@ namespace Spectrum.Components
 
         private const int BLINK_INTERVAL = 300;
         private const int MAX_INVINCIBILITY_TIME = 1500;
+        private Vector2 LastPosition;
     }
 }

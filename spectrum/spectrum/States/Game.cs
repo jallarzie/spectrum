@@ -62,7 +62,7 @@ namespace Spectrum.States
             }
 
             Crosshair = new Crosshair();
-            mBackground = new Background(2000, RNG);
+            mBackground = new Background(250, RNG);
             Core = new PowerCore(level, RNG);
             Core.Observer = this;
             List<Entity2D> scoreKeeperEntities = new List<Entity2D>();
@@ -82,7 +82,9 @@ namespace Spectrum.States
 
             SoundPlayer.PlayMainGameSong();
 
-            ThumbStick = new ThumbStickSprite(Vector2.Zero);
+            LeftThumbstickPosition = new Vector2(0.10f * this.Viewport.Width, 0.75f * this.Viewport.Height);
+            ThumbStick = new ThumbStickSprite(LeftThumbstickPosition);
+
         }
 
         public override void Initialize()
@@ -104,6 +106,9 @@ namespace Spectrum.States
             PowerupsToRemove.ForEach(delegate(Powerup powerup) { Application.Instance.Drawables.Add(powerup); });
 
             Explosions.ForEach(explosion => Application.Instance.Drawables.Add(explosion));
+
+            Application.Instance.Drawables.Add(ThumbStick);
+            Application.Instance.Drawables.Add(ThumbStick.ThumbStickInnerCircleSprite);
         }
 
         public override void Destroy()
@@ -324,22 +329,13 @@ namespace Spectrum.States
 
         private void UpdateThumbSticks(GameTime gameTime) 
         {
-            if (InputController.Instance.LeftAreaPhoneInputListener.LastMovedLocation != null)
+            if (InputController.Instance.LeftAreaPhoneInputListener.LastPressedLocation != null)
             {
-                ThumbStick.Update(InputController.Instance.LeftAreaPhoneInputListener);
-
-                if (!LeftThumbStickAdded) 
-                {
-                    Application.Instance.Drawables.Add(ThumbStick);
-                    Application.Instance.Drawables.Add(ThumbStick.ThumbStickInnerCircleSprite);
-                    LeftThumbStickAdded = true;
-                }
+                ThumbStick.Update(InputController.Instance.LeftAreaPhoneInputListener, true);
             }
-            else if (LeftThumbStickAdded)
+            else 
             {
-                Application.Instance.Drawables.Remove(ThumbStick);
-                Application.Instance.Drawables.Remove(ThumbStick.ThumbStickInnerCircleSprite);
-                LeftThumbStickAdded = false;
+                ThumbStick.Update(InputController.Instance.LeftAreaPhoneInputListener, false);
             }
         }
 
@@ -572,7 +568,6 @@ namespace Spectrum.States
         private Random RNG;
         private Background mBackground;
         private ThumbStickSprite ThumbStick;
-        private Boolean LeftThumbStickAdded;
         private Viewport Viewport;
         private List<Ship> Players, PlayersToRemove, DeadPlayers, PlayersToRevive;
         private Crosshair Crosshair;
@@ -586,6 +581,11 @@ namespace Spectrum.States
         private int EnemyWaveSize;
         private Vector2[] StartPositions;
         private string[] PlayerLabels;
+
+        /// <summary>
+        /// The position of the left controller stick image
+        /// </summary>
+        private readonly Vector2 LeftThumbstickPosition;
 
         public int Score
         {
