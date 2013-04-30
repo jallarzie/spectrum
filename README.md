@@ -43,6 +43,8 @@ This game is built using the Microsoft XNA 4.0 Game Engine.
 
 - Power Up : Ville Seppanen (http://opengameart.org/content/gem-jewel-diamond-glass)
 
+- Thumbstick : Plateau (http://opengameart.org/content/hexalium)
+
 **Background Music**
 
 	Retro Evolved 2 Megamix: 46860 Choices, Chris Chudley, Bizarre Creations.
